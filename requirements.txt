@@ -1,0 +1,6 @@
+loguru~=0.7.3
+comtypes~=1.4.15
+pycaw~=20251023
+psutil~=7.2.2
+screen_brightness_control~=0.27.0
+pywin32~=311

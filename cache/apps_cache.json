@@ -1,0 +1,4720 @@
+[
+  {
+    "name": "ableton live 10 suite",
+    "exe": "Ableton Live 10 Suite.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Program\\Ableton Live 10 Suite.exe",
+    "size_kb": 95639,
+    "source": "startmenu"
+  },
+  {
+    "name": "magnify",
+    "exe": "magnify.exe",
+    "path": "C:\\WINDOWS\\system32\\magnify.exe",
+    "size_kb": 636,
+    "source": "startmenu"
+  },
+  {
+    "name": "narrator",
+    "exe": "narrator.exe",
+    "path": "C:\\WINDOWS\\system32\\narrator.exe",
+    "size_kb": 522,
+    "source": "startmenu"
+  },
+  {
+    "name": "on-screen keyboard",
+    "exe": "osk.exe",
+    "path": "C:\\WINDOWS\\system32\\osk.exe",
+    "size_kb": 658,
+    "source": "startmenu"
+  },
+  {
+    "name": "internet explorer",
+    "exe": "iexplore.exe",
+    "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+    "size_kb": 817,
+    "source": "startmenu"
+  },
+  {
+    "name": "lenovo service bridge",
+    "exe": "LSB.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Lenovo\\Lenovo Service Bridge\\LSB.exe",
+    "size_kb": 118,
+    "source": "startmenu"
+  },
+  {
+    "name": "деинсталлировать lenovo service bridge",
+    "exe": "unins000.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Lenovo\\Lenovo Service Bridge\\unins000.exe",
+    "size_kb": 721,
+    "source": "startmenu"
+  },
+  {
+    "name": "ncalayer",
+    "exe": "NCALayer.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\NCALayer\\NCALayer.exe",
+    "size_kb": 11323,
+    "source": "startmenu"
+  },
+  {
+    "name": "деинсталлировать ncalayer",
+    "exe": "unins000.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\NCALayer\\unins000.exe",
+    "size_kb": 1176,
+    "source": "startmenu"
+  },
+  {
+    "name": "postman",
+    "exe": "Postman.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Postman\\app-10.24.16\\Postman.exe",
+    "size_kb": 139223,
+    "source": "disk"
+  },
+  {
+    "name": "idle (python 3.11 64-bit)",
+    "exe": "pythonw.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python311\\pythonw.exe",
+    "size_kb": 99,
+    "source": "startmenu"
+  },
+  {
+    "name": "python 3.11 (64-bit)",
+    "exe": "python.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "size_kb": 101,
+    "source": "startmenu"
+  },
+  {
+    "name": "administrative tools",
+    "exe": "control.exe",
+    "path": "C:\\WINDOWS\\system32\\control.exe",
+    "size_kb": 160,
+    "source": "startmenu"
+  },
+  {
+    "name": "command prompt",
+    "exe": "cmd.exe",
+    "path": "C:\\WINDOWS\\system32\\cmd.exe",
+    "size_kb": 283,
+    "source": "startmenu"
+  },
+  {
+    "name": "telegram",
+    "exe": "Telegram.exe",
+    "path": "D:\\Торрент файлы\\Telegram Desktop\\Telegram.exe",
+    "size_kb": 111127,
+    "source": "startmenu"
+  },
+  {
+    "name": "деинсталлировать telegram",
+    "exe": "unins001.exe",
+    "path": "D:\\Торрент файлы\\Telegram Desktop\\unins001.exe",
+    "size_kb": 3097,
+    "source": "startmenu"
+  },
+  {
+    "name": "webex",
+    "exe": "CiscoCollabHost.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\CiscoSparkLauncher\\CiscoCollabHost.exe",
+    "size_kb": 380,
+    "source": "startmenu"
+  },
+  {
+    "name": "windows powershell (x86)",
+    "exe": "powershell.exe",
+    "path": "C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "size_kb": 426,
+    "source": "startmenu"
+  },
+  {
+    "name": "windows powershell ise (x86)",
+    "exe": "PowerShell_ISE.exe",
+    "path": "C:\\WINDOWS\\syswow64\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe",
+    "size_kb": 208,
+    "source": "startmenu"
+  },
+  {
+    "name": "windows powershell ise",
+    "exe": "PowerShell_ISE.exe",
+    "path": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe",
+    "size_kb": 208,
+    "source": "startmenu"
+  },
+  {
+    "name": "windows powershell",
+    "exe": "powershell.exe",
+    "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "size_kb": 445,
+    "source": "startmenu"
+  },
+  {
+    "name": "winrar",
+    "exe": "WinRAR.exe",
+    "path": "C:\\Program Files (x86)\\WinRAR\\WinRAR.exe",
+    "size_kb": 2475,
+    "source": "startmenu"
+  },
+  {
+    "name": "zoom",
+    "exe": "Zoom.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe",
+    "size_kb": 372,
+    "source": "startmenu"
+  },
+  {
+    "name": "access",
+    "exe": "MSACCESS.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSACCESS.EXE",
+    "size_kb": 20559,
+    "source": "startmenu"
+  },
+  {
+    "name": "adobe after effects 2020",
+    "exe": "AfterFX.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\AfterFX.exe",
+    "size_kb": 1233,
+    "source": "startmenu"
+  },
+  {
+    "name": "avast free antivirus",
+    "exe": "AvastUI.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\AvastUI.exe",
+    "size_kb": 21788,
+    "source": "startmenu"
+  },
+  {
+    "name": "blend for visual studio 2022",
+    "exe": "Blend.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Blend.exe",
+    "size_kb": 995,
+    "source": "startmenu"
+  },
+  {
+    "name": "excel",
+    "exe": "EXCEL.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+    "size_kb": 54512,
+    "source": "startmenu"
+  },
+  {
+    "name": "firefox",
+    "exe": "firefox.exe",
+    "path": "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe",
+    "size_kb": 646,
+    "source": "startmenu"
+  },
+  {
+    "name": "google chrome",
+    "exe": "chrome.exe",
+    "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    "size_kb": 3236,
+    "source": "startmenu"
+  },
+  {
+    "name": "microsoft edge",
+    "exe": "msedge.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    "size_kb": 4241,
+    "source": "startmenu"
+  },
+  {
+    "name": "onenote 2016",
+    "exe": "ONENOTE.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE",
+    "size_kb": 2731,
+    "source": "startmenu"
+  },
+  {
+    "name": "outlook",
+    "exe": "OUTLOOK.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE",
+    "size_kb": 41264,
+    "source": "startmenu"
+  },
+  {
+    "name": "powerpoint",
+    "exe": "POWERPNT.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\POWERPNT.EXE",
+    "size_kb": 1855,
+    "source": "startmenu"
+  },
+  {
+    "name": "project",
+    "exe": "WINPROJ.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINPROJ.EXE",
+    "size_kb": 31358,
+    "source": "startmenu"
+  },
+  {
+    "name": "publisher",
+    "exe": "MSPUB.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSPUB.EXE",
+    "size_kb": 16485,
+    "source": "startmenu"
+  },
+  {
+    "name": "visio",
+    "exe": "VISIO.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\VISIO.EXE",
+    "size_kb": 1337,
+    "source": "startmenu"
+  },
+  {
+    "name": "visual studio 2022",
+    "exe": "devenv.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe",
+    "size_kb": 996,
+    "source": "startmenu"
+  },
+  {
+    "name": "word",
+    "exe": "WINWORD.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE",
+    "size_kb": 1928,
+    "source": "startmenu"
+  },
+  {
+    "name": "7-zip file manager",
+    "exe": "7zFM.exe",
+    "path": "C:\\Program Files\\7-Zip\\7zFM.exe",
+    "size_kb": 935,
+    "source": "startmenu"
+  },
+  {
+    "name": "math input panel",
+    "exe": "mip.exe",
+    "path": "C:\\Program Files\\Common Files\\Microsoft Shared\\Ink\\mip.exe",
+    "size_kb": 1515,
+    "source": "startmenu"
+  },
+  {
+    "name": "notepad",
+    "exe": "notepad.exe",
+    "path": "C:\\WINDOWS\\system32\\notepad.exe",
+    "size_kb": 196,
+    "source": "startmenu"
+  },
+  {
+    "name": "paint",
+    "exe": "mspaint.exe",
+    "path": "C:\\WINDOWS\\system32\\mspaint.exe",
+    "size_kb": 916,
+    "source": "startmenu"
+  },
+  {
+    "name": "quick assist",
+    "exe": "quickassist.exe",
+    "path": "C:\\WINDOWS\\system32\\quickassist.exe",
+    "size_kb": 930,
+    "source": "startmenu"
+  },
+  {
+    "name": "remote desktop connection",
+    "exe": "mstsc.exe",
+    "path": "C:\\WINDOWS\\system32\\mstsc.exe",
+    "size_kb": 1258,
+    "source": "startmenu"
+  },
+  {
+    "name": "snipping tool",
+    "exe": "SnippingTool.exe",
+    "path": "C:\\WINDOWS\\system32\\SnippingTool.exe",
+    "size_kb": 3292,
+    "source": "startmenu"
+  },
+  {
+    "name": "steps recorder",
+    "exe": "psr.exe",
+    "path": "C:\\WINDOWS\\system32\\psr.exe",
+    "size_kb": 232,
+    "source": "startmenu"
+  },
+  {
+    "name": "windows fax and scan",
+    "exe": "WFS.exe",
+    "path": "C:\\WINDOWS\\system32\\WFS.exe",
+    "size_kb": 944,
+    "source": "startmenu"
+  },
+  {
+    "name": "windows media player",
+    "exe": "wmplayer.exe",
+    "path": "C:\\Program Files (x86)\\Windows Media Player\\wmplayer.exe",
+    "size_kb": 163,
+    "source": "startmenu"
+  },
+  {
+    "name": "wordpad",
+    "exe": "wordpad.exe",
+    "path": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+    "size_kb": 2904,
+    "source": "startmenu"
+  },
+  {
+    "name": "character map",
+    "exe": "charmap.exe",
+    "path": "C:\\WINDOWS\\system32\\charmap.exe",
+    "size_kb": 194,
+    "source": "startmenu"
+  },
+  {
+    "name": "dfrgui",
+    "exe": "dfrgui.exe",
+    "path": "C:\\WINDOWS\\system32\\dfrgui.exe",
+    "size_kb": 116,
+    "source": "startmenu"
+  },
+  {
+    "name": "disk cleanup",
+    "exe": "cleanmgr.exe",
+    "path": "C:\\WINDOWS\\system32\\cleanmgr.exe",
+    "size_kb": 308,
+    "source": "startmenu"
+  },
+  {
+    "name": "memory diagnostics tool",
+    "exe": "MdSched.exe",
+    "path": "C:\\WINDOWS\\system32\\MdSched.exe",
+    "size_kb": 90,
+    "source": "startmenu"
+  },
+  {
+    "name": "odbc data sources (32-bit)",
+    "exe": "odbcad32.exe",
+    "path": "C:\\WINDOWS\\syswow64\\odbcad32.exe",
+    "size_kb": 70,
+    "source": "startmenu"
+  },
+  {
+    "name": "odbc data sources (64-bit)",
+    "exe": "odbcad32.exe",
+    "path": "C:\\WINDOWS\\system32\\odbcad32.exe",
+    "size_kb": 72,
+    "source": "startmenu"
+  },
+  {
+    "name": "recoverydrive",
+    "exe": "RecoveryDrive.exe",
+    "path": "C:\\WINDOWS\\system32\\RecoveryDrive.exe",
+    "size_kb": 922,
+    "source": "startmenu"
+  },
+  {
+    "name": "registry editor",
+    "exe": "regedit.exe",
+    "path": "C:\\WINDOWS\\regedit.exe",
+    "size_kb": 362,
+    "source": "startmenu"
+  },
+  {
+    "name": "resource monitor",
+    "exe": "perfmon.exe",
+    "path": "C:\\WINDOWS\\system32\\perfmon.exe",
+    "size_kb": 178,
+    "source": "startmenu"
+  },
+  {
+    "name": "system configuration",
+    "exe": "msconfig.exe",
+    "path": "C:\\WINDOWS\\system32\\msconfig.exe",
+    "size_kb": 193,
+    "source": "startmenu"
+  },
+  {
+    "name": "system information",
+    "exe": "msinfo32.exe",
+    "path": "C:\\WINDOWS\\system32\\msinfo32.exe",
+    "size_kb": 377,
+    "source": "startmenu"
+  },
+  {
+    "name": "aimp2 advanced tag editor",
+    "exe": "AIMP2t.exe",
+    "path": "C:\\Program Files (x86)\\AIMP2\\AIMP2t.exe",
+    "size_kb": 375,
+    "source": "startmenu"
+  },
+  {
+    "name": "aimp2 audio converter",
+    "exe": "AIMP2c.exe",
+    "path": "C:\\Program Files (x86)\\AIMP2\\AIMP2c.exe",
+    "size_kb": 1368,
+    "source": "startmenu"
+  },
+  {
+    "name": "aimp2 audio recorder",
+    "exe": "AIMP2r.exe",
+    "path": "C:\\Program Files (x86)\\AIMP2\\AIMP2r.exe",
+    "size_kb": 1267,
+    "source": "startmenu"
+  },
+  {
+    "name": "aimp2",
+    "exe": "AIMP2.exe",
+    "path": "C:\\Program Files (x86)\\AIMP2\\AIMP2.exe",
+    "size_kb": 1233,
+    "source": "startmenu"
+  },
+  {
+    "name": "android studio",
+    "exe": "studio64.exe",
+    "path": "D:\\Android studio\\bin\\studio64.exe",
+    "size_kb": 712,
+    "source": "startmenu"
+  },
+  {
+    "name": "ccleaner",
+    "exe": "CCleaner64.exe",
+    "path": "C:\\Program Files\\CCleaner\\CCleaner64.exe",
+    "size_kb": 34322,
+    "source": "startmenu"
+  },
+  {
+    "name": "classic explorer settings",
+    "exe": "ClassicExplorerSettings.exe",
+    "path": "C:\\Program Files\\Classic Shell\\ClassicExplorerSettings.exe",
+    "size_kb": 96,
+    "source": "startmenu"
+  },
+  {
+    "name": "classic ie settings",
+    "exe": "ClassicIE_32.exe",
+    "path": "C:\\Program Files\\Classic Shell\\ClassicIE_32.exe",
+    "size_kb": 102,
+    "source": "startmenu"
+  },
+  {
+    "name": "classic start menu settings",
+    "exe": "ClassicStartMenu.exe",
+    "path": "C:\\Program Files\\Classic Shell\\ClassicStartMenu.exe",
+    "size_kb": 160,
+    "source": "startmenu"
+  },
+  {
+    "name": "git bash",
+    "exe": "git-bash.exe",
+    "path": "C:\\Program Files\\Git\\git-bash.exe",
+    "size_kb": 134,
+    "source": "startmenu"
+  },
+  {
+    "name": "git cmd",
+    "exe": "git-cmd.exe",
+    "path": "C:\\Program Files\\Git\\git-cmd.exe",
+    "size_kb": 133,
+    "source": "startmenu"
+  },
+  {
+    "name": "git gui",
+    "exe": "git-gui.exe",
+    "path": "C:\\Program Files\\Git\\cmd\\git-gui.exe",
+    "size_kb": 133,
+    "source": "startmenu"
+  },
+  {
+    "name": "uninstall go",
+    "exe": "msiexec.exe",
+    "path": "C:\\Windows\\System32\\msiexec.exe",
+    "size_kb": 68,
+    "source": "startmenu"
+  },
+  {
+    "name": "goland 2023.3.4",
+    "exe": "goland64.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\bin\\goland64.exe",
+    "size_kb": 929,
+    "source": "startmenu"
+  },
+  {
+    "name": "intellij idea 2023.3.4",
+    "exe": "idea64.exe",
+    "path": "D:\\Java Ultimate\\IntelliJ IDEA 2023.3.4\\bin\\idea64.exe",
+    "size_kb": 930,
+    "source": "startmenu"
+  },
+  {
+    "name": "jetbrains rider 2023.3.3",
+    "exe": "rider64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\bin\\rider64.exe",
+    "size_kb": 1456,
+    "source": "startmenu"
+  },
+  {
+    "name": "pycharm 2023.3.3",
+    "exe": "pycharm64.exe",
+    "path": "D:\\Pycharm\\PyCharm 2023.3.3\\bin\\pycharm64.exe",
+    "size_kb": 929,
+    "source": "startmenu"
+  },
+  {
+    "name": "webstorm 2024.3.3",
+    "exe": "webstorm64.exe",
+    "path": "D:\\WebStorm\\WebStorm 2024.3.3\\bin\\webstorm64.exe",
+    "size_kb": 1456,
+    "source": "startmenu"
+  },
+  {
+    "name": "system update",
+    "exe": "tvsu.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\tvsu.exe",
+    "size_kb": 459,
+    "source": "startmenu"
+  },
+  {
+    "name": "lightshot",
+    "exe": "Lightshot.exe",
+    "path": "C:\\Program Files (x86)\\Skillbrains\\lightshot\\5.5.0.7\\Lightshot.exe",
+    "size_kb": 488,
+    "source": "disk"
+  },
+  {
+    "name": "деинсталлировать lightshot",
+    "exe": "unins000.exe",
+    "path": "C:\\Program Files (x86)\\Skillbrains\\lightshot\\unins000.exe",
+    "size_kb": 1522,
+    "source": "startmenu"
+  },
+  {
+    "name": "commandline 23",
+    "exe": "Commandline.exe",
+    "path": "C:\\Program Files\\Maxon Cinema 4D R23\\Commandline.exe",
+    "size_kb": 7258,
+    "source": "startmenu"
+  },
+  {
+    "name": "maxon cinema 4d 23",
+    "exe": "Cinema 4D.exe",
+    "path": "C:\\Program Files\\Maxon Cinema 4D R23\\Cinema 4D.exe",
+    "size_kb": 941,
+    "source": "startmenu"
+  },
+  {
+    "name": "team render client 23",
+    "exe": "Cinema 4D Team Render Client.exe",
+    "path": "C:\\Program Files\\Maxon Cinema 4D R23\\Cinema 4D Team Render Client.exe",
+    "size_kb": 7258,
+    "source": "startmenu"
+  },
+  {
+    "name": "team render server 23",
+    "exe": "Cinema 4D Team Render Server.exe",
+    "path": "C:\\Program Files\\Maxon Cinema 4D R23\\Cinema 4D Team Render Server.exe",
+    "size_kb": 7258,
+    "source": "startmenu"
+  },
+  {
+    "name": "sql server 2022 configuration manager",
+    "exe": "mmc.exe",
+    "path": "C:\\Windows\\SysWOW64\\mmc.exe",
+    "size_kb": 1408,
+    "source": "startmenu"
+  },
+  {
+    "name": "отчеты об ошибках и использовании sql server 2022",
+    "exe": "SqlWtsn.exe",
+    "path": "C:\\Program Files\\Microsoft SQL Server\\160\\Shared\\SqlWtsn.exe",
+    "size_kb": 98,
+    "source": "startmenu"
+  },
+  {
+    "name": "центр установки sql server 2022 (64-разрядная версия)",
+    "exe": "LandingPage.exe",
+    "path": "C:\\Program Files\\Microsoft SQL Server\\160\\Setup Bootstrap\\SQL2022\\x64\\LandingPage.exe",
+    "size_kb": 418,
+    "source": "startmenu"
+  },
+  {
+    "name": "sql server management studio 20",
+    "exe": "Ssms.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 20\\Common7\\IDE\\Ssms.exe",
+    "size_kb": 875,
+    "source": "startmenu"
+  },
+  {
+    "name": "database engine tuning advisor 20",
+    "exe": "DTASHELL.EXE",
+    "path": "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 20\\Common7\\DTASHELL.EXE",
+    "size_kb": 814,
+    "source": "startmenu"
+  },
+  {
+    "name": "sql server profiler 20",
+    "exe": "PROFILER.EXE",
+    "path": "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 20\\Common7\\PROFILER.EXE",
+    "size_kb": 742,
+    "source": "startmenu"
+  },
+  {
+    "name": "mysql workbench 8.0 ce",
+    "exe": "MySQLWorkbench.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Workbench 8.0\\MySQLWorkbench.exe",
+    "size_kb": 500,
+    "source": "startmenu"
+  },
+  {
+    "name": "mysql 8.0 command line client - unicode",
+    "exe": "mysql.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe",
+    "size_kb": 7151,
+    "source": "startmenu"
+  },
+  {
+    "name": "node.js",
+    "exe": "node.exe",
+    "path": "C:\\Program Files\\nodejs\\node.exe",
+    "size_kb": 81391,
+    "source": "startmenu"
+  },
+  {
+    "name": "uninstall node.js",
+    "exe": "msiexec.exe",
+    "path": "C:\\Windows\\SysWOW64\\msiexec.exe",
+    "size_kb": 58,
+    "source": "startmenu"
+  },
+  {
+    "name": "oracle virtualbox",
+    "exe": "VirtualBox.exe",
+    "path": "C:\\Program Files\\Oracle\\VirtualBox\\VirtualBox.exe",
+    "size_kb": 2805,
+    "source": "startmenu"
+  },
+  {
+    "name": "steam",
+    "exe": "Steam.exe",
+    "path": "D:\\Steam\\St_eam\\Steam.exe",
+    "size_kb": 5625,
+    "source": "startmenu"
+  },
+  {
+    "name": "task manager",
+    "exe": "taskmgr.exe",
+    "path": "C:\\WINDOWS\\system32\\taskmgr.exe",
+    "size_kb": 1325,
+    "source": "startmenu"
+  },
+  {
+    "name": "visual studio code",
+    "exe": "Code.exe",
+    "path": "D:\\VsCode\\Microsoft VS Code\\Code.exe",
+    "size_kb": 178247,
+    "source": "startmenu"
+  },
+  {
+    "name": "windjview",
+    "exe": "WinDjView.exe",
+    "path": "C:\\Program Files (x86)\\WinDjView\\WinDjView.exe",
+    "size_kb": 1692,
+    "source": "startmenu"
+  },
+  {
+    "name": "database compare",
+    "exe": "AppVLP.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Client\\AppVLP.exe",
+    "size_kb": 487,
+    "source": "startmenu"
+  },
+  {
+    "name": "журнал телеметрии office",
+    "exe": "msoev.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\msoev.exe",
+    "size_kb": 63,
+    "source": "startmenu"
+  },
+  {
+    "name": "панель мониторинга телеметрии office",
+    "exe": "msotd.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\msotd.exe",
+    "size_kb": 63,
+    "source": "startmenu"
+  },
+  {
+    "name": "языковые параметры office",
+    "exe": "SETLANG.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\SETLANG.EXE",
+    "size_kb": 83,
+    "source": "startmenu"
+  },
+  {
+    "name": "elevator",
+    "exe": "elevator.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\bin\\elevator.exe",
+    "size_kb": 164,
+    "source": "disk"
+  },
+  {
+    "name": "fsnotifier",
+    "exe": "fsnotifier.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\bin\\fsnotifier.exe",
+    "size_kb": 137,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains_client64",
+    "exe": "jetbrains_client64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\bin\\jetbrains_client64.exe",
+    "size_kb": 1456,
+    "source": "disk"
+  },
+  {
+    "name": "launcher",
+    "exe": "launcher.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\bin\\launcher.exe",
+    "size_kb": 135,
+    "source": "disk"
+  },
+  {
+    "name": "remote-dev-server",
+    "exe": "remote-dev-server.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\bin\\remote-dev-server.exe",
+    "size_kb": 1456,
+    "source": "disk"
+  },
+  {
+    "name": "restarter",
+    "exe": "restarter.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\bin\\restarter.exe",
+    "size_kb": 379,
+    "source": "disk"
+  },
+  {
+    "name": "runnerw",
+    "exe": "runnerw.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\bin\\runnerw.exe",
+    "size_kb": 152,
+    "source": "disk"
+  },
+  {
+    "name": "jaccessinspector",
+    "exe": "jaccessinspector.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\jbr\\bin\\jaccessinspector.exe",
+    "size_kb": 106,
+    "source": "disk"
+  },
+  {
+    "name": "jaccesswalker",
+    "exe": "jaccesswalker.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\jbr\\bin\\jaccesswalker.exe",
+    "size_kb": 71,
+    "source": "disk"
+  },
+  {
+    "name": "remote-dev-worker-windows-amd64",
+    "exe": "remote-dev-worker-windows-amd64.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\plugins\\gateway-plugin\\lib\\remote-dev-workers\\remote-dev-worker-windows-amd64.exe",
+    "size_kb": 2464,
+    "source": "disk"
+  },
+  {
+    "name": "remote-dev-worker-windows-arm64",
+    "exe": "remote-dev-worker-windows-arm64.exe",
+    "path": "D:\\GoLand\\GoLand 2023.3.4\\plugins\\gateway-plugin\\lib\\remote-dev-workers\\remote-dev-worker-windows-arm64.exe",
+    "size_kb": 2433,
+    "source": "disk"
+  },
+  {
+    "name": "inject_dll_amd64",
+    "exe": "inject_dll_amd64.exe",
+    "path": "D:\\Pycharm\\PyCharm 2023.3.3\\plugins\\python\\helpers\\pydev\\pydevd_attach_to_process\\inject_dll_amd64.exe",
+    "size_kb": 277,
+    "source": "disk"
+  },
+  {
+    "name": "inject_dll_x86",
+    "exe": "inject_dll_x86.exe",
+    "path": "D:\\Pycharm\\PyCharm 2023.3.3\\plugins\\python\\helpers\\pydev\\pydevd_attach_to_process\\inject_dll_x86.exe",
+    "size_kb": 223,
+    "source": "disk"
+  },
+  {
+    "name": "cef_server",
+    "exe": "cef_server.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\jbr\\bin\\cef_server.exe",
+    "size_kb": 1879,
+    "source": "disk"
+  },
+  {
+    "name": "openconsole",
+    "exe": "OpenConsole.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\pty4j\\win\\x86-64\\OpenConsole.exe",
+    "size_kb": 1377,
+    "source": "disk"
+  },
+  {
+    "name": "cslex",
+    "exe": "CsLex.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\CsLex.exe",
+    "size_kb": 115,
+    "source": "disk"
+  },
+  {
+    "name": "errorsgen",
+    "exe": "ErrorsGen.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\ErrorsGen.exe",
+    "size_kb": 135,
+    "source": "disk"
+  },
+  {
+    "name": "git-askpass",
+    "exe": "git-askpass.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\git-askpass.exe",
+    "size_kb": 225,
+    "source": "disk"
+  },
+  {
+    "name": "git-credential-manager",
+    "exe": "git-credential-manager.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\git-credential-manager.exe",
+    "size_kb": 175,
+    "source": "disk"
+  },
+  {
+    "name": "github.authentication",
+    "exe": "GitHub.Authentication.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\GitHub.Authentication.exe",
+    "size_kb": 294,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.debugger.browserhub",
+    "exe": "JetBrains.Debugger.BrowserHub.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.Debugger.BrowserHub.exe",
+    "size_kb": 163,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.debugger.worker",
+    "exe": "JetBrains.Debugger.Worker.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.Debugger.Worker.exe",
+    "size_kb": 75,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.debugger.worker32c",
+    "exe": "JetBrains.Debugger.Worker32c.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.Debugger.Worker32c.exe",
+    "size_kb": 633,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.debugger.worker64ac",
+    "exe": "JetBrains.Debugger.Worker64ac.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.Debugger.Worker64ac.exe",
+    "size_kb": 744,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.debugger.worker64c",
+    "exe": "JetBrains.Debugger.Worker64c.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.Debugger.Worker64c.exe",
+    "size_kb": 760,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.processenumerator.worker",
+    "exe": "JetBrains.ProcessEnumerator.Worker.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.ProcessEnumerator.Worker.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.processenumerator.worker32",
+    "exe": "JetBrains.ProcessEnumerator.Worker32.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.ProcessEnumerator.Worker32.exe",
+    "size_kb": 619,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.resharper.features.winforms.designer.external.core",
+    "exe": "JetBrains.ReSharper.Features.WinForms.Designer.External.Core.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.ReSharper.Features.WinForms.Designer.External.Core.exe",
+    "size_kb": 212,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.resharper.features.xaml.previewer.external",
+    "exe": "JetBrains.ReSharper.Features.Xaml.Previewer.External.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.ReSharper.Features.Xaml.Previewer.External.exe",
+    "size_kb": 262,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.roslyn.worker",
+    "exe": "JetBrains.Roslyn.Worker.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetBrains.Roslyn.Worker.exe",
+    "size_kb": 571,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncher32",
+    "exe": "JetLauncher32.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncher32.exe",
+    "size_kb": 630,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncher32c",
+    "exe": "JetLauncher32c.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncher32c.exe",
+    "size_kb": 629,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncher64",
+    "exe": "JetLauncher64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncher64.exe",
+    "size_kb": 756,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncher64a",
+    "exe": "JetLauncher64a.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncher64a.exe",
+    "size_kb": 740,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncher64ac",
+    "exe": "JetLauncher64ac.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncher64ac.exe",
+    "size_kb": 740,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncher64c",
+    "exe": "JetLauncher64c.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncher64c.exe",
+    "size_kb": 756,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncheril",
+    "exe": "JetLauncherIL.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncherIL.exe",
+    "size_kb": 227,
+    "source": "disk"
+  },
+  {
+    "name": "jetlauncherilc",
+    "exe": "JetLauncherILc.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\JetLauncherILc.exe",
+    "size_kb": 227,
+    "source": "disk"
+  },
+  {
+    "name": "psigen",
+    "exe": "PsiGen.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\PsiGen.exe",
+    "size_kb": 283,
+    "source": "disk"
+  },
+  {
+    "name": "rider.backend",
+    "exe": "Rider.Backend.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\Rider.Backend.exe",
+    "size_kb": 5454,
+    "source": "disk"
+  },
+  {
+    "name": "rider.backend64",
+    "exe": "Rider.Backend64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\Rider.Backend64.exe",
+    "size_kb": 724,
+    "source": "disk"
+  },
+  {
+    "name": "rider.sqlproj.worker",
+    "exe": "Rider.SqlProj.Worker.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\Rider.SqlProj.Worker.exe",
+    "size_kb": 322,
+    "source": "disk"
+  },
+  {
+    "name": "riderjitdebuggerlauncher32",
+    "exe": "RiderJITDebuggerLauncher32.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderJITDebuggerLauncher32.exe",
+    "size_kb": 907,
+    "source": "disk"
+  },
+  {
+    "name": "riderjitdebuggerlauncher64",
+    "exe": "RiderJITDebuggerLauncher64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderJITDebuggerLauncher64.exe",
+    "size_kb": 1034,
+    "source": "disk"
+  },
+  {
+    "name": "riderjitdebuggerlauncher64a",
+    "exe": "RiderJITDebuggerLauncher64a.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderJITDebuggerLauncher64a.exe",
+    "size_kb": 1018,
+    "source": "disk"
+  },
+  {
+    "name": "riderwinformsdesignerlauncher32",
+    "exe": "RiderWinFormsDesignerLauncher32.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderWinFormsDesignerLauncher32.exe",
+    "size_kb": 914,
+    "source": "disk"
+  },
+  {
+    "name": "riderwinformsdesignerlauncher64",
+    "exe": "RiderWinFormsDesignerLauncher64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderWinFormsDesignerLauncher64.exe",
+    "size_kb": 1040,
+    "source": "disk"
+  },
+  {
+    "name": "riderwinformsdesignerlauncher64a",
+    "exe": "RiderWinFormsDesignerLauncher64a.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderWinFormsDesignerLauncher64a.exe",
+    "size_kb": 1024,
+    "source": "disk"
+  },
+  {
+    "name": "riderwpfpreviewerlauncher32",
+    "exe": "RiderWpfPreviewerLauncher32.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderWpfPreviewerLauncher32.exe",
+    "size_kb": 911,
+    "source": "disk"
+  },
+  {
+    "name": "riderwpfpreviewerlauncher64",
+    "exe": "RiderWpfPreviewerLauncher64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderWpfPreviewerLauncher64.exe",
+    "size_kb": 1037,
+    "source": "disk"
+  },
+  {
+    "name": "riderwpfpreviewerlauncher64a",
+    "exe": "RiderWpfPreviewerLauncher64a.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\RiderWpfPreviewerLauncher64a.exe",
+    "size_kb": 1021,
+    "source": "disk"
+  },
+  {
+    "name": "resharpertestrunner",
+    "exe": "ReSharperTestRunner.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\TestRunner\\netcoreapp2.0\\ReSharperTestRunner.exe",
+    "size_kb": 153,
+    "source": "disk"
+  },
+  {
+    "name": "resharpertestrunner32",
+    "exe": "ReSharperTestRunner32.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\TestRunner\\netcoreapp2.0\\ReSharperTestRunner32.exe",
+    "size_kb": 125,
+    "source": "disk"
+  },
+  {
+    "name": "resharpertestrunner64",
+    "exe": "ReSharperTestRunner64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\TestRunner\\netcoreapp2.0\\ReSharperTestRunner64.exe",
+    "size_kb": 157,
+    "source": "disk"
+  },
+  {
+    "name": "resharpertestrunnerarm32",
+    "exe": "ReSharperTestRunnerArm32.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\TestRunner\\netcoreapp2.0\\ReSharperTestRunnerArm32.exe",
+    "size_kb": 120,
+    "source": "disk"
+  },
+  {
+    "name": "resharpertestrunnerarm64",
+    "exe": "ReSharperTestRunnerArm64.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\lib\\ReSharperHost\\TestRunner\\netcoreapp2.0\\ReSharperTestRunnerArm64.exe",
+    "size_kb": 153,
+    "source": "disk"
+  },
+  {
+    "name": "lldb",
+    "exe": "lldb.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\cidr-debugger-plugin\\bin\\lldb\\win\\aarch64\\bin\\lldb.exe",
+    "size_kb": 956,
+    "source": "disk"
+  },
+  {
+    "name": "lldbfrontend",
+    "exe": "LLDBFrontend.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\cidr-debugger-plugin\\bin\\lldb\\win\\aarch64\\bin\\LLDBFrontend.exe",
+    "size_kb": 3999,
+    "source": "disk"
+  },
+  {
+    "name": "python",
+    "exe": "python.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Workbench 8.0\\python.exe",
+    "size_kb": 92,
+    "source": "disk"
+  },
+  {
+    "name": "pythonw",
+    "exe": "pythonw.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\cidr-debugger-plugin\\bin\\lldb\\win\\x64\\bin\\pythonw.exe",
+    "size_kb": 89,
+    "source": "disk"
+  },
+  {
+    "name": "id",
+    "exe": "id.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\cwm-plugin\\msys-ssh-agent\\id.exe",
+    "size_kb": 55,
+    "source": "disk"
+  },
+  {
+    "name": "ssh-add",
+    "exe": "ssh-add.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\cwm-plugin\\msys-ssh-agent\\ssh-add.exe",
+    "size_kb": 405,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.profilers.rider",
+    "exe": "JetBrains.Profilers.Rider.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\dotTrace.dotMemory\\DotFiles\\JetBrains.Profilers.Rider.exe",
+    "size_kb": 100,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.resharper.plugins.fsharp.typeproviders.host",
+    "exe": "JetBrains.ReSharper.Plugins.FSharp.TypeProviders.Host.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\rider-plugins-fsharp\\typeProviders\\JetBrains.ReSharper.Plugins.FSharp.TypeProviders.Host.exe",
+    "size_kb": 61,
+    "source": "disk"
+  },
+  {
+    "name": "jetbrains.resharper.plugins.fsharp.typeproviders.host.netcore",
+    "exe": "JetBrains.ReSharper.Plugins.FSharp.TypeProviders.Host.NetCore.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\plugins\\rider-plugins-fsharp\\typeProviders\\JetBrains.ReSharper.Plugins.FSharp.TypeProviders.Host.NetCore.exe",
+    "size_kb": 62,
+    "source": "disk"
+  },
+  {
+    "name": "fsc",
+    "exe": "fsc.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\Common7\\IDE\\CommonExtensions\\Microsoft\\FSharp\\Tools\\fsc.exe",
+    "size_kb": 67,
+    "source": "disk"
+  },
+  {
+    "name": "fscanycpu",
+    "exe": "fscAnyCpu.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\FSharp\\Tools\\fscAnyCpu.exe",
+    "size_kb": 59,
+    "source": "disk"
+  },
+  {
+    "name": "fscarm64",
+    "exe": "fscArm64.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\FSharp\\Tools\\fscArm64.exe",
+    "size_kb": 58,
+    "source": "disk"
+  },
+  {
+    "name": "jdbcdriver.backend.host",
+    "exe": "JdbcDriver.Backend.Host.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\JbMsDriver\\Backend\\JdbcDriver.Backend.Host.exe",
+    "size_kb": 146,
+    "source": "disk"
+  },
+  {
+    "name": "msbuild",
+    "exe": "MSBuild.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\MSBuild\\Current\\Bin\\MSBuild.exe",
+    "size_kb": 424,
+    "source": "disk"
+  },
+  {
+    "name": "msbuildtaskhost",
+    "exe": "MSBuildTaskHost.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\MSBuild\\Current\\Bin\\MSBuildTaskHost.exe",
+    "size_kb": 245,
+    "source": "disk"
+  },
+  {
+    "name": "csc",
+    "exe": "csc.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\MSBuild\\Current\\Bin\\Roslyn\\csc.exe",
+    "size_kb": 70,
+    "source": "disk"
+  },
+  {
+    "name": "vbc",
+    "exe": "vbc.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\MSBuild\\Current\\Bin\\Roslyn\\vbc.exe",
+    "size_kb": 70,
+    "source": "disk"
+  },
+  {
+    "name": "vbcscompiler",
+    "exe": "VBCSCompiler.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\MSBuild\\Current\\Bin\\Roslyn\\VBCSCompiler.exe",
+    "size_kb": 110,
+    "source": "disk"
+  },
+  {
+    "name": "structuredlogviewer",
+    "exe": "StructuredLogViewer.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\MSBuildStructuredLogViewer\\StructuredLogViewer.exe",
+    "size_kb": 340,
+    "source": "disk"
+  },
+  {
+    "name": "dotmemory",
+    "exe": "dotMemory.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\profiler\\dotMemory.exe",
+    "size_kb": 120,
+    "source": "disk"
+  },
+  {
+    "name": "dottrace",
+    "exe": "dottrace.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\profiler\\dottrace.exe",
+    "size_kb": 91,
+    "source": "disk"
+  },
+  {
+    "name": "snapshotstat",
+    "exe": "SnapshotStat.exe",
+    "path": "D:\\Rider\\JetBrains Rider 2023.3.3\\tools\\profiler\\SnapshotStat.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "ddconfigca",
+    "exe": "DDConfigCA.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\DDConfigCA.exe",
+    "size_kb": 151,
+    "source": "disk"
+  },
+  {
+    "name": "microsoft.visualstudio.web.host",
+    "exe": "Microsoft.VisualStudio.Web.Host.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Microsoft.VisualStudio.Web.Host.exe",
+    "size_kb": 62,
+    "source": "disk"
+  },
+  {
+    "name": "mspdbsrv",
+    "exe": "mspdbsrv.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\mspdbsrv.exe",
+    "size_kb": 179,
+    "source": "disk"
+  },
+  {
+    "name": "perfwatson2",
+    "exe": "PerfWatson2.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\PerfWatson2.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "publicize",
+    "exe": "Publicize.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Publicize.exe",
+    "size_kb": 805,
+    "source": "disk"
+  },
+  {
+    "name": "texttransformcore",
+    "exe": "TextTransformCore.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\TextTransformCore.exe",
+    "size_kb": 150,
+    "source": "disk"
+  },
+  {
+    "name": "vb7to8",
+    "exe": "vb7to8.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\vb7to8.exe",
+    "size_kb": 3138,
+    "source": "disk"
+  },
+  {
+    "name": "vsfinalizer",
+    "exe": "VSFinalizer.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\VSFinalizer.exe",
+    "size_kb": 152,
+    "source": "disk"
+  },
+  {
+    "name": "vsinitializer",
+    "exe": "VSInitializer.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\VSInitializer.exe",
+    "size_kb": 84,
+    "source": "disk"
+  },
+  {
+    "name": "vsregedit",
+    "exe": "VsRegEdit.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\VsRegEdit.exe",
+    "size_kb": 216,
+    "source": "disk"
+  },
+  {
+    "name": "vsweblauncher",
+    "exe": "VSWebLauncher.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\VSWebLauncher.exe",
+    "size_kb": 360,
+    "source": "disk"
+  },
+  {
+    "name": "fsi",
+    "exe": "fsi.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\FSharp\\Tools\\fsi.exe",
+    "size_kb": 152,
+    "source": "disk"
+  },
+  {
+    "name": "fsianycpu",
+    "exe": "fsiAnyCpu.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\FSharp\\Tools\\fsiAnyCpu.exe",
+    "size_kb": 152,
+    "source": "disk"
+  },
+  {
+    "name": "fsiarm64",
+    "exe": "fsiArm64.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\FSharp\\Tools\\fsiArm64.exe",
+    "size_kb": 151,
+    "source": "disk"
+  },
+  {
+    "name": "intellitrace",
+    "exe": "IntelliTrace.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\IntelliTrace\\IntelliTrace.exe",
+    "size_kb": 51,
+    "source": "disk"
+  },
+  {
+    "name": "azcopy",
+    "exe": "azcopy.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\ModelBuilder\\azcopy.exe",
+    "size_kb": 25543,
+    "source": "disk"
+  },
+  {
+    "name": "lightgbm",
+    "exe": "lightgbm.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\ModelBuilder\\AutoMLService\\lightgbm.exe",
+    "size_kb": 1947,
+    "source": "disk"
+  },
+  {
+    "name": "nuget.build.tasks.console",
+    "exe": "NuGet.Build.Tasks.Console.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\NuGet\\NuGet.Build.Tasks.Console.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "credentialprovider.microsoft",
+    "exe": "CredentialProvider.Microsoft.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\NuGet\\Plugins\\CredentialProvider.Microsoft\\CredentialProvider.Microsoft.exe",
+    "size_kb": 128,
+    "source": "disk"
+  },
+  {
+    "name": "tf",
+    "exe": "TF.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\TF.exe",
+    "size_kb": 375,
+    "source": "disk"
+  },
+  {
+    "name": "tfsbuild",
+    "exe": "TFSBuild.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\TFSBuild.exe",
+    "size_kb": 177,
+    "source": "disk"
+  },
+  {
+    "name": "tfssecurity",
+    "exe": "TFSSecurity.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\TFSSecurity.exe",
+    "size_kb": 55,
+    "source": "disk"
+  },
+  {
+    "name": "vsdiffmerge",
+    "exe": "vsDiffMerge.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\vsDiffMerge.exe",
+    "size_kb": 258,
+    "source": "disk"
+  },
+  {
+    "name": "witadmin",
+    "exe": "witadmin.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\witadmin.exe",
+    "size_kb": 226,
+    "source": "disk"
+  },
+  {
+    "name": "blocked-file-util",
+    "exe": "blocked-file-util.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\blocked-file-util.exe",
+    "size_kb": 57,
+    "source": "disk"
+  },
+  {
+    "name": "brotli",
+    "exe": "brotli.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\brotli.exe",
+    "size_kb": 73,
+    "source": "disk"
+  },
+  {
+    "name": "git-credential-wincred",
+    "exe": "git-credential-wincred.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\git-credential-wincred.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "git-http-fetch",
+    "exe": "git-http-fetch.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\git-http-fetch.exe",
+    "size_kb": 2371,
+    "source": "disk"
+  },
+  {
+    "name": "git-http-push",
+    "exe": "git-http-push.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\git-http-push.exe",
+    "size_kb": 2382,
+    "source": "disk"
+  },
+  {
+    "name": "git-remote-https",
+    "exe": "git-remote-https.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\git-remote-https.exe",
+    "size_kb": 2387,
+    "source": "disk"
+  },
+  {
+    "name": "git-sh-i18n--envsubst",
+    "exe": "git-sh-i18n--envsubst.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\git-sh-i18n--envsubst.exe",
+    "size_kb": 2319,
+    "source": "disk"
+  },
+  {
+    "name": "git",
+    "exe": "git.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\git.exe",
+    "size_kb": 3924,
+    "source": "disk"
+  },
+  {
+    "name": "psl",
+    "exe": "psl.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\psl.exe",
+    "size_kb": 63,
+    "source": "disk"
+  },
+  {
+    "name": "scalar",
+    "exe": "scalar.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\bin\\scalar.exe",
+    "size_kb": 13942,
+    "source": "disk"
+  },
+  {
+    "name": "edit-git-bash",
+    "exe": "edit-git-bash.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\mingw64\\share\\git\\edit-git-bash.exe",
+    "size_kb": 131,
+    "source": "disk"
+  },
+  {
+    "name": "awk",
+    "exe": "awk.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\awk.exe",
+    "size_kb": 623,
+    "source": "disk"
+  },
+  {
+    "name": "b2sum",
+    "exe": "b2sum.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\b2sum.exe",
+    "size_kb": 64,
+    "source": "disk"
+  },
+  {
+    "name": "basenc",
+    "exe": "basenc.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\basenc.exe",
+    "size_kb": 58,
+    "source": "disk"
+  },
+  {
+    "name": "chattr",
+    "exe": "chattr.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\chattr.exe",
+    "size_kb": 59,
+    "source": "disk"
+  },
+  {
+    "name": "cmp",
+    "exe": "cmp.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\cmp.exe",
+    "size_kb": 56,
+    "source": "disk"
+  },
+  {
+    "name": "cp",
+    "exe": "cp.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\cp.exe",
+    "size_kb": 122,
+    "source": "disk"
+  },
+  {
+    "name": "cut",
+    "exe": "cut.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\cut.exe",
+    "size_kb": 54,
+    "source": "disk"
+  },
+  {
+    "name": "dash",
+    "exe": "dash.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\dash.exe",
+    "size_kb": 116,
+    "source": "disk"
+  },
+  {
+    "name": "date",
+    "exe": "date.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\date.exe",
+    "size_kb": 127,
+    "source": "disk"
+  },
+  {
+    "name": "diff",
+    "exe": "diff.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\diff.exe",
+    "size_kb": 216,
+    "source": "disk"
+  },
+  {
+    "name": "diff3",
+    "exe": "diff3.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\diff3.exe",
+    "size_kb": 71,
+    "source": "disk"
+  },
+  {
+    "name": "env",
+    "exe": "env.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\env.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "expr",
+    "exe": "expr.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\expr.exe",
+    "size_kb": 119,
+    "source": "disk"
+  },
+  {
+    "name": "find",
+    "exe": "find.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\find.exe",
+    "size_kb": 343,
+    "source": "disk"
+  },
+  {
+    "name": "gencat",
+    "exe": "gencat.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\gencat.exe",
+    "size_kb": 58,
+    "source": "disk"
+  },
+  {
+    "name": "getfacl",
+    "exe": "getfacl.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\getfacl.exe",
+    "size_kb": 57,
+    "source": "disk"
+  },
+  {
+    "name": "gmondump",
+    "exe": "gmondump.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\gmondump.exe",
+    "size_kb": 56,
+    "source": "disk"
+  },
+  {
+    "name": "grep",
+    "exe": "grep.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\grep.exe",
+    "size_kb": 218,
+    "source": "disk"
+  },
+  {
+    "name": "head",
+    "exe": "head.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\head.exe",
+    "size_kb": 54,
+    "source": "disk"
+  },
+  {
+    "name": "ls",
+    "exe": "ls.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\ls.exe",
+    "size_kb": 156,
+    "source": "disk"
+  },
+  {
+    "name": "lsattr",
+    "exe": "lsattr.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\lsattr.exe",
+    "size_kb": 58,
+    "source": "disk"
+  },
+  {
+    "name": "mkdir",
+    "exe": "mkdir.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\mkdir.exe",
+    "size_kb": 80,
+    "source": "disk"
+  },
+  {
+    "name": "mktemp",
+    "exe": "mktemp.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\mktemp.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "mv",
+    "exe": "mv.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\mv.exe",
+    "size_kb": 130,
+    "source": "disk"
+  },
+  {
+    "name": "printf",
+    "exe": "printf.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\printf.exe",
+    "size_kb": 80,
+    "source": "disk"
+  },
+  {
+    "name": "profiler",
+    "exe": "profiler.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\profiler.exe",
+    "size_kb": 169,
+    "source": "disk"
+  },
+  {
+    "name": "readlink",
+    "exe": "readlink.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\readlink.exe",
+    "size_kb": 57,
+    "source": "disk"
+  },
+  {
+    "name": "rebase",
+    "exe": "rebase.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\rebase.exe",
+    "size_kb": 890,
+    "source": "disk"
+  },
+  {
+    "name": "rm",
+    "exe": "rm.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\rm.exe",
+    "size_kb": 72,
+    "source": "disk"
+  },
+  {
+    "name": "rmdir",
+    "exe": "rmdir.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\rmdir.exe",
+    "size_kb": 71,
+    "source": "disk"
+  },
+  {
+    "name": "sdiff",
+    "exe": "sdiff.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\sdiff.exe",
+    "size_kb": 62,
+    "source": "disk"
+  },
+  {
+    "name": "sed",
+    "exe": "sed.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\sed.exe",
+    "size_kb": 184,
+    "source": "disk"
+  },
+  {
+    "name": "sh",
+    "exe": "sh.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\sh.exe",
+    "size_kb": 2257,
+    "source": "disk"
+  },
+  {
+    "name": "sort",
+    "exe": "sort.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\sort.exe",
+    "size_kb": 117,
+    "source": "disk"
+  },
+  {
+    "name": "ssh",
+    "exe": "ssh.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\ssh.exe",
+    "size_kb": 892,
+    "source": "disk"
+  },
+  {
+    "name": "tail",
+    "exe": "tail.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\tail.exe",
+    "size_kb": 65,
+    "source": "disk"
+  },
+  {
+    "name": "test",
+    "exe": "test.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\test.exe",
+    "size_kb": 79,
+    "source": "disk"
+  },
+  {
+    "name": "touch",
+    "exe": "touch.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\touch.exe",
+    "size_kb": 115,
+    "source": "disk"
+  },
+  {
+    "name": "tr",
+    "exe": "tr.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\tr.exe",
+    "size_kb": 58,
+    "source": "disk"
+  },
+  {
+    "name": "uniq",
+    "exe": "uniq.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\uniq.exe",
+    "size_kb": 54,
+    "source": "disk"
+  },
+  {
+    "name": "wc",
+    "exe": "wc.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\wc.exe",
+    "size_kb": 56,
+    "source": "disk"
+  },
+  {
+    "name": "xargs",
+    "exe": "xargs.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\bin\\xargs.exe",
+    "size_kb": 87,
+    "source": "disk"
+  },
+  {
+    "name": "ssh-keysign",
+    "exe": "ssh-keysign.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\lib\\ssh\\ssh-keysign.exe",
+    "size_kb": 509,
+    "source": "disk"
+  },
+  {
+    "name": "getprocaddr32",
+    "exe": "getprocaddr32.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\libexec\\getprocaddr32.exe",
+    "size_kb": 262,
+    "source": "disk"
+  },
+  {
+    "name": "getprocaddr64",
+    "exe": "getprocaddr64.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\Git\\usr\\libexec\\getprocaddr64.exe",
+    "size_kb": 276,
+    "source": "disk"
+  },
+  {
+    "name": "interactivehost64",
+    "exe": "InteractiveHost64.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\VBCSharp\\LanguageServices\\InteractiveHost\\Core\\InteractiveHost64.exe",
+    "size_kb": 150,
+    "source": "disk"
+  },
+  {
+    "name": "livepreviewsurface",
+    "exe": "LivePreviewSurface.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\XamlDiagnostics\\arm64\\LivePreviewSurface.exe",
+    "size_kb": 1172,
+    "source": "disk"
+  },
+  {
+    "name": "vsdebugconsole",
+    "exe": "VsDebugConsole.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Platform\\Debugger\\VsDebugConsole.exe",
+    "size_kb": 253,
+    "source": "disk"
+  },
+  {
+    "name": "azurite",
+    "exe": "azurite.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Extensions\\Microsoft\\Azure Storage Emulator\\azurite.exe",
+    "size_kb": 54591,
+    "source": "disk"
+  },
+  {
+    "name": "winpty-debugserver",
+    "exe": "winpty-debugserver.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Extensions\\Microsoft\\LiveShare\\Agent\\winpty-debugserver.exe",
+    "size_kb": 463,
+    "source": "disk"
+  },
+  {
+    "name": "dacunpack",
+    "exe": "DacUnpack.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\DacUnpack.exe",
+    "size_kb": 151,
+    "source": "disk"
+  },
+  {
+    "name": "sqlpackage",
+    "exe": "SqlPackage.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\SqlPackage.exe",
+    "size_kb": 159,
+    "source": "disk"
+  },
+  {
+    "name": "microsoft.webtools.languages.languageserver.host",
+    "exe": "Microsoft.WebTools.Languages.LanguageServer.Host.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Extensions\\Microsoft\\Web Tools\\Languages\\Microsoft.WebTools.Languages.LanguageServer.Host.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "vstest.console.arm64",
+    "exe": "vstest.console.arm64.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.arm64.exe",
+    "size_kb": 324,
+    "source": "disk"
+  },
+  {
+    "name": "vstest.console",
+    "exe": "vstest.console.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe",
+    "size_kb": 324,
+    "source": "disk"
+  },
+  {
+    "name": "checkhypervhost",
+    "exe": "CheckHyperVHost.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\PrivateAssemblies\\CheckHyperVHost.exe",
+    "size_kb": 93,
+    "source": "disk"
+  },
+  {
+    "name": "msvsmon",
+    "exe": "msvsmon.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\Remote Debugger\\x64\\msvsmon.exe",
+    "size_kb": 4685,
+    "source": "disk"
+  },
+  {
+    "name": "wpfsurface",
+    "exe": "WpfSurface.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\SurfaceProcess\\Wpf\\Framework\\x64\\WpfSurface.exe",
+    "size_kb": 181,
+    "source": "disk"
+  },
+  {
+    "name": "connectionmanager",
+    "exe": "ConnectionManager.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe\\ConnectionManager.exe",
+    "size_kb": 62,
+    "source": "disk"
+  },
+  {
+    "name": "errlook",
+    "exe": "errlook.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Common7\\Tools\\errlook.exe",
+    "size_kb": 50,
+    "source": "disk"
+  },
+  {
+    "name": "tracker",
+    "exe": "Tracker.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Tracker.exe",
+    "size_kb": 204,
+    "source": "disk"
+  },
+  {
+    "name": "netcorecheck",
+    "exe": "NetCoreCheck.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\MSBuild\\Microsoft\\VisualStudio\\BootstrapperPackages\\net5coreruntime_x64\\NetCoreCheck.exe",
+    "size_kb": 141,
+    "source": "disk"
+  },
+  {
+    "name": "node",
+    "exe": "node.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\MSBuild\\Microsoft\\VisualStudio\\NodeJs\\node.exe",
+    "size_kb": 67643,
+    "source": "disk"
+  },
+  {
+    "name": "vsdiagnostics",
+    "exe": "VSDiagnostics.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Team Tools\\DiagnosticsHub\\Collector\\VSDiagnostics.exe",
+    "size_kb": 136,
+    "source": "disk"
+  },
+  {
+    "name": "vsinstr",
+    "exe": "VSInstr.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Team Tools\\DiagnosticsHub\\Collector\\VSInstr.exe",
+    "size_kb": 6838,
+    "source": "disk"
+  },
+  {
+    "name": "fxcopcmd",
+    "exe": "FxCopCmd.exe",
+    "path": "D:\\Visual Studio\\2022\\Community\\Team Tools\\Static Analysis Tools\\FxCop\\FxCopCmd.exe",
+    "size_kb": 86,
+    "source": "disk"
+  },
+  {
+    "name": "unins000",
+    "exe": "unins000.exe",
+    "path": "D:\\VsCode\\Microsoft VS Code\\unins000.exe",
+    "size_kb": 3413,
+    "source": "disk"
+  },
+  {
+    "name": "code-tunnel",
+    "exe": "code-tunnel.exe",
+    "path": "D:\\VsCode\\Microsoft VS Code\\bin\\code-tunnel.exe",
+    "size_kb": 19145,
+    "source": "disk"
+  },
+  {
+    "name": "rg",
+    "exe": "rg.exe",
+    "path": "D:\\VsCode\\Microsoft VS Code\\resources\\app\\node_modules\\@vscode\\ripgrep\\bin\\rg.exe",
+    "size_kb": 4569,
+    "source": "disk"
+  },
+  {
+    "name": "vsce-sign",
+    "exe": "vsce-sign.exe",
+    "path": "D:\\VsCode\\Microsoft VS Code\\resources\\app\\node_modules\\@vscode\\vsce-sign\\bin\\vsce-sign.exe",
+    "size_kb": 5496,
+    "source": "disk"
+  },
+  {
+    "name": "adobe analysis server",
+    "exe": "Adobe Analysis Server.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\Adobe Analysis Server.exe",
+    "size_kb": 515,
+    "source": "disk"
+  },
+  {
+    "name": "aegpusniffer",
+    "exe": "AEGPUSniffer.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\AEGPUSniffer.exe",
+    "size_kb": 91,
+    "source": "disk"
+  },
+  {
+    "name": "capsuleschematest",
+    "exe": "CapsuleSchemaTest.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\CapsuleSchemaTest.exe",
+    "size_kb": 491,
+    "source": "disk"
+  },
+  {
+    "name": "crlogtransport",
+    "exe": "CRLogTransport.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\CRLogTransport.exe",
+    "size_kb": 209,
+    "source": "disk"
+  },
+  {
+    "name": "dynamiclinkmanager",
+    "exe": "dynamiclinkmanager.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\dynamiclinkmanager.exe",
+    "size_kb": 498,
+    "source": "disk"
+  },
+  {
+    "name": "importerredserver",
+    "exe": "ImporterREDServer.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\ImporterREDServer.exe",
+    "size_kb": 115,
+    "source": "disk"
+  },
+  {
+    "name": "teamprojectslocalhub",
+    "exe": "TeamProjectsLocalHub.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\TeamProjectsLocalHub.exe",
+    "size_kb": 6294,
+    "source": "disk"
+  },
+  {
+    "name": "cephtmlengine",
+    "exe": "CEPHtmlEngine.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\CEPHtmlEngine\\CEPHtmlEngine.exe",
+    "size_kb": 3984,
+    "source": "disk"
+  },
+  {
+    "name": "automatic duck",
+    "exe": "Automatic Duck.exe",
+    "path": "D:\\Видео редактор\\After.Effects.2020\\After.Effects.2020\\Adobe After Effects 2020\\Support Files\\Plug-ins\\Format\\ProImport\\Supporting Files\\Automatic Duck.exe",
+    "size_kb": 5248,
+    "source": "disk"
+  },
+  {
+    "name": "7z",
+    "exe": "7z.exe",
+    "path": "C:\\Program Files\\7-Zip\\7z.exe",
+    "size_kb": 532,
+    "source": "disk"
+  },
+  {
+    "name": "7zg",
+    "exe": "7zG.exe",
+    "path": "C:\\Program Files\\7-Zip\\7zG.exe",
+    "size_kb": 668,
+    "source": "disk"
+  },
+  {
+    "name": "ccxprocess",
+    "exe": "CCXProcess.exe",
+    "path": "C:\\Program Files\\Adobe\\Adobe Creative Cloud Experience\\CCXProcess.exe",
+    "size_kb": 662,
+    "source": "disk"
+  },
+  {
+    "name": "afwserv",
+    "exe": "afwServ.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\afwServ.exe",
+    "size_kb": 2574,
+    "source": "disk"
+  },
+  {
+    "name": "ashquick",
+    "exe": "ashQuick.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\ashQuick.exe",
+    "size_kb": 547,
+    "source": "disk"
+  },
+  {
+    "name": "ashupd",
+    "exe": "ashUpd.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\ashUpd.exe",
+    "size_kb": 698,
+    "source": "disk"
+  },
+  {
+    "name": "aswavboottimescanshmin",
+    "exe": "aswAvBootTimeScanShMin.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\aswAvBootTimeScanShMin.exe",
+    "size_kb": 1333,
+    "source": "disk"
+  },
+  {
+    "name": "aswchlic",
+    "exe": "aswChLic.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\aswChLic.exe",
+    "size_kb": 327,
+    "source": "disk"
+  },
+  {
+    "name": "aswengsrv",
+    "exe": "aswEngSrv.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\aswEngSrv.exe",
+    "size_kb": 647,
+    "source": "disk"
+  },
+  {
+    "name": "aswrundll",
+    "exe": "aswRunDll.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\aswRunDll.exe",
+    "size_kb": 4407,
+    "source": "disk"
+  },
+  {
+    "name": "aswtoolssvc",
+    "exe": "aswToolsSvc.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\aswToolsSvc.exe",
+    "size_kb": 1067,
+    "source": "disk"
+  },
+  {
+    "name": "avastnm",
+    "exe": "AvastNM.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\AvastNM.exe",
+    "size_kb": 2349,
+    "source": "disk"
+  },
+  {
+    "name": "avastsvc",
+    "exe": "AvastSvc.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\AvastSvc.exe",
+    "size_kb": 1015,
+    "source": "disk"
+  },
+  {
+    "name": "avconsent",
+    "exe": "AvConsent.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\AvConsent.exe",
+    "size_kb": 642,
+    "source": "disk"
+  },
+  {
+    "name": "avdump",
+    "exe": "AvDump.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\AvDump.exe",
+    "size_kb": 3894,
+    "source": "disk"
+  },
+  {
+    "name": "avlaunch",
+    "exe": "AvLaunch.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\AvLaunch.exe",
+    "size_kb": 867,
+    "source": "disk"
+  },
+  {
+    "name": "firefox_pass",
+    "exe": "firefox_pass.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\firefox_pass.exe",
+    "size_kb": 539,
+    "source": "disk"
+  },
+  {
+    "name": "oobeutil",
+    "exe": "OobeUtil.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\OobeUtil.exe",
+    "size_kb": 1234,
+    "source": "disk"
+  },
+  {
+    "name": "overseer",
+    "exe": "overseer.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\overseer.exe",
+    "size_kb": 2908,
+    "source": "disk"
+  },
+  {
+    "name": "regsvr",
+    "exe": "RegSvr.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\RegSvr.exe",
+    "size_kb": 4331,
+    "source": "disk"
+  },
+  {
+    "name": "sched",
+    "exe": "sched.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\sched.exe",
+    "size_kb": 516,
+    "source": "disk"
+  },
+  {
+    "name": "supporttool",
+    "exe": "SupportTool.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\SupportTool.exe",
+    "size_kb": 11910,
+    "source": "disk"
+  },
+  {
+    "name": "su_worker",
+    "exe": "su_worker.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\su_worker.exe",
+    "size_kb": 5025,
+    "source": "disk"
+  },
+  {
+    "name": "visthaux",
+    "exe": "VisthAux.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\VisthAux.exe",
+    "size_kb": 526,
+    "source": "disk"
+  },
+  {
+    "name": "wa_3rd_party_host_32",
+    "exe": "wa_3rd_party_host_32.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\wa_3rd_party_host_32.exe",
+    "size_kb": 2317,
+    "source": "disk"
+  },
+  {
+    "name": "wa_3rd_party_host_64",
+    "exe": "wa_3rd_party_host_64.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\wa_3rd_party_host_64.exe",
+    "size_kb": 2924,
+    "source": "disk"
+  },
+  {
+    "name": "engsup",
+    "exe": "engsup.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\defs\\26021900\\engsup.exe",
+    "size_kb": 2350,
+    "source": "disk"
+  },
+  {
+    "name": "aswboot",
+    "exe": "aswBoot.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\Inf\\x64\\aswBoot.exe",
+    "size_kb": 316,
+    "source": "disk"
+  },
+  {
+    "name": "aswpeantivirus",
+    "exe": "aswPEAntivirus.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\RescueDisk\\aswPEAntivirus.exe",
+    "size_kb": 13158,
+    "source": "disk"
+  },
+  {
+    "name": "aswpebrowser",
+    "exe": "aswPEBrowser.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\RescueDisk\\aswPEBrowser.exe",
+    "size_kb": 3741,
+    "source": "disk"
+  },
+  {
+    "name": "aswpecommander",
+    "exe": "aswPECommander.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\RescueDisk\\aswPECommander.exe",
+    "size_kb": 3556,
+    "source": "disk"
+  },
+  {
+    "name": "aswpeshell",
+    "exe": "aswPEShell.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\RescueDisk\\aswPEShell.exe",
+    "size_kb": 3769,
+    "source": "disk"
+  },
+  {
+    "name": "aswshmin",
+    "exe": "aswShMin.exe",
+    "path": "C:\\Program Files\\Avast Software\\Avast\\RescueDisk\\aswShMin.exe",
+    "size_kb": 452,
+    "source": "disk"
+  },
+  {
+    "name": "courgette64",
+    "exe": "courgette64.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\courgette64.exe",
+    "size_kb": 1694,
+    "source": "disk"
+  },
+  {
+    "name": "docker desktop",
+    "exe": "Docker Desktop.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\frontend\\Docker Desktop.exe",
+    "size_kb": 162193,
+    "source": "disk"
+  },
+  {
+    "name": "dockercli",
+    "exe": "DockerCli.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\DockerCli.exe",
+    "size_kb": 11930,
+    "source": "disk"
+  },
+  {
+    "name": "com.docker.admin",
+    "exe": "com.docker.admin.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.admin.exe",
+    "size_kb": 13917,
+    "source": "disk"
+  },
+  {
+    "name": "com.docker.backend",
+    "exe": "com.docker.backend.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+    "size_kb": 77872,
+    "source": "disk"
+  },
+  {
+    "name": "com.docker.build",
+    "exe": "com.docker.build.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.build.exe",
+    "size_kb": 68907,
+    "source": "disk"
+  },
+  {
+    "name": "com.docker.dev-envs",
+    "exe": "com.docker.dev-envs.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.dev-envs.exe",
+    "size_kb": 12396,
+    "source": "disk"
+  },
+  {
+    "name": "com.docker.diagnose",
+    "exe": "com.docker.diagnose.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.diagnose.exe",
+    "size_kb": 26436,
+    "source": "disk"
+  },
+  {
+    "name": "com.docker.extensions",
+    "exe": "com.docker.extensions.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.extensions.exe",
+    "size_kb": 21150,
+    "source": "disk"
+  },
+  {
+    "name": "dockerd",
+    "exe": "dockerd.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\dockerd.exe",
+    "size_kb": 61651,
+    "source": "disk"
+  },
+  {
+    "name": "com.docker.cli",
+    "exe": "com.docker.cli.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\com.docker.cli.exe",
+    "size_kb": 34767,
+    "source": "disk"
+  },
+  {
+    "name": "docker-compose",
+    "exe": "docker-compose.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-compose.exe",
+    "size_kb": 61104,
+    "source": "disk"
+  },
+  {
+    "name": "docker-credential-desktop",
+    "exe": "docker-credential-desktop.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker-credential-desktop.exe",
+    "size_kb": 12909,
+    "source": "disk"
+  },
+  {
+    "name": "docker-credential-ecr-login",
+    "exe": "docker-credential-ecr-login.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker-credential-ecr-login.exe",
+    "size_kb": 6762,
+    "source": "disk"
+  },
+  {
+    "name": "docker-credential-wincred",
+    "exe": "docker-credential-wincred.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker-credential-wincred.exe",
+    "size_kb": 1851,
+    "source": "disk"
+  },
+  {
+    "name": "docker-index",
+    "exe": "docker-index.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker-index.exe",
+    "size_kb": 46982,
+    "source": "disk"
+  },
+  {
+    "name": "docker",
+    "exe": "docker.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+    "size_kb": 57702,
+    "source": "disk"
+  },
+  {
+    "name": "extension-admin",
+    "exe": "extension-admin.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\extension-admin.exe",
+    "size_kb": 9562,
+    "source": "disk"
+  },
+  {
+    "name": "hub-tool",
+    "exe": "hub-tool.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\hub-tool.exe",
+    "size_kb": 13544,
+    "source": "disk"
+  },
+  {
+    "name": "kubectl",
+    "exe": "kubectl.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe",
+    "size_kb": 49841,
+    "source": "disk"
+  },
+  {
+    "name": "docker-buildx",
+    "exe": "docker-buildx.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-buildx.exe",
+    "size_kb": 53455,
+    "source": "disk"
+  },
+  {
+    "name": "docker-debug",
+    "exe": "docker-debug.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-debug.exe",
+    "size_kb": 14569,
+    "source": "disk"
+  },
+  {
+    "name": "docker-dev",
+    "exe": "docker-dev.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-dev.exe",
+    "size_kb": 13477,
+    "source": "disk"
+  },
+  {
+    "name": "docker-extension",
+    "exe": "docker-extension.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-extension.exe",
+    "size_kb": 14772,
+    "source": "disk"
+  },
+  {
+    "name": "docker-feedback",
+    "exe": "docker-feedback.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-feedback.exe",
+    "size_kb": 14609,
+    "source": "disk"
+  },
+  {
+    "name": "docker-init",
+    "exe": "docker-init.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-init.exe",
+    "size_kb": 13693,
+    "source": "disk"
+  },
+  {
+    "name": "docker-sbom",
+    "exe": "docker-sbom.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-sbom.exe",
+    "size_kb": 21103,
+    "source": "disk"
+  },
+  {
+    "name": "docker-scout",
+    "exe": "docker-scout.exe",
+    "path": "C:\\Program Files\\Docker\\Docker\\resources\\cli-plugins\\docker-scout.exe",
+    "size_kb": 61775,
+    "source": "disk"
+  },
+  {
+    "name": "unins001",
+    "exe": "unins001.exe",
+    "path": "C:\\Program Files\\Git\\unins001.exe",
+    "size_kb": 3140,
+    "source": "disk"
+  },
+  {
+    "name": "gitk",
+    "exe": "gitk.exe",
+    "path": "C:\\Program Files\\Git\\cmd\\gitk.exe",
+    "size_kb": 133,
+    "source": "disk"
+  },
+  {
+    "name": "antiword",
+    "exe": "antiword.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\antiword.exe",
+    "size_kb": 278,
+    "source": "disk"
+  },
+  {
+    "name": "bunzip2",
+    "exe": "bunzip2.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\bunzip2.exe",
+    "size_kb": 90,
+    "source": "disk"
+  },
+  {
+    "name": "bzcat",
+    "exe": "bzcat.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\bzcat.exe",
+    "size_kb": 90,
+    "source": "disk"
+  },
+  {
+    "name": "bzip2",
+    "exe": "bzip2.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\bzip2.exe",
+    "size_kb": 90,
+    "source": "disk"
+  },
+  {
+    "name": "connect",
+    "exe": "connect.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\connect.exe",
+    "size_kb": 83,
+    "source": "disk"
+  },
+  {
+    "name": "create-shortcut",
+    "exe": "create-shortcut.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\create-shortcut.exe",
+    "size_kb": 106,
+    "source": "disk"
+  },
+  {
+    "name": "curl",
+    "exe": "curl.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\curl.exe",
+    "size_kb": 308,
+    "source": "disk"
+  },
+  {
+    "name": "envsubst",
+    "exe": "envsubst.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\envsubst.exe",
+    "size_kb": 119,
+    "source": "disk"
+  },
+  {
+    "name": "gettext",
+    "exe": "gettext.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\gettext.exe",
+    "size_kb": 120,
+    "source": "disk"
+  },
+  {
+    "name": "git-lfs",
+    "exe": "git-lfs.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\git-lfs.exe",
+    "size_kb": 10887,
+    "source": "disk"
+  },
+  {
+    "name": "git-receive-pack",
+    "exe": "git-receive-pack.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\git-receive-pack.exe",
+    "size_kb": 3910,
+    "source": "disk"
+  },
+  {
+    "name": "git-upload-archive",
+    "exe": "git-upload-archive.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-archive.exe",
+    "size_kb": 3910,
+    "source": "disk"
+  },
+  {
+    "name": "git-upload-pack",
+    "exe": "git-upload-pack.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-pack.exe",
+    "size_kb": 3910,
+    "source": "disk"
+  },
+  {
+    "name": "lzmadec",
+    "exe": "lzmadec.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\lzmadec.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "odt2txt",
+    "exe": "odt2txt.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\odt2txt.exe",
+    "size_kb": 61,
+    "source": "disk"
+  },
+  {
+    "name": "openssl",
+    "exe": "openssl.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\openssl.exe",
+    "size_kb": 965,
+    "source": "disk"
+  },
+  {
+    "name": "p11-kit",
+    "exe": "p11-kit.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\p11-kit.exe",
+    "size_kb": 211,
+    "source": "disk"
+  },
+  {
+    "name": "pdftotext",
+    "exe": "pdftotext.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\pdftotext.exe",
+    "size_kb": 1502,
+    "source": "disk"
+  },
+  {
+    "name": "pkcs1-conv",
+    "exe": "pkcs1-conv.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\pkcs1-conv.exe",
+    "size_kb": 58,
+    "source": "disk"
+  },
+  {
+    "name": "sexp-conv",
+    "exe": "sexp-conv.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\sexp-conv.exe",
+    "size_kb": 63,
+    "source": "disk"
+  },
+  {
+    "name": "tclsh",
+    "exe": "tclsh.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\tclsh.exe",
+    "size_kb": 78,
+    "source": "disk"
+  },
+  {
+    "name": "tclsh86",
+    "exe": "tclsh86.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\tclsh86.exe",
+    "size_kb": 78,
+    "source": "disk"
+  },
+  {
+    "name": "trust",
+    "exe": "trust.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\trust.exe",
+    "size_kb": 238,
+    "source": "disk"
+  },
+  {
+    "name": "unxz",
+    "exe": "unxz.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\unxz.exe",
+    "size_kb": 91,
+    "source": "disk"
+  },
+  {
+    "name": "whouses",
+    "exe": "WhoUses.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\WhoUses.exe",
+    "size_kb": 104,
+    "source": "disk"
+  },
+  {
+    "name": "wintoast",
+    "exe": "wintoast.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\wintoast.exe",
+    "size_kb": 348,
+    "source": "disk"
+  },
+  {
+    "name": "wish",
+    "exe": "wish.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\wish.exe",
+    "size_kb": 65,
+    "source": "disk"
+  },
+  {
+    "name": "wish86",
+    "exe": "wish86.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\wish86.exe",
+    "size_kb": 65,
+    "source": "disk"
+  },
+  {
+    "name": "xmlwf",
+    "exe": "xmlwf.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\xmlwf.exe",
+    "size_kb": 81,
+    "source": "disk"
+  },
+  {
+    "name": "xz",
+    "exe": "xz.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\xz.exe",
+    "size_kb": 91,
+    "source": "disk"
+  },
+  {
+    "name": "xzcat",
+    "exe": "xzcat.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\xzcat.exe",
+    "size_kb": 91,
+    "source": "disk"
+  },
+  {
+    "name": "xzdec",
+    "exe": "xzdec.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\xzdec.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "git-http-backend",
+    "exe": "git-http-backend.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git-http-backend.exe",
+    "size_kb": 2320,
+    "source": "disk"
+  },
+  {
+    "name": "git-imap-send",
+    "exe": "git-imap-send.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git-imap-send.exe",
+    "size_kb": 2369,
+    "source": "disk"
+  },
+  {
+    "name": "git-remote-ftp",
+    "exe": "git-remote-ftp.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git-remote-ftp.exe",
+    "size_kb": 2378,
+    "source": "disk"
+  },
+  {
+    "name": "git-remote-ftps",
+    "exe": "git-remote-ftps.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git-remote-ftps.exe",
+    "size_kb": 2378,
+    "source": "disk"
+  },
+  {
+    "name": "git-remote-http",
+    "exe": "git-remote-http.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git-remote-http.exe",
+    "size_kb": 2378,
+    "source": "disk"
+  },
+  {
+    "name": "p11-kit-remote",
+    "exe": "p11-kit-remote.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\libexec\\p11-kit\\p11-kit-remote.exe",
+    "size_kb": 65,
+    "source": "disk"
+  },
+  {
+    "name": "p11-kit-server",
+    "exe": "p11-kit-server.exe",
+    "path": "C:\\Program Files\\Git\\mingw64\\libexec\\p11-kit\\p11-kit-server.exe",
+    "size_kb": 80,
+    "source": "disk"
+  },
+  {
+    "name": "bash",
+    "exe": "bash.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+    "size_kb": 2257,
+    "source": "disk"
+  },
+  {
+    "name": "captoinfo",
+    "exe": "captoinfo.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\captoinfo.exe",
+    "size_kb": 78,
+    "source": "disk"
+  },
+  {
+    "name": "chcon",
+    "exe": "chcon.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\chcon.exe",
+    "size_kb": 59,
+    "source": "disk"
+  },
+  {
+    "name": "chgrp",
+    "exe": "chgrp.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\chgrp.exe",
+    "size_kb": 65,
+    "source": "disk"
+  },
+  {
+    "name": "chmod",
+    "exe": "chmod.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\chmod.exe",
+    "size_kb": 58,
+    "source": "disk"
+  },
+  {
+    "name": "chown",
+    "exe": "chown.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\chown.exe",
+    "size_kb": 68,
+    "source": "disk"
+  },
+  {
+    "name": "csplit",
+    "exe": "csplit.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\csplit.exe",
+    "size_kb": 110,
+    "source": "disk"
+  },
+  {
+    "name": "cygcheck",
+    "exe": "cygcheck.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\cygcheck.exe",
+    "size_kb": 779,
+    "source": "disk"
+  },
+  {
+    "name": "cygpath",
+    "exe": "cygpath.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\cygpath.exe",
+    "size_kb": 127,
+    "source": "disk"
+  },
+  {
+    "name": "d2u",
+    "exe": "d2u.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\d2u.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "dd",
+    "exe": "dd.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\dd.exe",
+    "size_kb": 89,
+    "source": "disk"
+  },
+  {
+    "name": "df",
+    "exe": "df.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\df.exe",
+    "size_kb": 102,
+    "source": "disk"
+  },
+  {
+    "name": "dir",
+    "exe": "dir.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\dir.exe",
+    "size_kb": 146,
+    "source": "disk"
+  },
+  {
+    "name": "dircolors",
+    "exe": "dircolors.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\dircolors.exe",
+    "size_kb": 56,
+    "source": "disk"
+  },
+  {
+    "name": "dirmngr-client",
+    "exe": "dirmngr-client.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\dirmngr-client.exe",
+    "size_kb": 93,
+    "source": "disk"
+  },
+  {
+    "name": "dirmngr",
+    "exe": "dirmngr.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\dirmngr.exe",
+    "size_kb": 379,
+    "source": "disk"
+  },
+  {
+    "name": "dos2unix",
+    "exe": "dos2unix.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\dos2unix.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "du",
+    "exe": "du.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\du.exe",
+    "size_kb": 164,
+    "source": "disk"
+  },
+  {
+    "name": "ex",
+    "exe": "ex.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ex.exe",
+    "size_kb": 3415,
+    "source": "disk"
+  },
+  {
+    "name": "factor",
+    "exe": "factor.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\factor.exe",
+    "size_kb": 76,
+    "source": "disk"
+  },
+  {
+    "name": "gawk-5.0.0",
+    "exe": "gawk-5.0.0.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gawk-5.0.0.exe",
+    "size_kb": 613,
+    "source": "disk"
+  },
+  {
+    "name": "gawk",
+    "exe": "gawk.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gawk.exe",
+    "size_kb": 613,
+    "source": "disk"
+  },
+  {
+    "name": "getconf",
+    "exe": "getconf.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\getconf.exe",
+    "size_kb": 69,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-card",
+    "exe": "gpg-card.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpg-card.exe",
+    "size_kb": 224,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-wks-client",
+    "exe": "gpg-wks-client.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpg-wks-client.exe",
+    "size_kb": 187,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-wks-server",
+    "exe": "gpg-wks-server.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpg-wks-server.exe",
+    "size_kb": 163,
+    "source": "disk"
+  },
+  {
+    "name": "gpg",
+    "exe": "gpg.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpg.exe",
+    "size_kb": 1073,
+    "source": "disk"
+  },
+  {
+    "name": "gpgconf",
+    "exe": "gpgconf.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpgconf.exe",
+    "size_kb": 139,
+    "source": "disk"
+  },
+  {
+    "name": "gpgscm",
+    "exe": "gpgscm.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpgscm.exe",
+    "size_kb": 215,
+    "source": "disk"
+  },
+  {
+    "name": "gpgsm",
+    "exe": "gpgsm.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpgsm.exe",
+    "size_kb": 541,
+    "source": "disk"
+  },
+  {
+    "name": "gpgsplit",
+    "exe": "gpgsplit.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpgsplit.exe",
+    "size_kb": 63,
+    "source": "disk"
+  },
+  {
+    "name": "gpgtar",
+    "exe": "gpgtar.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpgtar.exe",
+    "size_kb": 109,
+    "source": "disk"
+  },
+  {
+    "name": "gpgv",
+    "exe": "gpgv.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gpgv.exe",
+    "size_kb": 487,
+    "source": "disk"
+  },
+  {
+    "name": "gzip",
+    "exe": "gzip.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\gzip.exe",
+    "size_kb": 104,
+    "source": "disk"
+  },
+  {
+    "name": "infocmp",
+    "exe": "infocmp.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\infocmp.exe",
+    "size_kb": 54,
+    "source": "disk"
+  },
+  {
+    "name": "infotocap",
+    "exe": "infotocap.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\infotocap.exe",
+    "size_kb": 78,
+    "source": "disk"
+  },
+  {
+    "name": "join",
+    "exe": "join.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\join.exe",
+    "size_kb": 50,
+    "source": "disk"
+  },
+  {
+    "name": "kbxutil",
+    "exe": "kbxutil.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\kbxutil.exe",
+    "size_kb": 151,
+    "source": "disk"
+  },
+  {
+    "name": "kill",
+    "exe": "kill.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\kill.exe",
+    "size_kb": 93,
+    "source": "disk"
+  },
+  {
+    "name": "ldd",
+    "exe": "ldd.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ldd.exe",
+    "size_kb": 96,
+    "source": "disk"
+  },
+  {
+    "name": "ldh",
+    "exe": "ldh.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ldh.exe",
+    "size_kb": 147,
+    "source": "disk"
+  },
+  {
+    "name": "less",
+    "exe": "less.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\less.exe",
+    "size_kb": 195,
+    "source": "disk"
+  },
+  {
+    "name": "ln",
+    "exe": "ln.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ln.exe",
+    "size_kb": 75,
+    "source": "disk"
+  },
+  {
+    "name": "locale",
+    "exe": "locale.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\locale.exe",
+    "size_kb": 105,
+    "source": "disk"
+  },
+  {
+    "name": "locate",
+    "exe": "locate.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\locate.exe",
+    "size_kb": 144,
+    "source": "disk"
+  },
+  {
+    "name": "mac2unix",
+    "exe": "mac2unix.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\mac2unix.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "minidumper",
+    "exe": "minidumper.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\minidumper.exe",
+    "size_kb": 74,
+    "source": "disk"
+  },
+  {
+    "name": "mintty",
+    "exe": "mintty.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\mintty.exe",
+    "size_kb": 1114,
+    "source": "disk"
+  },
+  {
+    "name": "mkgroup",
+    "exe": "mkgroup.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\mkgroup.exe",
+    "size_kb": 71,
+    "source": "disk"
+  },
+  {
+    "name": "mkpasswd",
+    "exe": "mkpasswd.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\mkpasswd.exe",
+    "size_kb": 71,
+    "source": "disk"
+  },
+  {
+    "name": "mount",
+    "exe": "mount.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\mount.exe",
+    "size_kb": 94,
+    "source": "disk"
+  },
+  {
+    "name": "nano",
+    "exe": "nano.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\nano.exe",
+    "size_kb": 354,
+    "source": "disk"
+  },
+  {
+    "name": "nl",
+    "exe": "nl.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\nl.exe",
+    "size_kb": 102,
+    "source": "disk"
+  },
+  {
+    "name": "numfmt",
+    "exe": "numfmt.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\numfmt.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "od",
+    "exe": "od.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\od.exe",
+    "size_kb": 85,
+    "source": "disk"
+  },
+  {
+    "name": "passwd",
+    "exe": "passwd.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\passwd.exe",
+    "size_kb": 71,
+    "source": "disk"
+  },
+  {
+    "name": "pinentry-w32",
+    "exe": "pinentry-w32.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\pinentry-w32.exe",
+    "size_kb": 77,
+    "source": "disk"
+  },
+  {
+    "name": "pinentry",
+    "exe": "pinentry.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\pinentry.exe",
+    "size_kb": 77,
+    "source": "disk"
+  },
+  {
+    "name": "pldd",
+    "exe": "pldd.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\pldd.exe",
+    "size_kb": 55,
+    "source": "disk"
+  },
+  {
+    "name": "pr",
+    "exe": "pr.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\pr.exe",
+    "size_kb": 72,
+    "source": "disk"
+  },
+  {
+    "name": "ps",
+    "exe": "ps.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ps.exe",
+    "size_kb": 82,
+    "source": "disk"
+  },
+  {
+    "name": "ptx",
+    "exe": "ptx.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ptx.exe",
+    "size_kb": 127,
+    "source": "disk"
+  },
+  {
+    "name": "regtool",
+    "exe": "regtool.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\regtool.exe",
+    "size_kb": 101,
+    "source": "disk"
+  },
+  {
+    "name": "rnano",
+    "exe": "rnano.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\rnano.exe",
+    "size_kb": 354,
+    "source": "disk"
+  },
+  {
+    "name": "rview",
+    "exe": "rview.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\rview.exe",
+    "size_kb": 3415,
+    "source": "disk"
+  },
+  {
+    "name": "rvim",
+    "exe": "rvim.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\rvim.exe",
+    "size_kb": 3415,
+    "source": "disk"
+  },
+  {
+    "name": "scp",
+    "exe": "scp.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\scp.exe",
+    "size_kb": 200,
+    "source": "disk"
+  },
+  {
+    "name": "seq",
+    "exe": "seq.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\seq.exe",
+    "size_kb": 67,
+    "source": "disk"
+  },
+  {
+    "name": "setfacl",
+    "exe": "setfacl.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\setfacl.exe",
+    "size_kb": 66,
+    "source": "disk"
+  },
+  {
+    "name": "setmetamode",
+    "exe": "setmetamode.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\setmetamode.exe",
+    "size_kb": 52,
+    "source": "disk"
+  },
+  {
+    "name": "sftp",
+    "exe": "sftp.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\sftp.exe",
+    "size_kb": 212,
+    "source": "disk"
+  },
+  {
+    "name": "sha224sum",
+    "exe": "sha224sum.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\sha224sum.exe",
+    "size_kb": 55,
+    "source": "disk"
+  },
+  {
+    "name": "sha256sum",
+    "exe": "sha256sum.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\sha256sum.exe",
+    "size_kb": 55,
+    "source": "disk"
+  },
+  {
+    "name": "sha384sum",
+    "exe": "sha384sum.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\sha384sum.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "sha512sum",
+    "exe": "sha512sum.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\sha512sum.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "shred",
+    "exe": "shred.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\shred.exe",
+    "size_kb": 57,
+    "source": "disk"
+  },
+  {
+    "name": "shuf",
+    "exe": "shuf.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\shuf.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "split",
+    "exe": "split.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\split.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "ssh-keygen",
+    "exe": "ssh-keygen.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ssh-keygen.exe",
+    "size_kb": 511,
+    "source": "disk"
+  },
+  {
+    "name": "ssh-keyscan",
+    "exe": "ssh-keyscan.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ssh-keyscan.exe",
+    "size_kb": 473,
+    "source": "disk"
+  },
+  {
+    "name": "sshd",
+    "exe": "sshd.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\sshd.exe",
+    "size_kb": 921,
+    "source": "disk"
+  },
+  {
+    "name": "ssp",
+    "exe": "ssp.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\ssp.exe",
+    "size_kb": 70,
+    "source": "disk"
+  },
+  {
+    "name": "stat",
+    "exe": "stat.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\stat.exe",
+    "size_kb": 95,
+    "source": "disk"
+  },
+  {
+    "name": "stdbuf",
+    "exe": "stdbuf.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\stdbuf.exe",
+    "size_kb": 67,
+    "source": "disk"
+  },
+  {
+    "name": "strace",
+    "exe": "strace.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\strace.exe",
+    "size_kb": 405,
+    "source": "disk"
+  },
+  {
+    "name": "stty",
+    "exe": "stty.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\stty.exe",
+    "size_kb": 89,
+    "source": "disk"
+  },
+  {
+    "name": "tac",
+    "exe": "tac.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\tac.exe",
+    "size_kb": 105,
+    "source": "disk"
+  },
+  {
+    "name": "tar",
+    "exe": "tar.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\tar.exe",
+    "size_kb": 486,
+    "source": "disk"
+  },
+  {
+    "name": "tic",
+    "exe": "tic.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\tic.exe",
+    "size_kb": 78,
+    "source": "disk"
+  },
+  {
+    "name": "tig",
+    "exe": "tig.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\tig.exe",
+    "size_kb": 654,
+    "source": "disk"
+  },
+  {
+    "name": "tzset",
+    "exe": "tzset.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\tzset.exe",
+    "size_kb": 94,
+    "source": "disk"
+  },
+  {
+    "name": "u2d",
+    "exe": "u2d.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\u2d.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "umount",
+    "exe": "umount.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\umount.exe",
+    "size_kb": 63,
+    "source": "disk"
+  },
+  {
+    "name": "unix2dos",
+    "exe": "unix2dos.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\unix2dos.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "unix2mac",
+    "exe": "unix2mac.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\unix2mac.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "unzip",
+    "exe": "unzip.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\unzip.exe",
+    "size_kb": 160,
+    "source": "disk"
+  },
+  {
+    "name": "unzipsfx",
+    "exe": "unzipsfx.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\unzipsfx.exe",
+    "size_kb": 76,
+    "source": "disk"
+  },
+  {
+    "name": "vdir",
+    "exe": "vdir.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\vdir.exe",
+    "size_kb": 146,
+    "source": "disk"
+  },
+  {
+    "name": "view",
+    "exe": "view.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\view.exe",
+    "size_kb": 3415,
+    "source": "disk"
+  },
+  {
+    "name": "vim",
+    "exe": "vim.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\vim.exe",
+    "size_kb": 3415,
+    "source": "disk"
+  },
+  {
+    "name": "vimdiff",
+    "exe": "vimdiff.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\vimdiff.exe",
+    "size_kb": 3415,
+    "source": "disk"
+  },
+  {
+    "name": "who",
+    "exe": "who.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\who.exe",
+    "size_kb": 69,
+    "source": "disk"
+  },
+  {
+    "name": "winpty",
+    "exe": "winpty.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\winpty.exe",
+    "size_kb": 181,
+    "source": "disk"
+  },
+  {
+    "name": "zipinfo",
+    "exe": "zipinfo.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\zipinfo.exe",
+    "size_kb": 160,
+    "source": "disk"
+  },
+  {
+    "name": "[",
+    "exe": "[.exe",
+    "path": "C:\\Program Files\\Git\\usr\\bin\\[.exe",
+    "size_kb": 71,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-auth",
+    "exe": "gpg-auth.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\gnupg\\gpg-auth.exe",
+    "size_kb": 98,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-check-pattern",
+    "exe": "gpg-check-pattern.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\gnupg\\gpg-check-pattern.exe",
+    "size_kb": 85,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-pair-tool",
+    "exe": "gpg-pair-tool.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\gnupg\\gpg-pair-tool.exe",
+    "size_kb": 103,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-preset-passphrase",
+    "exe": "gpg-preset-passphrase.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\gnupg\\gpg-preset-passphrase.exe",
+    "size_kb": 64,
+    "source": "disk"
+  },
+  {
+    "name": "gpg-protect-tool",
+    "exe": "gpg-protect-tool.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\gnupg\\gpg-protect-tool.exe",
+    "size_kb": 163,
+    "source": "disk"
+  },
+  {
+    "name": "keyboxd",
+    "exe": "keyboxd.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\gnupg\\keyboxd.exe",
+    "size_kb": 249,
+    "source": "disk"
+  },
+  {
+    "name": "sftp-server",
+    "exe": "sftp-server.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\ssh\\sftp-server.exe",
+    "size_kb": 140,
+    "source": "disk"
+  },
+  {
+    "name": "rmt",
+    "exe": "rmt.exe",
+    "path": "C:\\Program Files\\Git\\usr\\lib\\tar\\rmt.exe",
+    "size_kb": 53,
+    "source": "disk"
+  },
+  {
+    "name": "java",
+    "exe": "java.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\NCALayer\\jre\\bin\\java.exe",
+    "size_kb": 269,
+    "source": "disk"
+  },
+  {
+    "name": "javaw",
+    "exe": "javaw.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\NCALayer\\jre\\bin\\javaw.exe",
+    "size_kb": 269,
+    "source": "disk"
+  },
+  {
+    "name": "c4dpy",
+    "exe": "c4dpy.exe",
+    "path": "C:\\Program Files\\Maxon Cinema 4D R23\\c4dpy.exe",
+    "size_kb": 7258,
+    "source": "disk"
+  },
+  {
+    "name": "cineware",
+    "exe": "Cineware.exe",
+    "path": "C:\\Program Files\\Maxon Cinema 4D R23\\Cineware.exe",
+    "size_kb": 7258,
+    "source": "disk"
+  },
+  {
+    "name": "imb-mpi1",
+    "exe": "IMB-MPI1.exe",
+    "path": "C:\\Program Files\\Microsoft MPI\\Benchmarks\\IMB-MPI1.exe",
+    "size_kb": 532,
+    "source": "disk"
+  },
+  {
+    "name": "imb-nbc",
+    "exe": "IMB-NBC.exe",
+    "path": "C:\\Program Files\\Microsoft MPI\\Benchmarks\\IMB-NBC.exe",
+    "size_kb": 545,
+    "source": "disk"
+  },
+  {
+    "name": "mpipingpong",
+    "exe": "MpiPingpong.exe",
+    "path": "C:\\Program Files\\Microsoft MPI\\Benchmarks\\MpiPingpong.exe",
+    "size_kb": 206,
+    "source": "disk"
+  },
+  {
+    "name": "mpiexec",
+    "exe": "mpiexec.exe",
+    "path": "C:\\Program Files\\Microsoft MPI\\Bin\\mpiexec.exe",
+    "size_kb": 537,
+    "source": "disk"
+  },
+  {
+    "name": "msmpilaunchsvc",
+    "exe": "msmpilaunchsvc.exe",
+    "path": "C:\\Program Files\\Microsoft MPI\\Bin\\msmpilaunchsvc.exe",
+    "size_kb": 156,
+    "source": "disk"
+  },
+  {
+    "name": "smpd",
+    "exe": "smpd.exe",
+    "path": "C:\\Program Files\\Microsoft MPI\\Bin\\smpd.exe",
+    "size_kb": 417,
+    "source": "disk"
+  },
+  {
+    "name": "ospprearm",
+    "exe": "OSPPREARM.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\Office16\\OSPPREARM.EXE",
+    "size_kb": 252,
+    "source": "disk"
+  },
+  {
+    "name": "appvdllsurrogate32",
+    "exe": "AppVDllSurrogate32.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Client\\AppVDllSurrogate32.exe",
+    "size_kb": 192,
+    "source": "disk"
+  },
+  {
+    "name": "appvdllsurrogate64",
+    "exe": "AppVDllSurrogate64.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Client\\AppVDllSurrogate64.exe",
+    "size_kb": 222,
+    "source": "disk"
+  },
+  {
+    "name": "integrator",
+    "exe": "Integrator.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Integration\\Integrator.exe",
+    "size_kb": 6859,
+    "source": "disk"
+  },
+  {
+    "name": "accicons",
+    "exe": "ACCICONS.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\ACCICONS.EXE",
+    "size_kb": 3671,
+    "source": "disk"
+  },
+  {
+    "name": "clview",
+    "exe": "CLVIEW.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\CLVIEW.EXE",
+    "size_kb": 522,
+    "source": "disk"
+  },
+  {
+    "name": "cnfnot32",
+    "exe": "CNFNOT32.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\CNFNOT32.EXE",
+    "size_kb": 255,
+    "source": "disk"
+  },
+  {
+    "name": "editor",
+    "exe": "EDITOR.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EDITOR.EXE",
+    "size_kb": 218,
+    "source": "disk"
+  },
+  {
+    "name": "excelcnv",
+    "exe": "excelcnv.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\excelcnv.exe",
+    "size_kb": 43144,
+    "source": "disk"
+  },
+  {
+    "name": "graph",
+    "exe": "GRAPH.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\GRAPH.EXE",
+    "size_kb": 5692,
+    "source": "disk"
+  },
+  {
+    "name": "misc",
+    "exe": "misc.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\misc.exe",
+    "size_kb": 1013,
+    "source": "disk"
+  },
+  {
+    "name": "msoadfsb",
+    "exe": "msoadfsb.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\msoadfsb.exe",
+    "size_kb": 1888,
+    "source": "disk"
+  },
+  {
+    "name": "msoasb",
+    "exe": "msoasb.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\msoasb.exe",
+    "size_kb": 294,
+    "source": "disk"
+  },
+  {
+    "name": "msohtmed",
+    "exe": "MSOHTMED.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSOHTMED.EXE",
+    "size_kb": 379,
+    "source": "disk"
+  },
+  {
+    "name": "msoia",
+    "exe": "msoia.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\msoia.exe",
+    "size_kb": 5917,
+    "source": "disk"
+  },
+  {
+    "name": "msosrec",
+    "exe": "MSOSREC.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSOSREC.EXE",
+    "size_kb": 287,
+    "source": "disk"
+  },
+  {
+    "name": "msosync",
+    "exe": "MSOSYNC.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSOSYNC.EXE",
+    "size_kb": 503,
+    "source": "disk"
+  },
+  {
+    "name": "msouc",
+    "exe": "MSOUC.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSOUC.EXE",
+    "size_kb": 619,
+    "source": "disk"
+  },
+  {
+    "name": "msqry32",
+    "exe": "MSQRY32.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSQRY32.EXE",
+    "size_kb": 865,
+    "source": "disk"
+  },
+  {
+    "name": "namecontrolserver",
+    "exe": "NAMECONTROLSERVER.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\NAMECONTROLSERVER.EXE",
+    "size_kb": 150,
+    "source": "disk"
+  },
+  {
+    "name": "olcfg",
+    "exe": "OLCFG.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\OLCFG.EXE",
+    "size_kb": 126,
+    "source": "disk"
+  },
+  {
+    "name": "onenotem",
+    "exe": "ONENOTEM.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTEM.EXE",
+    "size_kb": 188,
+    "source": "disk"
+  },
+  {
+    "name": "orgchart",
+    "exe": "ORGCHART.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\ORGCHART.EXE",
+    "size_kb": 666,
+    "source": "disk"
+  },
+  {
+    "name": "orgwiz",
+    "exe": "ORGWIZ.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\ORGWIZ.EXE",
+    "size_kb": 220,
+    "source": "disk"
+  },
+  {
+    "name": "pdfreflow",
+    "exe": "PDFREFLOW.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\PDFREFLOW.EXE",
+    "size_kb": 15596,
+    "source": "disk"
+  },
+  {
+    "name": "perfboost",
+    "exe": "PerfBoost.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\PerfBoost.exe",
+    "size_kb": 838,
+    "source": "disk"
+  },
+  {
+    "name": "pptico",
+    "exe": "PPTICO.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\PPTICO.EXE",
+    "size_kb": 3438,
+    "source": "disk"
+  },
+  {
+    "name": "projimpt",
+    "exe": "PROJIMPT.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\PROJIMPT.EXE",
+    "size_kb": 221,
+    "source": "disk"
+  },
+  {
+    "name": "scanpst",
+    "exe": "SCANPST.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\SCANPST.EXE",
+    "size_kb": 125,
+    "source": "disk"
+  },
+  {
+    "name": "selfcert",
+    "exe": "SELFCERT.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\SELFCERT.EXE",
+    "size_kb": 1665,
+    "source": "disk"
+  },
+  {
+    "name": "tlimpt",
+    "exe": "TLIMPT.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\TLIMPT.EXE",
+    "size_kb": 219,
+    "source": "disk"
+  },
+  {
+    "name": "visicon",
+    "exe": "VISICON.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\VISICON.EXE",
+    "size_kb": 2477,
+    "source": "disk"
+  },
+  {
+    "name": "vpreview",
+    "exe": "VPREVIEW.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\VPREVIEW.EXE",
+    "size_kb": 613,
+    "source": "disk"
+  },
+  {
+    "name": "wordconv",
+    "exe": "Wordconv.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\Wordconv.exe",
+    "size_kb": 50,
+    "source": "disk"
+  },
+  {
+    "name": "wordicon",
+    "exe": "WORDICON.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WORDICON.EXE",
+    "size_kb": 2955,
+    "source": "disk"
+  },
+  {
+    "name": "xlicons",
+    "exe": "XLICONS.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\XLICONS.EXE",
+    "size_kb": 3610,
+    "source": "disk"
+  },
+  {
+    "name": "visevmon",
+    "exe": "VISEVMON.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\1049\\VISEVMON.EXE",
+    "size_kb": 329,
+    "source": "disk"
+  },
+  {
+    "name": "skypeserver",
+    "exe": "SKYPESERVER.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\SkypeSrv\\SKYPESERVER.EXE",
+    "size_kb": 120,
+    "source": "disk"
+  },
+  {
+    "name": "dw20",
+    "exe": "DW20.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\DW\\DW20.EXE",
+    "size_kb": 2369,
+    "source": "disk"
+  },
+  {
+    "name": "dwtrig20",
+    "exe": "DWTRIG20.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\DW\\DWTRIG20.EXE",
+    "size_kb": 330,
+    "source": "disk"
+  },
+  {
+    "name": "fltldr",
+    "exe": "FLTLDR.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\OFFICE16\\FLTLDR.EXE",
+    "size_kb": 452,
+    "source": "disk"
+  },
+  {
+    "name": "msoicons",
+    "exe": "MSOICONS.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\OFFICE16\\MSOICONS.EXE",
+    "size_kb": 1197,
+    "source": "disk"
+  },
+  {
+    "name": "msoxmled",
+    "exe": "MSOXMLED.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\OFFICE16\\MSOXMLED.EXE",
+    "size_kb": 233,
+    "source": "disk"
+  },
+  {
+    "name": "olicenseheartbeat",
+    "exe": "OLicenseHeartbeat.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\OFFICE16\\OLicenseHeartbeat.exe",
+    "size_kb": 1074,
+    "source": "disk"
+  },
+  {
+    "name": "ose",
+    "exe": "OSE.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\Source Engine\\OSE.EXE",
+    "size_kb": 260,
+    "source": "disk"
+  },
+  {
+    "name": "sqldumper",
+    "exe": "SQLDumper.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesX64\\Microsoft Analysis Services\\AS OLEDB\\140\\SQLDumper.exe",
+    "size_kb": 144,
+    "source": "disk"
+  },
+  {
+    "name": "databasecompare",
+    "exe": "DATABASECOMPARE.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesX86\\Microsoft Office\\Office16\\DCF\\DATABASECOMPARE.EXE",
+    "size_kb": 191,
+    "source": "disk"
+  },
+  {
+    "name": "filecompare",
+    "exe": "filecompare.exe",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesX86\\Microsoft Office\\Office16\\DCF\\filecompare.exe",
+    "size_kb": 271,
+    "source": "disk"
+  },
+  {
+    "name": "spreadsheetcompare",
+    "exe": "SPREADSHEETCOMPARE.EXE",
+    "path": "C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesX86\\Microsoft Office\\Office16\\DCF\\SPREADSHEETCOMPARE.EXE",
+    "size_kb": 463,
+    "source": "disk"
+  },
+  {
+    "name": "ibd2sdi",
+    "exe": "ibd2sdi.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\ibd2sdi.exe",
+    "size_kb": 6270,
+    "source": "disk"
+  },
+  {
+    "name": "innochecksum",
+    "exe": "innochecksum.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\innochecksum.exe",
+    "size_kb": 6256,
+    "source": "disk"
+  },
+  {
+    "name": "lz4_decompress",
+    "exe": "lz4_decompress.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\lz4_decompress.exe",
+    "size_kb": 6197,
+    "source": "disk"
+  },
+  {
+    "name": "myisamchk",
+    "exe": "myisamchk.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\myisamchk.exe",
+    "size_kb": 6504,
+    "source": "disk"
+  },
+  {
+    "name": "myisamlog",
+    "exe": "myisamlog.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\myisamlog.exe",
+    "size_kb": 6351,
+    "source": "disk"
+  },
+  {
+    "name": "myisampack",
+    "exe": "myisampack.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\myisampack.exe",
+    "size_kb": 6411,
+    "source": "disk"
+  },
+  {
+    "name": "myisam_ftdump",
+    "exe": "myisam_ftdump.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\myisam_ftdump.exe",
+    "size_kb": 6389,
+    "source": "disk"
+  },
+  {
+    "name": "mysqladmin",
+    "exe": "mysqladmin.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqladmin.exe",
+    "size_kb": 7041,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlbinlog",
+    "exe": "mysqlbinlog.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlbinlog.exe",
+    "size_kb": 7386,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlcheck",
+    "exe": "mysqlcheck.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlcheck.exe",
+    "size_kb": 7047,
+    "source": "disk"
+  },
+  {
+    "name": "mysqld",
+    "exe": "mysqld.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqld.exe",
+    "size_kb": 53361,
+    "source": "disk"
+  },
+  {
+    "name": "mysqldump",
+    "exe": "mysqldump.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe",
+    "size_kb": 7110,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlimport",
+    "exe": "mysqlimport.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlimport.exe",
+    "size_kb": 7033,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlpump",
+    "exe": "mysqlpump.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlpump.exe",
+    "size_kb": 7531,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlrouter",
+    "exe": "mysqlrouter.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlrouter.exe",
+    "size_kb": 7549,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlrouter_keyring",
+    "exe": "mysqlrouter_keyring.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlrouter_keyring.exe",
+    "size_kb": 6164,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlrouter_passwd",
+    "exe": "mysqlrouter_passwd.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlrouter_passwd.exe",
+    "size_kb": 6137,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlrouter_plugin_info",
+    "exe": "mysqlrouter_plugin_info.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlrouter_plugin_info.exe",
+    "size_kb": 6121,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlshow",
+    "exe": "mysqlshow.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlshow.exe",
+    "size_kb": 7031,
+    "source": "disk"
+  },
+  {
+    "name": "mysqlslap",
+    "exe": "mysqlslap.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqlslap.exe",
+    "size_kb": 7050,
+    "source": "disk"
+  },
+  {
+    "name": "mysql_config_editor",
+    "exe": "mysql_config_editor.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql_config_editor.exe",
+    "size_kb": 6152,
+    "source": "disk"
+  },
+  {
+    "name": "mysql_migrate_keyring",
+    "exe": "mysql_migrate_keyring.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql_migrate_keyring.exe",
+    "size_kb": 7121,
+    "source": "disk"
+  },
+  {
+    "name": "mysql_tzinfo_to_sql",
+    "exe": "mysql_tzinfo_to_sql.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql_tzinfo_to_sql.exe",
+    "size_kb": 6087,
+    "source": "disk"
+  },
+  {
+    "name": "mysql_upgrade",
+    "exe": "mysql_upgrade.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql_upgrade.exe",
+    "size_kb": 7124,
+    "source": "disk"
+  },
+  {
+    "name": "my_print_defaults",
+    "exe": "my_print_defaults.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\my_print_defaults.exe",
+    "size_kb": 6138,
+    "source": "disk"
+  },
+  {
+    "name": "perror",
+    "exe": "perror.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\perror.exe",
+    "size_kb": 6980,
+    "source": "disk"
+  },
+  {
+    "name": "zlib_decompress",
+    "exe": "zlib_decompress.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\zlib_decompress.exe",
+    "size_kb": 6105,
+    "source": "disk"
+  },
+  {
+    "name": "mysql",
+    "exe": "mysql.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Workbench 8.0\\mysql.exe",
+    "size_kb": 7151,
+    "source": "disk"
+  },
+  {
+    "name": "ogr2ogr",
+    "exe": "ogr2ogr.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Workbench 8.0\\ogr2ogr.exe",
+    "size_kb": 113,
+    "source": "disk"
+  },
+  {
+    "name": "ogrinfo",
+    "exe": "ogrinfo.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Workbench 8.0\\ogrinfo.exe",
+    "size_kb": 115,
+    "source": "disk"
+  },
+  {
+    "name": "wbcopytables",
+    "exe": "wbcopytables.exe",
+    "path": "C:\\Program Files\\MySQL\\MySQL Workbench 8.0\\wbcopytables.exe",
+    "size_kb": 6984,
+    "source": "disk"
+  },
+  {
+    "name": "rar",
+    "exe": "Rar.exe",
+    "path": "C:\\Program Files\\WinRAR\\Rar.exe",
+    "size_kb": 590,
+    "source": "disk"
+  },
+  {
+    "name": "unrar",
+    "exe": "UnRAR.exe",
+    "path": "C:\\Program Files\\WinRAR\\UnRAR.exe",
+    "size_kb": 389,
+    "source": "disk"
+  },
+  {
+    "name": "acrobroker",
+    "exe": "AcroBroker.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\AcroBroker.exe",
+    "size_kb": 261,
+    "source": "disk"
+  },
+  {
+    "name": "acrord32",
+    "exe": "AcroRd32.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\AcroRd32.exe",
+    "size_kb": 1511,
+    "source": "disk"
+  },
+  {
+    "name": "adobecollabsync",
+    "exe": "AdobeCollabSync.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\AdobeCollabSync.exe",
+    "size_kb": 745,
+    "source": "disk"
+  },
+  {
+    "name": "arh",
+    "exe": "arh.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\arh.exe",
+    "size_kb": 86,
+    "source": "disk"
+  },
+  {
+    "name": "eula",
+    "exe": "Eula.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\Eula.exe",
+    "size_kb": 84,
+    "source": "disk"
+  },
+  {
+    "name": "logtransport2",
+    "exe": "LogTransport2.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\LogTransport2.exe",
+    "size_kb": 546,
+    "source": "disk"
+  },
+  {
+    "name": "acroext",
+    "exe": "AcroExt.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\AcroExt\\AcroExt.exe",
+    "size_kb": 1047,
+    "source": "disk"
+  },
+  {
+    "name": "32bitmapibroker",
+    "exe": "32BitMAPIBroker.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\plug_ins\\pi_brokers\\32BitMAPIBroker.exe",
+    "size_kb": 98,
+    "source": "disk"
+  },
+  {
+    "name": "64bitmapibroker",
+    "exe": "64BitMAPIBroker.exe",
+    "path": "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\plug_ins\\pi_brokers\\64BitMAPIBroker.exe",
+    "size_kb": 127,
+    "source": "disk"
+  },
+  {
+    "name": "template",
+    "exe": "template.exe",
+    "path": "C:\\Program Files (x86)\\Common Files\\Adobe AIR\\Versions\\1.0\\Resources\\template.exe",
+    "size_kb": 86,
+    "source": "disk"
+  },
+  {
+    "name": "chrome_pwa_launcher",
+    "exe": "chrome_pwa_launcher.exe",
+    "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\145.0.7632.76\\chrome_pwa_launcher.exe",
+    "size_kb": 1830,
+    "source": "disk"
+  },
+  {
+    "name": "chrmstp",
+    "exe": "chrmstp.exe",
+    "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\145.0.7632.76\\Installer\\chrmstp.exe",
+    "size_kb": 6596,
+    "source": "disk"
+  },
+  {
+    "name": "enumcd",
+    "exe": "EnumCD.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\EnumCD.exe",
+    "size_kb": 67,
+    "source": "disk"
+  },
+  {
+    "name": "ismetromode",
+    "exe": "IsMetroMode.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\IsMetroMode.exe",
+    "size_kb": 68,
+    "source": "disk"
+  },
+  {
+    "name": "mapdrv",
+    "exe": "mapdrv.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\mapdrv.exe",
+    "size_kb": 1714,
+    "source": "disk"
+  },
+  {
+    "name": "susetsched",
+    "exe": "susetsched.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\susetsched.exe",
+    "size_kb": 1875,
+    "source": "disk"
+  },
+  {
+    "name": "tvsukernel",
+    "exe": "Tvsukernel.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\Tvsukernel.exe",
+    "size_kb": 1477,
+    "source": "disk"
+  },
+  {
+    "name": "tvsushim",
+    "exe": "tvsuShim.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\tvsuShim.exe",
+    "size_kb": 1860,
+    "source": "disk"
+  },
+  {
+    "name": "uacsdk",
+    "exe": "UACSdk.exe",
+    "path": "C:\\Program Files (x86)\\Lenovo\\System Update\\UACSdk.exe",
+    "size_kb": 139,
+    "source": "disk"
+  },
+  {
+    "name": "cookie_exporter",
+    "exe": "cookie_exporter.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\145.0.3800.65\\cookie_exporter.exe",
+    "size_kb": 115,
+    "source": "disk"
+  },
+  {
+    "name": "mscopilot",
+    "exe": "mscopilot.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\145.0.3800.65\\mscopilot.exe",
+    "size_kb": 3807,
+    "source": "disk"
+  },
+  {
+    "name": "msedge",
+    "exe": "msedge.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\145.0.3800.65\\msedge.exe",
+    "size_kb": 4241,
+    "source": "disk"
+  },
+  {
+    "name": "msedgewebview2",
+    "exe": "msedgewebview2.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\145.0.3800.65\\msedgewebview2.exe",
+    "size_kb": 3712,
+    "source": "disk"
+  },
+  {
+    "name": "msedge_pwa_launcher",
+    "exe": "msedge_pwa_launcher.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\144.0.3719.104\\msedge_pwa_launcher.exe",
+    "size_kb": 1988,
+    "source": "disk"
+  },
+  {
+    "name": "passkey_authenticator_plugin",
+    "exe": "passkey_authenticator_plugin.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\145.0.3800.65\\passkey_authenticator_plugin.exe",
+    "size_kb": 1779,
+    "source": "disk"
+  },
+  {
+    "name": "ie_to_edge_stub",
+    "exe": "ie_to_edge_stub.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\144.0.3719.104\\BHO\\ie_to_edge_stub.exe",
+    "size_kb": 531,
+    "source": "disk"
+  },
+  {
+    "name": "hlpctntmgr",
+    "exe": "HlpCtntMgr.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft Help Viewer\\v2.3\\HlpCtntMgr.exe",
+    "size_kb": 149,
+    "source": "disk"
+  },
+  {
+    "name": "hlpviewer",
+    "exe": "HlpViewer.exe",
+    "path": "C:\\Program Files (x86)\\Microsoft Help Viewer\\v2.3\\HlpViewer.exe",
+    "size_kb": 592,
+    "source": "disk"
+  },
+  {
+    "name": "minidump-analyzer",
+    "exe": "minidump-analyzer.exe",
+    "path": "C:\\Program Files (x86)\\Mozilla Firefox\\minidump-analyzer.exe",
+    "size_kb": 626,
+    "source": "disk"
+  },
+  {
+    "name": "pingsender",
+    "exe": "pingsender.exe",
+    "path": "C:\\Program Files (x86)\\Mozilla Firefox\\pingsender.exe",
+    "size_kb": 75,
+    "source": "disk"
+  },
+  {
+    "name": "plugin-container",
+    "exe": "plugin-container.exe",
+    "path": "C:\\Program Files (x86)\\Mozilla Firefox\\plugin-container.exe",
+    "size_kb": 320,
+    "source": "disk"
+  },
+  {
+    "name": "push2displayprocess",
+    "exe": "Push2DisplayProcess.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Program\\Push2DisplayProcess.exe",
+    "size_kb": 2790,
+    "source": "disk"
+  },
+  {
+    "name": "ableton index",
+    "exe": "Ableton Index.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Extensions\\Index\\Ableton Index.exe",
+    "size_kb": 13885,
+    "source": "disk"
+  },
+  {
+    "name": "ableton plugin scanner",
+    "exe": "Ableton Plugin Scanner.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Extensions\\PluginScanner\\Ableton Plugin Scanner.exe",
+    "size_kb": 7677,
+    "source": "disk"
+  },
+  {
+    "name": "soundcloud",
+    "exe": "soundcloud.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Extensions\\SoundCloud\\soundcloud.exe",
+    "size_kb": 2294,
+    "source": "disk"
+  },
+  {
+    "name": "ableton swapper",
+    "exe": "Ableton Swapper.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Extensions\\WebConnector\\Ableton Swapper.exe",
+    "size_kb": 3710,
+    "source": "disk"
+  },
+  {
+    "name": "ableton web connector",
+    "exe": "Ableton Web Connector.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Extensions\\WebConnector\\Ableton Web Connector.exe",
+    "size_kb": 10103,
+    "source": "disk"
+  },
+  {
+    "name": "max",
+    "exe": "Max.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Max\\Max.exe",
+    "size_kb": 18132,
+    "source": "disk"
+  },
+  {
+    "name": "maxrt",
+    "exe": "MaxRT.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Max\\MaxRT.exe",
+    "size_kb": 17590,
+    "source": "disk"
+  },
+  {
+    "name": "maxrt_nocef",
+    "exe": "MaxRT_nocef.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Max\\MaxRT_nocef.exe",
+    "size_kb": 17112,
+    "source": "disk"
+  },
+  {
+    "name": "maxpluginscanner",
+    "exe": "MaxPlugInScanner.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Max\\resources\\support\\ConsoleApp\\MaxPlugInScanner.exe",
+    "size_kb": 4992,
+    "source": "disk"
+  },
+  {
+    "name": "xdelta3",
+    "exe": "xdelta3.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Python\\abl.webconnector\\abl\\installer\\third_party\\xdelta3.exe",
+    "size_kb": 226,
+    "source": "disk"
+  },
+  {
+    "name": "wininst-6.0",
+    "exe": "wininst-6.0.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Python\\lib\\distutils\\command\\wininst-6.0.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "wininst-7.1",
+    "exe": "wininst-7.1.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Python\\lib\\distutils\\command\\wininst-7.1.exe",
+    "size_kb": 64,
+    "source": "disk"
+  },
+  {
+    "name": "wininst-8.0",
+    "exe": "wininst-8.0.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Python\\lib\\distutils\\command\\wininst-8.0.exe",
+    "size_kb": 60,
+    "source": "disk"
+  },
+  {
+    "name": "wininst-9.0-amd64",
+    "exe": "wininst-9.0-amd64.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Python\\lib\\distutils\\command\\wininst-9.0-amd64.exe",
+    "size_kb": 218,
+    "source": "disk"
+  },
+  {
+    "name": "wininst-9.0",
+    "exe": "wininst-9.0.exe",
+    "path": "C:\\ProgramData\\Ableton\\Live 10 Suite\\Resources\\Python\\lib\\distutils\\command\\wininst-9.0.exe",
+    "size_kb": 192,
+    "source": "disk"
+  },
+  {
+    "name": "discord",
+    "exe": "Discord.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Discord\\app-1.0.9192\\Discord.exe",
+    "size_kb": 184953,
+    "source": "disk"
+  },
+  {
+    "name": "squirrel",
+    "exe": "squirrel.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Postman\\app-10.24.16\\squirrel.exe",
+    "size_kb": 1823,
+    "source": "disk"
+  },
+  {
+    "name": "ciscocollabhost",
+    "exe": "CiscoCollabHost.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Cisco Spark\\CiscoCollabHost.exe",
+    "size_kb": 118,
+    "source": "disk"
+  },
+  {
+    "name": "ciscocollabhostcef",
+    "exe": "CiscoCollabHostCef.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Cisco Spark\\dependencies\\CiscoCollabHostCef.exe",
+    "size_kb": 616,
+    "source": "disk"
+  },
+  {
+    "name": "ciscowebexstart",
+    "exe": "CiscoWebExStart.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Cisco Spark\\dependencies\\CiscoWebExStart.exe",
+    "size_kb": 4541,
+    "source": "disk"
+  },
+  {
+    "name": "washost",
+    "exe": "washost.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Cisco Spark\\dependencies\\washost.exe",
+    "size_kb": 1150,
+    "source": "disk"
+  },
+  {
+    "name": "wmlhost",
+    "exe": "wmlhost.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Cisco Spark\\dependencies\\wmlhost.exe",
+    "size_kb": 13390,
+    "source": "disk"
+  },
+  {
+    "name": "createwtstask",
+    "exe": "CreateWTSTask.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Lenovo\\Lenovo Service Bridge\\CreateWTSTask.exe",
+    "size_kb": 95,
+    "source": "disk"
+  },
+  {
+    "name": "lscshim",
+    "exe": "LscShim.exe",
+    "path": "C:\\Users\\User\\AppData\\Local\\Programs\\Lenovo\\Lenovo Service Bridge\\LscShim.exe",
+    "size_kb": 69,
+    "source": "disk"
+  },
+  {
+    "name": "ncalayerlite",
+    "exe": "ncalayerlite.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\NCALayer\\ncalayerlite.exe",
+    "size_kb": 12192,
+    "source": "disk"
+  },
+  {
+    "name": "unpack200",
+    "exe": "unpack200.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\NCALayer\\jre\\bin\\unpack200.exe",
+    "size_kb": 215,
+    "source": "disk"
+  },
+  {
+    "name": "airhost",
+    "exe": "airhost.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\airhost.exe",
+    "size_kb": 15805,
+    "source": "disk"
+  },
+  {
+    "name": "aomhost64",
+    "exe": "aomhost64.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\aomhost64.exe",
+    "size_kb": 1429,
+    "source": "disk"
+  },
+  {
+    "name": "cptcontrol",
+    "exe": "CptControl.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\CptControl.exe",
+    "size_kb": 161,
+    "source": "disk"
+  },
+  {
+    "name": "cpthost",
+    "exe": "CptHost.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\CptHost.exe",
+    "size_kb": 932,
+    "source": "disk"
+  },
+  {
+    "name": "zoomdocconverter",
+    "exe": "ZoomDocConverter.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\ZoomDocConverter.exe",
+    "size_kb": 330,
+    "source": "disk"
+  },
+  {
+    "name": "zoomoutlookimplugin",
+    "exe": "ZoomOutlookIMPlugin.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\ZoomOutlookIMPlugin.exe",
+    "size_kb": 645,
+    "source": "disk"
+  },
+  {
+    "name": "zoomoutlookmapi",
+    "exe": "ZoomOutlookMAPI.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\ZoomOutlookMAPI.exe",
+    "size_kb": 1636,
+    "source": "disk"
+  },
+  {
+    "name": "zoomoutlookmapi64",
+    "exe": "ZoomOutlookMAPI64.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\ZoomOutlookMAPI64.exe",
+    "size_kb": 291,
+    "source": "disk"
+  },
+  {
+    "name": "zoom_launcher",
+    "exe": "Zoom_launcher.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\Zoom_launcher.exe",
+    "size_kb": 398,
+    "source": "disk"
+  },
+  {
+    "name": "ztscoder",
+    "exe": "zTscoder.exe",
+    "path": "C:\\Users\\User\\AppData\\Roaming\\Zoom\\bin\\zTscoder.exe",
+    "size_kb": 420,
+    "source": "disk"
+  },
+  {
+    "name": "calc",
+    "exe": "calc.exe",
+    "path": "C:\\Windows\\System32\\calc.exe",
+    "size_kb": 0,
+    "source": "builtin"
+  },
+  {
+    "name": "explorer",
+    "exe": "explorer.exe",
+    "path": "C:\\Windows\\explorer.exe",
+    "size_kb": 0,
+    "source": "builtin"
+  }
+]
