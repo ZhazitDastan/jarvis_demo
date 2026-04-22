@@ -1,0 +1,9 @@
+# .gitignore
+echo ".env" >> .gitignore
+
+
+.env
+.env.local
+.env.*.local
+config.json
+secrets/
