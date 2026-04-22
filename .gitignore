@@ -1,9 +1,31 @@
-# .gitignore
-echo ".env" >> .gitignore
-
-
+# Environment
 .env
 .env.local
 .env.*.local
 config.json
 secrets/
+
+# Large model files (too large for GitHub)
+models/vosk-ru/
+models/voices/
+models/whisper-*/
+*.onnx
+*.bin
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Logs
+logs/
+*.log
+
+# Cache
+cache/
