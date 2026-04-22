@@ -57,9 +57,18 @@ def wait_for_wake_word(stt, tts=None, timeout: int = 0) -> bool:
     try:
         import openwakeword
         return _oww_listen(tts, timeout)
-    except ImportError:
-        print("  [!] openwakeword не установлен: pip install openwakeword")
-        print("  [~] Используется Whisper режим")
+    except ImportError as e:
+        if "openwakeword" in str(e).lower() or "No module" in str(e):
+            print("  [!] openwakeword не установлен: pip install openwakeword")
+        else:
+            # DLL ошибка onnxruntime — показываем реальную причину
+            print(f"  [!] openwakeword не загружен (DLL ошибка): {e}")
+            print(f"  [~] Установи Visual C++ Redistributable: https://aka.ms/vs/17/release/vc_redist.x64.exe")
+        print("  [~] Использую Whisper для wake word...")
+        return _whisper_listen(stt, tts, timeout)
+    except Exception as e:
+        print(f"  [!] openwakeword ошибка: {type(e).__name__}: {e}")
+        print("  [~] Использую Whisper для wake word...")
         return _whisper_listen(stt, tts, timeout)
 
 

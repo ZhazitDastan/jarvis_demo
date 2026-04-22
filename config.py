@@ -67,6 +67,7 @@ def set_language(lang_code: str):
         ACTIVE_LANGUAGE = lang_code
 
 
+
 def build_system_prompt(commands: dict) -> str:
     """Строит системный промпт с учётом доступных команд и языка."""
     lang = ACTIVE_LANGUAGE

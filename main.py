@@ -12,6 +12,24 @@ Jarvis — Голосовой ассистент
 """
 
 import sys
+import os
+
+# JetBrains запускает Python без полного PATH — torch и onnxruntime не находят свои DLL.
+# Явно добавляем их директории в DLL search path до любых других импортов.
+if hasattr(os, 'add_dll_directory') and sys.platform == 'win32':
+    import site
+    for _sp in site.getsitepackages():
+        for _pkg in ('torch/lib', 'onnxruntime/capi'):
+            _dll_dir = os.path.join(_sp, _pkg.replace('/', os.sep))
+            if os.path.isdir(_dll_dir):
+                os.add_dll_directory(_dll_dir)
+
+# Windows-консоль cp1251/cp850 не поддерживает символы из метаданных Piper-моделей.
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 import time
 import config
 from config import (
