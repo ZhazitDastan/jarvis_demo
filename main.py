@@ -6,6 +6,8 @@ Jarvis — Голосовой ассистент
   1. Слушаем "Jarvis" (непрерывно, без Enter)
   2. Записываем команду с VAD (стоп по тишине, макс 15 сек)
   3. STT → GPT → TTS
+
+
   4. После ответа — ещё FOLLOWUP_SECONDS секунд слушаем без wake word
      (продолжение диалога без повторного "Jarvis")
   5. Возвращаемся к шагу 1
@@ -36,11 +38,24 @@ from config import (
     check_config, set_language, get_lang,
     LANGUAGE_PROFILES, LISTEN_TIMEOUT
 )
-from speech.STT.stt import STT
+import speech.STT.stt as _stt_module
+from speech.STT.stt import STT, get_stt
 from speech.TTS.tts_v2 import TTS
 from ai.brain import Brain
 from speech.STT.recorder import Recorder
 from speech.STT.wake_word import wait_for_wake_word, StopListener
+from utils.ramdisk import setup_vosk_ramdisk
+
+
+def _set_process_priority():
+    """Устанавливает приоритет процесса 'Выше среднего' через psutil."""
+    try:
+        import psutil
+        p = psutil.Process()
+        p.nice(psutil.ABOVE_NORMAL_PRIORITY_CLASS)
+        print("  [✓] Приоритет процесса: выше среднего")
+    except Exception as e:
+        print(f"  [~] Приоритет не изменён: {e}")
 
 # Сколько секунд после ответа слушаем продолжение без wake word
 FOLLOWUP_SECONDS = 12
@@ -114,8 +129,14 @@ def main():
     lang = get_lang()
     print(f"\n  [✓] Язык: {lang['label']}\n")
 
+    _set_process_priority()
+
     print("[*] Загрузка модулей...")
-    stt      = STT()
+
+    # Пробуем положить Vosk на RAM-диск перед загрузкой STT
+    _stt_module.VOSK_MODEL_PATH = setup_vosk_ramdisk(_stt_module.VOSK_MODEL_PATH)
+
+    stt      = get_stt()
     tts      = TTS()
     brain    = Brain()
     recorder = Recorder()

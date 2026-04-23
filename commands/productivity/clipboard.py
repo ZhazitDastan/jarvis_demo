@@ -6,6 +6,7 @@ PARAMETERS = {}
 REQUIRED = []
 
 
+
 def handler() -> str:
     try:
         result = subprocess.run(

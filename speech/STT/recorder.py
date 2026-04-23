@@ -5,6 +5,7 @@ recorder.py — запись аудио с адаптивным шумопода
   1. КАЛИБРОВКА — 1 секунда в начале: измеряем уровень фонового шума
   2. Порог активации = шум × NOISE_MULTIPLIER (автоматически под комнату)
   3. VAD — ждём голос, пишем, стоп через SILENCE_AFTER сек тишины
+      Приоритет: webrtcvad (если установлен) → energy-based (fallback)
   4. Перед сохранением — вычитаем шумовой профиль из аудио (спектральное вычитание)
 """
 
@@ -13,6 +14,13 @@ import wave
 import tempfile
 import numpy as np
 import sounddevice as sd
+
+try:
+    import webrtcvad as _webrtcvad
+    _VAD_AVAILABLE = True
+except ImportError:
+    _webrtcvad    = None
+    _VAD_AVAILABLE = False
 
 # ── Настройки ──────────────────────────────────────────────────────────────────
 NOISE_MULTIPLIER  = 3.5   # порог = шум × это число (выше → игнорирует больше шума)
@@ -31,6 +39,14 @@ class Recorder:
         self.noise_level  = 300   # дефолт, перезапишется при калибровке
         self.threshold    = 300 * NOISE_MULTIPLIER
         self._calibrated  = False
+        self._vad         = None
+        if _VAD_AVAILABLE:
+            try:
+                # 1 = мягкий (0 — отключён, 3 — максимально агрессивный)
+                # 1 лучше для акцентированной речи и тихих голосов
+                self._vad = _webrtcvad.Vad(1)
+            except Exception:
+                pass
 
     # ── Калибровка шума ────────────────────────────────────────────────────────
 
@@ -52,8 +68,9 @@ class Recorder:
         self.threshold    = self.noise_level * NOISE_MULTIPLIER
         self._calibrated  = True
 
+        vad_engine = "webrtcvad" if self._vad else "energy-based"
         print(f"  [✓] Калибровка готова — уровень шума: {self.noise_level:.0f}, "
-              f"порог активации: {self.threshold:.0f}          ")
+              f"порог: {self.threshold:.0f}  [{vad_engine}]          ")
 
     # ── Запись с VAD ───────────────────────────────────────────────────────────
 
@@ -87,7 +104,7 @@ class Recorder:
                 energy   = float(np.abs(chunk).mean())
                 total_chunks += 1
 
-                is_speech = energy > threshold
+                is_speech = self._is_speech_vad(chunk, energy)
 
                 if not speech_started:
                     if is_speech:
@@ -117,7 +134,7 @@ class Recorder:
 
         print()
 
-        if not frames_all or speech_frames < 3:
+        if not frames_all or speech_frames < 2:
             return None
 
         # Собираем аудио
@@ -133,6 +150,38 @@ class Recorder:
         audio_int16 = np.clip(audio_data, -32768, 32767).astype(np.int16)
 
         return self._save_wav(audio_int16)
+
+    # ── VAD ───────────────────────────────────────────────────────────────────
+
+    def _is_speech_vad(self, chunk: np.ndarray, energy: float) -> bool:
+        """
+        Определяет наличие речи в чанке.
+        webrtcvad: делит чанк на 30-мс фреймы, голосует большинством.
+        Fallback на energy-threshold если webrtcvad не установлен.
+        """
+        # Быстрый фильтр: явная тишина — не гоняем через VAD
+        if energy < self.threshold * 0.25:
+            return False
+
+        if self._vad is None:
+            return energy > self.threshold
+
+        frame_samples = int(self.sample_rate * 0.030)  # 480 @ 16kHz
+        audio_int16   = chunk.astype(np.int16)
+        n_speech = n_total = 0
+
+        for i in range(0, len(audio_int16) - frame_samples + 1, frame_samples):
+            frame = audio_int16[i:i + frame_samples].tobytes()
+            n_total += 1
+            try:
+                if self._vad.is_speech(frame, self.sample_rate):
+                    n_speech += 1
+            except Exception:
+                pass
+
+        if n_total == 0:
+            return energy > self.threshold
+        return (n_speech / n_total) >= 0.3
 
     # ── Обработка аудио ────────────────────────────────────────────────────────
 
@@ -165,7 +214,7 @@ class Recorder:
                 phase    = np.angle(spectrum)
 
                 # Вычитаем шумовой профиль (с ограничением снизу чтобы не уходить в минус)
-                mag_clean = np.maximum(mag - noise_spectrum * 1.5, mag * 0.1)
+                mag_clean = np.maximum(mag - noise_spectrum * 1.0, mag * 0.1)
 
                 clean_frame = np.fft.irfft(mag_clean * np.exp(1j * phase))
                 out[i:i + frame_len] += clean_frame

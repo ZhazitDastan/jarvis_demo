@@ -12,9 +12,19 @@ import os
 import re
 import wave
 import json
-from config import WHISPER_MODEL, get_whisper_language
+from config import WHISPER_MODEL, VOSK_MODEL_DIR, get_whisper_language
 
-VOSK_MODEL_PATH = os.path.join("models", "vosk-ru")
+VOSK_MODEL_PATH = VOSK_MODEL_DIR
+
+_instance: 'STT | None' = None
+
+
+def get_stt() -> 'STT':
+    """Возвращает единственный экземпляр STT — модели загружаются один раз."""
+    global _instance
+    if _instance is None:
+        _instance = STT()
+    return _instance
 
 _HALLUCINATIONS = {
     "продолжение следует", "субтитры сделаны", "субтитры",
@@ -25,12 +35,9 @@ _HALLUCINATIONS = {
 }
 
 # Фразы-триггеры галлюцинаций Whisper (начало зацикленного текста)
+# Только фразы которые НИКОГДА не бывают реальными командами
 _HALLUCINATION_STARTS = {
-    # EN
-    "it comes", "it's coming", "i'm not sure", "i don't know",
-    "what is it", "it is what it is",
-    # RU
-    "продолжение следует", "это приходит", "не знаю", "я не знаю",
+    "продолжение следует", "это приходит",
     "это то что", "субтитры", "редактор субтитров",
 }
 
@@ -43,7 +50,8 @@ def _is_repetitive(text: str, max_repeat: int = 3) -> bool:
     words = text.lower().split()
     if len(words) < max_repeat * 2:
         return False
-    for n in range(1, 5):
+    # n=1 пропускаем: служебные слова (the, and, is) повторяются в нормальной речи
+    for n in range(2, 5):
         if len(words) < n:
             break
         ngrams = [" ".join(words[i:i + n]) for i in range(len(words) - n + 1)]
@@ -197,34 +205,35 @@ class STT:
                 temperature=0.0 if fast_mode else [0.0, 0.1, 0.2],
                 condition_on_previous_text=False,
                 repetition_penalty=1.2,
-                log_prob_threshold=-0.8,
-                no_speech_threshold=0.5,
-                vad_filter=True,
-                vad_parameters=dict(
-                    threshold=0.35,
-                    min_speech_duration_ms=150,
-                    min_silence_duration_ms=300,
-                    speech_pad_ms=300,
-                ),
+                log_prob_threshold=-1.0,
+                no_speech_threshold=0.6,
+                # vad_filter отключён — recorder уже отфильтровал тишину через webrtcvad
+                vad_filter=False,
                 initial_prompt=prompt,
                 suppress_blank=True,
             )
 
-            # Отклоняем если Whisper уверен что это другой язык
-            if info.language != lang and info.language_probability > 0.75:
-                print(f"  [STT/whisper] Другой язык: {info.language} "
-                      f"({info.language_probability:.0%}) — игнорирую")
-                return ""
+            # Предупреждение если Whisper думает что другой язык (не отклоняем — язык задан явно)
+            if info.language != lang and info.language_probability > 0.85:
+                print(f"  [STT/whisper] предупреждение: детектирован {info.language} "
+                      f"({info.language_probability:.0%}), ожидался {lang}")
 
             parts = []
             for seg in segments:
-                if seg.avg_logprob < -0.9:
+                if seg.avg_logprob < -1.2:
+                    print(f"  [STT/whisper] сегмент отброшен (низкий logprob {seg.avg_logprob:.2f}): «{seg.text.strip()}»")
                     continue
-                if seg.no_speech_prob > 0.5:
+                if seg.no_speech_prob > 0.7:
+                    print(f"  [STT/whisper] сегмент отброшен (no_speech {seg.no_speech_prob:.2f}): «{seg.text.strip()}»")
                     continue
                 parts.append(seg.text)
 
-            text = self._clean(" ".join(parts))
+            raw = " ".join(parts).strip()
+            if not raw:
+                print(f"  [STT/whisper] Whisper вернул пустой результат (аудио {duration:.1f}с)")
+                return ""
+
+            text = self._clean(raw)
             if text:
                 mode = "fast" if fast_mode else "precise"
                 print(f"  [STT/whisper-{mode}] «{text}»  "
@@ -271,19 +280,20 @@ class STT:
         text = re.sub(r"\s+", " ", text).strip()
         lower = text.lower().strip(".… !?,;:-")
         if lower in _HALLUCINATIONS:
+            print(f"  [STT] отброшено (галлюцинация): «{text}»")
             return ""
         if len(text.strip()) < 2:
+            print(f"  [STT] отброшено (слишком коротко): «{text}»")
             return ""
         if re.fullmatch(r"[.\s…,!?;:\-]+", text):
+            print(f"  [STT] отброшено (только знаки): «{text}»")
             return ""
-        # Зацикленный текст — галлюцинация Whisper
         if _is_repetitive(text):
-            print(f"  [STT] Галлюцинация (повторы) — игнорирую")
+            print(f"  [STT] отброшено (повторяющийся текст): «{text}»")
             return ""
-        # Начинается с известной галлюцинации
         for start in _HALLUCINATION_STARTS:
             if lower.startswith(start):
-                print(f"  [STT] Галлюцинация (триггер) — игнорирую")
+                print(f"  [STT] отброшено (триггер «{start}»): «{text}»")
                 return ""
         return text
 

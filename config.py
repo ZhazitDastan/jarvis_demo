@@ -14,6 +14,11 @@ GPT_MODEL      = "gpt-4o-mini"   # или "gpt-4o"
 # ── Whisper ───────────────────────────────────────────────────────────────────
 WHISPER_MODEL    = "base"           # tiny / base / small / medium / large
 
+# ── Vosk ──────────────────────────────────────────────────────────────────────
+# vosk-model-small-ru-0.22  (~45 MB,  быстро, менее точно)
+# vosk-model-ru-0.42        (~2.6 GB, медленно загружается, точнее)
+VOSK_MODEL_DIR   = "models/vosk-model-small-ru-0.22"
+
 # ── Wake word ─────────────────────────────────────────────────────────────────
 WAKE_WORD            = "jarvis"
 LISTEN_TIMEOUT       = 12        # секунд ждать команду после активации (5-15)
