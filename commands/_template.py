@@ -38,3 +38,4 @@ def handler(param1: str, param2: int = 0) -> str:
     # Твой код здесь
     result = f"Выполнено: {param1}"
     return result
+

@@ -24,6 +24,34 @@ _HALLUCINATIONS = {
     ".", " ", "", "you", "the", "a",
 }
 
+# Фразы-триггеры галлюцинаций Whisper (начало зацикленного текста)
+_HALLUCINATION_STARTS = {
+    # EN
+    "it comes", "it's coming", "i'm not sure", "i don't know",
+    "what is it", "it is what it is",
+    # RU
+    "продолжение следует", "это приходит", "не знаю", "я не знаю",
+    "это то что", "субтитры", "редактор субтитров",
+}
+
+
+def _is_repetitive(text: str, max_repeat: int = 3) -> bool:
+    """
+    Детектирует зацикленный текст типа "It comes ! It comes ! It comes !".
+    Возвращает True если одна фраза (1-4 слова) встречается >= max_repeat раз.
+    """
+    words = text.lower().split()
+    if len(words) < max_repeat * 2:
+        return False
+    for n in range(1, 5):
+        if len(words) < n:
+            break
+        ngrams = [" ".join(words[i:i + n]) for i in range(len(words) - n + 1)]
+        for gram in set(ngrams):
+            if ngrams.count(gram) >= max_repeat:
+                return True
+    return False
+
 _PROMPTS = {
     "ru": (
         "Голосовая команда ассистенту Jarvis. "
@@ -182,11 +210,17 @@ class STT:
                 suppress_blank=True,
             )
 
+            # Отклоняем если Whisper уверен что это другой язык
+            if info.language != lang and info.language_probability > 0.75:
+                print(f"  [STT/whisper] Другой язык: {info.language} "
+                      f"({info.language_probability:.0%}) — игнорирую")
+                return ""
+
             parts = []
             for seg in segments:
-                if seg.avg_logprob < -1.0:
+                if seg.avg_logprob < -0.9:
                     continue
-                if seg.no_speech_prob > 0.65:
+                if seg.no_speech_prob > 0.5:
                     continue
                 parts.append(seg.text)
 
@@ -235,12 +269,22 @@ class STT:
             return ""
         text = re.sub(r"[\(\[\{][^\)\]\}]{0,40}[\)\]\}]", "", text)
         text = re.sub(r"\s+", " ", text).strip()
-        if text.lower().strip(".… !?,;:-") in _HALLUCINATIONS:
+        lower = text.lower().strip(".… !?,;:-")
+        if lower in _HALLUCINATIONS:
             return ""
         if len(text.strip()) < 2:
             return ""
         if re.fullmatch(r"[.\s…,!?;:\-]+", text):
             return ""
+        # Зацикленный текст — галлюцинация Whisper
+        if _is_repetitive(text):
+            print(f"  [STT] Галлюцинация (повторы) — игнорирую")
+            return ""
+        # Начинается с известной галлюцинации
+        for start in _HALLUCINATION_STARTS:
+            if lower.startswith(start):
+                print(f"  [STT] Галлюцинация (триггер) — игнорирую")
+                return ""
         return text
 
     def _safe_delete(self, path: str):

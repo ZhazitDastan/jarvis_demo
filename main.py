@@ -37,13 +37,19 @@ from config import (
     LANGUAGE_PROFILES, LISTEN_TIMEOUT
 )
 from speech.STT.stt import STT
-from speech.TTS.tts import TTS
+from speech.TTS.tts_v2 import TTS
 from ai.brain import Brain
 from speech.STT.recorder import Recorder
-from speech.STT.wake_word import wait_for_wake_word
+from speech.STT.wake_word import wait_for_wake_word, StopListener
 
 # Сколько секунд после ответа слушаем продолжение без wake word
 FOLLOWUP_SECONDS = 12
+
+
+def _is_stop(text: str, lang: dict) -> bool:
+    """True если текст содержит команду остановки (не выход)."""
+    t = text.lower()
+    return any(w in t for w in lang.get("stop_words", []))
 
 
 # ── Выбор языка ───────────────────────────────────────────────────────────────
@@ -136,15 +142,21 @@ def main():
             continue
 
         # Проверяем выход
-        if any(w in text.lower() for w in lang["exit_words"]):
-            tts.speak(lang["bye"])
-            break
+        # if any(w in text.lower() for w in lang["exit_words"]):
+        #     tts.speak(lang["bye"])
+        #     break
+
+        # Проверяем стоп сразу после команды (до GPT)
+        if _is_stop(text, lang):
+            tts.speak(lang.get("stopped", "Хорошо."))
+            continue
 
         # ── Шаг 3: GPT → TTS ─────────────────────────────────────────────────
         print(f"  [*] {lang['thinking']}")
         response = brain.think(text)
         print(f"\n  Jarvis: {response}\n")
-        tts.speak(response)
+        with StopListener(stt, tts):
+            tts.speak(response)
 
         # ── Шаг 4: Followup — слушаем продолжение без wake word ──────────────
         followup_end = time.time() + FOLLOWUP_SECONDS
@@ -157,13 +169,17 @@ def main():
             followup_text = handle_query(stt, tts, brain, recorder, lang)
 
             if followup_text is None:
-                # Тишина — выходим из followup, возвращаемся к wake word
                 break
 
-            # Проверяем выход
-            if any(w in followup_text.lower() for w in lang["exit_words"]):
-                tts.speak(lang["bye"])
-                sys.exit(0)
+            # Стоп — прерываем followup, возвращаемся к wake word
+            if _is_stop(followup_text, lang):
+                tts.stop()
+                break
+
+            # Выход из Jarvis
+            # if any(w in followup_text.lower() for w in lang["exit_words"]):
+            #     tts.speak(lang["bye"])
+            #     sys.exit(0)
 
             # Если сказали "Jarvis" внутри followup — просто отвечаем дальше
             if "jarvis" in followup_text.lower():
@@ -176,8 +192,8 @@ def main():
             print(f"  [*] {lang['thinking']}")
             response = brain.think(followup_text)
             print(f"\n  Jarvis: {response}\n")
-            tts.speak(response)
-
+            with StopListener(stt, tts):
+                tts.speak(response)
 
             # Продлеваем окно followup после каждого ответа
             followup_end = time.time() + FOLLOWUP_SECONDS

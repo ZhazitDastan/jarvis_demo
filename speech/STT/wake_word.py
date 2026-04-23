@@ -1,208 +1,381 @@
 """
-wake_word.py — детекция "Jarvis" через OpenWakeWord
+wake_word.py — детекция "Джарвис" через faster-whisper + нечёткое совпадение
 
-Два режима (автовыбор):
-  1. OpenWakeWord — если установлен (pip install openwakeword)
-       - Полностью бесплатно и оффлайн
-       - Задержка ~200-300 мс
-       - Без обучения работает через текстовый режим
-       - С обученной моделью (.onnx) — максимальная точность
-  2. Whisper fallback — если openwakeword не установлен
-
-Как использовать обученную модель:
-  1. Обучи модель (см. train_wake_word.py в папке tools/)
-  2. Положи .onnx файл в папку models/
-  3. Укажи путь в CUSTOM_MODEL_PATH ниже
+Алгоритм:
+  1. Непрерывно читаем микрофон маленькими кусочками (80 мс)
+  2. VAD: Energy-порог определяет начало / конец речи
+  3. Когда речь закончилась → транскрипция через faster-whisper (beam=1, int8)
+  4. difflib.SequenceMatcher проверяет каждое слово на сходство с "джарвис"
+  5. Порог совпадения 55% — ловит: "жарвис", "харвис", "jarvis", "джарвис" и т.д.
 """
 
+import collections
+import difflib
 import os
+import tempfile
+import threading
 import time
 import wave
-import tempfile
-import collections
+
 import numpy as np
 import sounddevice as sd
+
 from config import WAKE_WORD, get_whisper_language
 
-# ── Настройки ─────────────────────────────────────────────────────────────────
+# ── Аудио-параметры ────────────────────────────────────────────────────────────
+SAMPLE_RATE     = 16000
+CHUNK_SEC       = 0.08                          # размер одного кусочка
+CHUNK_SIZE      = int(SAMPLE_RATE * CHUNK_SEC)
 
-# Путь к обученной модели (.onnx). None = текстовый режим без обучения
-# Используем встроенную модель hey_jarvis (onnx формат)
-# Файлы нужно скачать вручную в папку openwakeword/resources/models/:
-#   hey_jarvis_v0.1.onnx
-#   embedding_model.onnx
-#   melspectrogram.onnx
-# Ссылки: github.com/dscripka/openWakeWord/releases/tag/v0.5.1
-CUSTOM_MODEL_PATH = None   # None = используем встроенную hey_jarvis
+ENERGY_THRESH   = 80     # RMS-порог начала речи (снизь если mic слабый)
+SILENCE_SEC     = 0.55   # секунд тишины → считаем что слово закончилось
+MAX_WORD_SEC    = 3.0    # максимальная длина захватываемого сегмента
+PRE_BUFFER_SEC  = 0.25   # буфер аудио до начала речи (не обрезать начало слова)
+WARMUP_SEC      = 1.0    # секунд прогрева микрофона при старте
 
-# Порог срабатывания OpenWakeWord (0.0 - 1.0)
-# Выше = меньше ложных срабатываний, но может пропускать слово
-OWW_THRESHOLD = 0.5
+# ── Параметры нечёткого совпадения ────────────────────────────────────────────
+FUZZY_THRESHOLD = 0.55   # порог SequenceMatcher (0.0–1.0)
 
-# Настройки Whisper fallback
-SAMPLE_RATE   = 16000
-CHUNK_SEC     = 0.5
-WINDOW_SEC    = 2.0
-ENERGY_THRESH = 100
-WARMUP_SEC    = 1.5
+# Цели разделены по языкам
+_TARGETS_RU  = frozenset({"джарвис"})
+_TARGETS_EN  = frozenset({"jarvis"})
 
-# Размер чанка для OpenWakeWord (строго 1280 сэмплов = 80мс при 16кГц)
-OWW_CHUNK = 1280
-
-
-def wait_for_wake_word(stt, tts=None, timeout: int = 0) -> bool:
-    """
-    Автоматически выбирает лучший доступный метод.
-    """
-    try:
-        import openwakeword
-        return _oww_listen(tts, timeout)
-    except ImportError as e:
-        if "openwakeword" in str(e).lower() or "No module" in str(e):
-            print("  [!] openwakeword не установлен: pip install openwakeword")
-        else:
-            # DLL ошибка onnxruntime — показываем реальную причину
-            print(f"  [!] openwakeword не загружен (DLL ошибка): {e}")
-            print(f"  [~] Установи Visual C++ Redistributable: https://aka.ms/vs/17/release/vc_redist.x64.exe")
-        print("  [~] Использую Whisper для wake word...")
-        return _whisper_listen(stt, tts, timeout)
-    except Exception as e:
-        print(f"  [!] openwakeword ошибка: {type(e).__name__}: {e}")
-        print("  [~] Использую Whisper для wake word...")
-        return _whisper_listen(stt, tts, timeout)
+_PHONETIC_RU = frozenset({
+    "жарвис", "харвис", "карвис", "давис", "дарвис",
+    "ярвис",  "шарвис", "марвис",
+})
+_PHONETIC_EN = frozenset({
+    "garvis", "harvey", "jarbis",
+})
 
 
-# ── Режим 1: OpenWakeWord ─────────────────────────────────────────────────────
-
-def _oww_listen(tts, timeout: int) -> bool:
-    """
-    Слушает через OpenWakeWord.
-    Задержка ~200-300 мс, CPU ~3-5%, полностью оффлайн.
-    """
-    from openwakeword.model import Model
-
-    # Загружаем модель
-    if CUSTOM_MODEL_PATH and os.path.exists(CUSTOM_MODEL_PATH):
-        model = Model(wakeword_models=[CUSTOM_MODEL_PATH], inference_framework="onnx")
-        model_key = os.path.splitext(os.path.basename(CUSTOM_MODEL_PATH))[0]
-        print(f"  [oww] Кастомная модель: {CUSTOM_MODEL_PATH}")
+def _wake_sets() -> tuple[frozenset, list]:
+    """Возвращает (exact_set, fuzzy_list) для текущего языка."""
+    if get_whisper_language() == "ru":
+        exact  = _TARGETS_RU | _PHONETIC_RU | _TARGETS_EN   # EN тоже слушаем в RU режиме
+        fuzzy  = list(_TARGETS_RU | _TARGETS_EN)
     else:
-        # Встроенная hey_jarvis модель
-        model = Model(wakeword_models=["hey_jarvis"], inference_framework="onnx")
-        available = list(model.models.keys())
-        print(f"  [oww] Ключи модели: {available}")  # ← покажет реальное имя ключа
-        model_key = next(
-            (k for k in available if "jarvis" in k.lower()),
-            available[0] if available else None
+        exact  = _TARGETS_EN | _PHONETIC_EN                  # только EN варианты
+        fuzzy  = list(_TARGETS_EN)
+    return exact, fuzzy
+
+
+# ── Нечёткое совпадение ───────────────────────────────────────────────────────
+
+def _is_wake_word(text: str) -> tuple[bool, str]:
+    """
+    Возвращает (совпало, найденное_слово).
+    В EN-режиме реагирует только на английские варианты.
+    """
+    if not text:
+        return False, ""
+
+    exact_set, fuzzy_list = _wake_sets()
+
+    for word in text.lower().split():
+        for target in exact_set:
+            if target in word or word in target:
+                return True, word
+
+        for target in fuzzy_list:
+            score = difflib.SequenceMatcher(None, word, target).ratio()
+            if score >= FUZZY_THRESHOLD:
+                return True, f"{word} ({score:.0%})"
+
+    return False, ""
+
+
+# ── Стоп-команда ──────────────────────────────────────────────────────────────
+
+_STOP_TARGETS   = frozenset({"стоп", "stop"})
+_STOP_PHONETIC  = frozenset({
+    # RU
+    "стой", "хватит", "замолчи", "тихо", "молчать", "достаточно", "стопэ",
+    # EN
+    "enough", "quiet", "silence", "cancel", "halt", "pause",
+})
+_STOP_ALL       = _STOP_TARGETS | _STOP_PHONETIC
+_STOP_THRESHOLD = 0.70   # строже чем wake word — короткие слова врут чаще
+
+
+def _is_stop_word(text: str) -> bool:
+    if not text:
+        return False
+    for word in text.lower().split():
+        for target in _STOP_ALL:
+            if target in word or word in target:
+                return True
+        for target in _STOP_TARGETS:
+            if difflib.SequenceMatcher(None, word, target).ratio() >= _STOP_THRESHOLD:
+                return True
+    return False
+
+
+# ── StopListener — прерывает TTS пока он говорит ──────────────────────────────
+
+class StopListener:
+    """
+    Фоновый поток, слушающий 'стоп'/'stop' пока TTS воспроизводит ответ.
+    Используется как контекстный менеджер:
+
+        with StopListener(stt, tts):
+            tts.speak(response)
+    """
+
+    _CHUNK_SIZE    = int(SAMPLE_RATE * 0.08)
+    _ENERGY_THRESH = 160    # выше wake word — голос должен быть громче TTS
+    _SILENCE_CHUNKS = 5     # ~400 мс тишины
+    _MAX_CHUNKS    = 25     # ~2 сек максимум
+
+    def __init__(self, stt, tts):
+        self._stt     = stt
+        self._tts     = tts
+        self._active  = threading.Event()
+        self._thread  = None
+
+    # ── context manager ───────────────────────────────────────────────────────
+
+    def __enter__(self):
+        self.start()
+        return self
+
+    def __exit__(self, *_):
+        self.stop()
+
+    # ── управление ────────────────────────────────────────────────────────────
+
+    def start(self):
+        self._active.set()
+        self._thread = threading.Thread(
+            target=self._run, daemon=True, name="stop-listener"
         )
-        if not model_key:
-            print("  [!] Ключ не найден, переключаюсь на Whisper")
-            return False
-        print(f"  [oww] Используется ключ: '{model_key}'")
+        self._thread.start()
+
+    def stop(self):
+        self._active.clear()
+        if self._thread:
+            self._thread.join(timeout=0.3)
+
+    # ── фоновый поток ─────────────────────────────────────────────────────────
+
+    def _run(self):
+        speech_buf: list = []
+        silence_cnt = 0
+        in_speech   = False
+
+        try:
+            with sd.InputStream(
+                samplerate=SAMPLE_RATE,
+                channels=1,
+                dtype=np.int16,
+                blocksize=self._CHUNK_SIZE,
+            ) as stream:
+                while self._active.is_set():
+                    chunk, _ = stream.read(self._CHUNK_SIZE)
+                    chunk    = chunk.flatten()
+                    energy   = float(np.abs(chunk).mean())
+
+                    if not in_speech:
+                        if energy >= self._ENERGY_THRESH:
+                            in_speech   = True
+                            silence_cnt = 0
+                            speech_buf  = [chunk]
+                    else:
+                        speech_buf.append(chunk)
+                        silence_cnt = silence_cnt + 1 if energy < self._ENERGY_THRESH else 0
+
+                        ended = (
+                            silence_cnt >= self._SILENCE_CHUNKS
+                            or len(speech_buf) >= self._MAX_CHUNKS
+                        )
+                        if ended:
+                            audio = np.concatenate(speech_buf)
+                            text  = _transcribe_fast(self._stt, audio)
+                            if text:
+                                print(f"  [stop?] «{text}»")
+                            if _is_stop_word(text):
+                                print("  [✓] Прерывание речи!")
+                                self._tts.stop()
+                                self._active.clear()
+                                return
+                            speech_buf.clear()
+                            in_speech   = False
+                            silence_cnt = 0
+        except Exception:
+            pass   # поток завершается вместе с TTS
 
 
-    start_time = time.time()
-    print(f"\n  [👂] Жду '{WAKE_WORD}' (OpenWakeWord)...")
-
-    with sd.InputStream(
-        samplerate=SAMPLE_RATE,
-        channels=1,
-        dtype=np.int16,
-        blocksize=OWW_CHUNK,
-    ) as stream:
-
-        while True:
-            if timeout > 0 and (time.time() - start_time) > timeout:
-                return False
-
-            # Пропускаем пока Jarvis говорит
-            if tts and tts.__class__.is_speaking:
-                stream.read(OWW_CHUNK)
-                model.reset()   # сбрасываем состояние модели
-                continue
-
-            chunk, _ = stream.read(OWW_CHUNK)
-            chunk    = chunk.flatten()
-
-            # Прогоняем через модель
-            prediction = model.predict(chunk)
-            score = prediction.get(model_key, 0.0)
-
-            # Показываем score в реальном времени
-            if score > 0.1:
-                print(f"  score={score:.3f} ← говори 'hey jarvis'", end="\r", flush=True)
-
-            if score > OWW_THRESHOLD:
-                print(f"\n  [✓] Активация! (score={score:.2f})")
-                model.reset()
-                return True
-
-
-# ── Режим 2: Whisper fallback ─────────────────────────────────────────────────
-
-def _whisper_listen(stt, tts, timeout: int) -> bool:
-    """Скользящее окно + Whisper. Используется если OWW недоступен."""
-    chunk_size  = int(SAMPLE_RATE * CHUNK_SEC)
-    window_size = int(WINDOW_SEC / CHUNK_SEC)
-    keyword     = WAKE_WORD.lower()
-    start_time  = time.time()
-    warmup_end  = start_time + WARMUP_SEC
-    window: collections.deque = collections.deque(maxlen=window_size)
-
-    print(f"\n  [👂] Жду '{WAKE_WORD}' (Whisper)...")
-
-    with sd.InputStream(
-        samplerate=SAMPLE_RATE,
-        channels=1,
-        dtype=np.int16,
-        blocksize=chunk_size,
-    ) as stream:
-
-        while True:
-            if timeout > 0 and (time.time() - start_time) > timeout:
-                return False
-
-            if tts and tts.__class__.is_speaking:
-                stream.read(chunk_size)
-                window.clear()
-                continue
-
-            chunk, _ = stream.read(chunk_size)
-            chunk    = chunk.flatten()
-            energy   = float(np.abs(chunk).mean())
-            window.append(chunk)
-
-            if time.time() < warmup_end:
-                continue
-            if energy < ENERGY_THRESH or len(window) < 2:
-                continue
-
-            audio = np.concatenate(list(window)).astype(np.int16)
-            path  = _save_wav(audio)
-
-            try:
-                text = stt.transcribe(path).lower().strip()
-            except Exception:
-                text = ""
-
-            if text:
-                print(f"  [~] «{text}»")
-
-            if keyword in text:
-                print("  [✓] Активация! (Whisper)")
-                window.clear()
-                return True
-
-
-# ── Утилита ───────────────────────────────────────────────────────────────────
+# ── Транскрипция ──────────────────────────────────────────────────────────────
 
 def _save_wav(audio: np.ndarray) -> str:
-    tmp  = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
     path = tmp.name
     tmp.close()
     with wave.open(path, "wb") as wf:
         wf.setnchannels(1)
         wf.setsampwidth(2)
         wf.setframerate(SAMPLE_RATE)
-        wf.writeframes(audio.tobytes())
+        wf.writeframes(audio.astype(np.int16).tobytes())
     return path
+
+
+def _transcribe_fast(stt, audio: np.ndarray) -> str:
+    """
+    Выбирает движок по активному языку:
+      ru  → Vosk   (быстро, оффлайн, без torch)
+      en  → faster-whisper (beam=1, greedy)
+    """
+    if get_whisper_language() == "ru":
+        return _transcribe_vosk(stt, audio)
+    return _transcribe_whisper(stt, audio)
+
+
+def _transcribe_vosk(stt, audio: np.ndarray) -> str:
+    """Транскрипция через Vosk — для русского wake word."""
+    vosk_model = getattr(stt, "_vosk_model", None)
+    if vosk_model is None:
+        print("  [!] Vosk модель не загружена")
+        return ""
+    try:
+        import json
+        from vosk import KaldiRecognizer
+        rec = KaldiRecognizer(vosk_model, SAMPLE_RATE)
+        rec.AcceptWaveform(audio.astype(np.int16).tobytes())
+        result = json.loads(rec.FinalResult())
+        return result.get("text", "").strip()
+    except Exception as e:
+        print(f"  [!] wake vosk: {e}")
+        return ""
+
+
+def _transcribe_whisper(stt, audio: np.ndarray) -> str:
+    """Транскрипция через faster-whisper — для английского wake word."""
+    whisper = getattr(stt, "_whisper_model", None)
+    if whisper is None:
+        print("  [!] Whisper модель не загружена")
+        return ""
+    path = _save_wav(audio)
+    try:
+        segments, _ = whisper.transcribe(
+            path,
+            language="en",
+            beam_size=1,
+            best_of=1,
+            temperature=0.0,
+            condition_on_previous_text=False,
+            suppress_blank=True,
+            no_speech_threshold=0.65,
+            log_prob_threshold=-1.5,
+            vad_filter=True,
+            vad_parameters=dict(
+                threshold=0.35,
+                min_speech_duration_ms=80,
+                min_silence_duration_ms=150,
+            ),
+        )
+        return " ".join(seg.text for seg in segments).strip()
+    except Exception as e:
+        print(f"  [!] wake whisper: {e}")
+        return ""
+    finally:
+        try:
+            os.unlink(path)
+        except OSError:
+            pass
+
+
+# ── Основная функция ──────────────────────────────────────────────────────────
+
+def wait_for_wake_word(stt, tts=None, timeout: int = 0) -> bool:
+    """
+    Ждёт слово активации через faster-whisper + нечёткое совпадение.
+    Возвращает True при активации, False при таймауте.
+
+    stt     — экземпляр STT (нужен _whisper_model или _vosk_model)
+    tts     — экземпляр TTS (чтобы не слушать пока говорит Jarvis)
+    timeout — секунд ожидания (0 = бесконечно)
+    """
+    engine = "vosk" if get_whisper_language() == "ru" else "faster-whisper"
+    print(f"\n  [👂] Жду '{WAKE_WORD}' ({engine} + fuzzy match)...")
+
+    pad_chunks     = max(1, int(PRE_BUFFER_SEC / CHUNK_SEC))
+    silence_chunks = max(1, int(SILENCE_SEC    / CHUNK_SEC))
+    max_chunks     = max(1, int(MAX_WORD_SEC   / CHUNK_SEC))
+
+    pre_buffer: collections.deque = collections.deque(maxlen=pad_chunks)
+    speech_buffer: list            = []
+    silence_count  = 0
+    in_speech      = False
+    start_time     = time.time()
+    warmup_end     = start_time + WARMUP_SEC
+
+    with sd.InputStream(
+        samplerate=SAMPLE_RATE,
+        channels=1,
+        dtype=np.int16,
+        blocksize=CHUNK_SIZE,
+    ) as stream:
+
+        while True:
+            # ── Таймаут ───────────────────────────────────────────────────────
+            if timeout > 0 and (time.time() - start_time) > timeout:
+                return False
+
+            # ── Пока TTS говорит — не слушаем, сбрасываем буфер ──────────────
+            if tts and getattr(tts.__class__, "is_speaking", False):
+                stream.read(CHUNK_SIZE)
+                pre_buffer.clear()
+                speech_buffer.clear()
+                in_speech     = False
+                silence_count = 0
+                continue
+
+            chunk, _ = stream.read(CHUNK_SIZE)
+            chunk     = chunk.flatten()
+            energy    = float(np.abs(chunk).mean())
+
+            # ── Прогрев: игнорируем первый WARMUP_SEC ────────────────────────
+            if time.time() < warmup_end:
+                pre_buffer.append(chunk)
+                continue
+
+            # ── VAD: детекция начала речи ─────────────────────────────────────
+            if not in_speech:
+                pre_buffer.append(chunk)
+                if energy >= ENERGY_THRESH:
+                    in_speech     = True
+                    silence_count = 0
+                    speech_buffer = list(pre_buffer)   # берём пред-буфер
+                    speech_buffer.append(chunk)
+
+            # ── VAD: идёт речь ────────────────────────────────────────────────
+            else:
+                speech_buffer.append(chunk)
+
+                if energy < ENERGY_THRESH:
+                    silence_count += 1
+                else:
+                    silence_count = 0
+
+                word_ended = (
+                    silence_count >= silence_chunks
+                    or len(speech_buffer) >= max_chunks
+                )
+
+                if word_ended:
+                    audio = np.concatenate(speech_buffer)
+                    text  = _transcribe_fast(stt, audio)
+
+                    if text:
+                        print(f"  [~] «{text}»")
+
+                    matched, match_word = _is_wake_word(text)
+                    if matched:
+                        print(f"  [✓] Активация!  ← «{match_word}»")
+                        return True
+
+                    # Сброс для следующего слова
+                    pre_buffer.clear()
+                    speech_buffer.clear()
+                    in_speech     = False
+                    silence_count = 0

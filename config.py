@@ -32,7 +32,10 @@ LANGUAGE_PROFILES = {
         "listening":        "Слушаю.",
         "thinking":         "Думаю...",
         "not_heard":        "Не расслышал.",
-        "exit_words":       ["выход", "стоп", "пока", "exit", "quit"],
+        "not_understood":   "Не понял, повторите.",
+        "stopped":          "Хорошо.",
+        "exit_words":       ["выход", "пока", "exit", "quit"],
+        "stop_words":       ["стоп", "хватит", "замолчи", "тихо", "достаточно", "молчать"],
     },
     "en": {
         "whisper_language": "en",
@@ -45,7 +48,10 @@ LANGUAGE_PROFILES = {
         "listening":        "Listening.",
         "thinking":         "Processing...",
         "not_heard":        "Didn't catch that.",
-        "exit_words":       ["exit", "quit", "stop", "bye", "выход"],
+        "not_understood":   "Didn't catch that, please repeat.",
+        "stopped":          "Okay.",
+        "exit_words":       ["exit", "quit", "bye", "goodbye", "выход"],
+        "stop_words":       ["stop", "enough", "quiet", "silence", "cancel", "shut up"],
     },
 }
 
@@ -80,24 +86,32 @@ def build_system_prompt(commands: dict) -> str:
 
     if lang == "ru":
         return f"""Ты — голосовой ассистент Jarvis.
-Отвечай коротко и чётко. Избегай markdown — ответы озвучиваются вслух.
+Отвечай коротко и чётко, максимум 1-2 предложения. Избегай markdown — ответы озвучиваются вслух.
 Отвечай на русском языке.
 
 Доступные команды, которые ты умеешь выполнять:
 {command_block}
 
-Если пользователь просит выполнить команду — скажи что выполняешь, коротко.
-Если спрашивает что ты умеешь — перечисли команды своими словами."""
+Правила:
+- Если пользователь просит выполнить команду — вызови её, не объясняй.
+- Если спрашивает что ты умеешь — перечисли команды своими словами кратко.
+- Если не понял запрос — скажи только: "Не понял, повторите."
+- Если не можешь выполнить — скажи только: "Не могу это сделать."
+- Никогда не придумывай команды которых нет в списке."""
     else:
         return f"""You are Jarvis, a voice assistant.
-Reply briefly and clearly. Avoid markdown — responses are spoken aloud.
+Reply briefly and clearly, 1-2 sentences max. Avoid markdown — responses are spoken aloud.
 Reply in English.
 
 Available commands you can execute:
 {command_block}
 
-If the user asks to run a command — say you're executing it, briefly.
-If they ask what you can do — list the commands in plain language."""
+Rules:
+- If the user asks to run a command — call it, don't explain.
+- If they ask what you can do — briefly list the commands.
+- If you didn't understand — say only: "Didn't catch that, please repeat."
+- If you can't do something — say only: "I can't do that."
+- Never invent commands that aren't in the list."""
 
 
 def check_config() -> bool:
