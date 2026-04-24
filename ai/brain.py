@@ -4,7 +4,7 @@ brain.py — Мозг Jarvis через OpenAI ChatGPT API + function calling д
 
 import json
 from openai import OpenAI
-from config import OPENAI_API_KEY, GPT_MODEL, build_system_prompt, get_lang
+from config import OPENAI_API_KEY, GPT_MODEL, GPT_TEMPERATURE, build_system_prompt, get_lang
 from commands import COMMANDS, execute_command, build_tools_schema
 
 
@@ -45,7 +45,7 @@ class Brain:
                 tools=build_tools_schema(),
                 tool_choice="auto",
                 max_tokens=500,
-                temperature=0.7,
+                temperature=GPT_TEMPERATURE,
             )
 
             msg = response.choices[0].message

@@ -8,8 +8,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ── API ───────────────────────────────────────────────────────────────────────
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-GPT_MODEL      = "gpt-4o-mini"   # или "gpt-4o"
+OPENAI_API_KEY  = os.getenv("OPENAI_API_KEY", "")
+GPT_MODEL       = "gpt-4o-mini"   # или "gpt-4o"
+GPT_TEMPERATURE = 0.7
 
 # ── Whisper ───────────────────────────────────────────────────────────────────
 WHISPER_MODEL    = "base"           # tiny / base / small / medium / large
