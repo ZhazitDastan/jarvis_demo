@@ -7,6 +7,7 @@ api/server.py — FastAPI backend для фронта (React + Vite + Tauri)
 import sys
 import os
 import time
+import datetime
 import logging
 import threading
 import asyncio
@@ -52,6 +53,8 @@ from config import set_language, LANGUAGE_PROFILES, get_lang
 from ai.brain import Brain
 from commands import COMMANDS, execute_command
 from speech.TTS.tts_v2 import TTS
+import services.events as _events
+from api.files import router as _files_router
 
 # ── App ───────────────────────────────────────────────────────────────────────
 
@@ -78,6 +81,12 @@ def _preload_models():
         _logger.info("STT загружен")
     except Exception as e:
         _logger.warning("STT не загружен: %s", e)
+    try:
+        from database.files.file_indexer import get_indexer
+        get_indexer()   # создаёт синглтон и запускает _auto_build в фоне
+        _logger.info("Файловый индексатор запущен")
+    except Exception as e:
+        _logger.warning("Файловый индексатор не загружен: %s", e)
     _logger.info("Предзагрузка завершена")
 
 
@@ -90,6 +99,7 @@ async def lifespan(application: FastAPI):
 
 
 app = FastAPI(title="Jarvis API", version="1.0.0", lifespan=lifespan)
+app.include_router(_files_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -103,10 +113,13 @@ app.add_middleware(
 class _State:
     status: str = "idle"          # idle | listening | thinking | speaking
     is_running: bool = False
+    voice_busy: bool = False      # True пока голосовой цикл обрабатывает команду
     active_mic_index: Optional[int] = None
     followup_seconds: int = 12
     _clients: list[WebSocket] = []
     _loop: Optional[asyncio.AbstractEventLoop] = None
+    chat_history: list = []
+    _MAX_HISTORY: int = 200
 
     @classmethod
     def set_loop(cls, loop: asyncio.AbstractEventLoop):
@@ -133,6 +146,16 @@ class _State:
     def set_status(cls, status: str):
         cls.status = status
         cls.emit({"type": "status", "value": status})
+
+    @classmethod
+    def add_message(cls, role: str, text: str):
+        cls.chat_history.append({
+            "role": role,
+            "text": text,
+            "time": datetime.datetime.now().strftime("%H:%M:%S"),
+        })
+        if len(cls.chat_history) > cls._MAX_HISTORY:
+            cls.chat_history = cls.chat_history[-cls._MAX_HISTORY:]
 
 
 # ── Синглтоны Brain и TTS ─────────────────────────────────────────────────────
@@ -161,15 +184,17 @@ def get_tts() -> TTS:
 class VoiceRunner:
     def __init__(self):
         self._thread: Optional[threading.Thread] = None
-        self._stop = threading.Event()
+        self._stop  = threading.Event()
+        self._lock  = threading.Lock()
 
     def start(self):
-        if _State.is_running:
-            return
+        with self._lock:
+            if _State.is_running:
+                return
+            _State.is_running = True   # устанавливаем до старта потока
         self._stop.clear()
         self._thread = threading.Thread(target=self._run, daemon=True)
         self._thread.start()
-        _State.is_running = True
 
     def stop(self):
         self._stop.set()
@@ -219,6 +244,7 @@ class VoiceRunner:
                     continue
 
                 _State.emit({"type": "transcribed", "text": text})
+                _State.add_message("user", text)
                 _logger.info("Голос | Пользователь: %s", text)
 
                 stop_words = lang.get("stop_words", [])
@@ -228,16 +254,24 @@ class VoiceRunner:
                     continue
 
                 # Шаг 3: GPT → TTS
-                with _brain_lock:
-                    response = brain.think(text)
+                _State.voice_busy = True
+                try:
+                    with _brain_lock:
+                        response = brain.think(text)
+                finally:
+                    _State.voice_busy = False
 
                 _logger.info("Голос | Jarvis: %s", response)
+                _State.add_message("assistant", response)
                 _State.emit({"type": "response", "text": response})
                 _State.set_status("speaking")
                 with StopListener(stt, tts):
                     tts.speak(response)
 
                 # Шаг 4: Followup
+                # Пауза 0.6с — даём эху TTS затухнуть, иначе микрофон
+                # подхватывает конец ответа Jarvis как новую команду
+                time.sleep(0.6)
                 followup_end = time.time() + _State.followup_seconds
                 while time.time() < followup_end and not self._stop.is_set():
                     _State.set_status("listening")
@@ -250,6 +284,7 @@ class VoiceRunner:
                         break
 
                     _State.emit({"type": "transcribed", "text": text})
+                    _State.add_message("user", text)
 
                     if any(w in text.lower() for w in stop_words):
                         tts.stop()
@@ -262,9 +297,14 @@ class VoiceRunner:
                             continue
 
                     _State.set_status("thinking")
-                    with _brain_lock:
-                        response = brain.think(text)
+                    _State.voice_busy = True
+                    try:
+                        with _brain_lock:
+                            response = brain.think(text)
+                    finally:
+                        _State.voice_busy = False
 
+                    _State.add_message("assistant", response)
                     _State.emit({"type": "response", "text": response})
                     _State.set_status("speaking")
                     with StopListener(stt, tts):
@@ -280,6 +320,7 @@ class VoiceRunner:
 
 
 _runner = VoiceRunner()
+_events.register_emit(_State.emit)
 
 # ── WebSocket /ws ─────────────────────────────────────────────────────────────
 
@@ -344,6 +385,9 @@ async def chat(req: ChatRequest):
         raise HTTPException(400, "Пустой запрос")
     if not config.OPENAI_API_KEY:
         raise HTTPException(400, "OpenAI API ключ не задан")
+    if _State.voice_busy:
+        # Голосовой цикл уже обрабатывает эту команду — дублировать не нужно
+        raise HTTPException(409, "Voice pipeline is busy")
 
     _State.set_status("thinking")
     _State.emit({"type": "transcribed", "text": req.text})
@@ -364,6 +408,8 @@ def _chat_sync(text: str, speak: bool) -> str:
         response = get_brain().think(text)
     _logger.info("Чат  | Пользователь: %s", text)
     _logger.info("Чат  | Jarvis: %s", response)
+    _State.add_message("user", text)
+    _State.add_message("assistant", response)
     if speak:
         get_tts().speak(response)
     return response
@@ -371,10 +417,24 @@ def _chat_sync(text: str, speak: bool) -> str:
 
 # ── POST /chat/reset ──────────────────────────────────────────────────────────
 
+@app.get("/chat/history")
+async def get_chat_history():
+    return {"messages": _State.chat_history}
+
+
+@app.delete("/chat/history/{index}")
+async def delete_chat_message(index: int):
+    if index < 0 or index >= len(_State.chat_history):
+        raise HTTPException(404, f"Сообщение с индексом {index} не найдено")
+    _State.chat_history.pop(index)
+    return {"ok": True, "remaining": len(_State.chat_history)}
+
+
 @app.post("/chat/reset")
 async def reset_chat():
     with _brain_lock:
         get_brain().reset_history()
+    _State.chat_history.clear()
     return {"ok": True}
 
 
@@ -704,3 +764,4 @@ async def clear_logs():
     if LOG_FILE.exists():
         LOG_FILE.write_text("", encoding="utf-8")
     return {"ok": True}
+

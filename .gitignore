@@ -29,3 +29,7 @@ logs/
 
 # Cache
 cache/
+
+# Database (генерируется автоматически при запуске)
+database/files/files.db
+*.db
