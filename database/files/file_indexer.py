@@ -15,21 +15,100 @@ from difflib import SequenceMatcher
 # Транслитерация "скриншот" → "skrinshot", но реальный файл "screenshot".
 # Этот словарь даёт точный EN-оригинал для поиска.
 _LOANWORDS: dict[str, str] = {
-    "скриншот":  "screenshot",
-    "скриншоты": "screenshot",
-    "скрин":     "screenshot",
-    "ворд":      "word",
-    "эксель":    "excel",
-    "экзель":    "excel",
-    "питон":     "python",
-    "джанго":    "django",
-    "реакт":     "react",
-    "ноджс":     "nodejs",
-    "пдф":       "pdf",
-    "зип":       "zip",
-    "рар":       "rar",
+    # Форматы / инструменты
+    "скриншот":   "screenshot",
+    "скриншоты":  "screenshot",
+    "ворд":       "word",
+    "эксель":     "excel",
+    "экзель":     "excel",
+    "питон":      "python",
+    "джанго":     "django",
+    "реакт":      "react",
+    "ноджс":      "nodejs",
+    "пдф":        "pdf",
+    "зип":        "zip",
+    "рар":        "rar",
     "майкрософт": "microsoft",
-    "гитхаб":    "github",
+    "гитхаб":     "github",
+    # Браузеры
+    "хром":       "chrome",
+    "хромиум":    "chromium",
+    "файрфокс":   "firefox",
+    "опера":      "opera",
+    "яндекс":     "yandex",
+    # Мессенджеры / соцсети
+    "телеграм":   "telegram",
+    "телега":     "telegram",
+    "ватсап":     "whatsapp",
+    "вотсап":     "whatsapp",
+    "дискорд":    "discord",
+    "скайп":      "skype",
+    "зум":        "zoom",
+    "вайбер":     "viber",
+    # Офис / утилиты
+    "фотошоп":    "photoshop",
+    "иллюстратор":"illustrator",
+    "блокнот":    "notepad",
+    "пейнт":      "paint",
+    "проводник":  "explorer",
+    "калькулятор":"calculator",
+    "ноутпад":    "notepad",
+    # Игры / платформы
+    "стим":       "steam",
+    "майнкрафт":  "minecraft",
+    # Разработка
+    "докер":      "docker",
+    "гит":        "git",
+    "линукс":     "linux",
+    "убунту":     "ubuntu",
+    "андроид":    "android",
+}
+# "скрин" убран — он подстрока "скриншот" и вызывал мусор типа "screenshotшот"
+
+# Обратный словарь EN→RU для кросс-языкового поиска
+_LOANWORDS_EN: dict[str, str] = {
+    # Форматы / инструменты
+    "screenshot":   "скриншот",
+    "word":         "ворд",
+    "excel":        "эксель",
+    "python":       "питон",
+    "django":       "джанго",
+    "react":        "реакт",
+    "nodejs":       "ноджс",
+    "pdf":          "пдф",
+    "zip":          "зип",
+    "rar":          "рар",
+    "microsoft":    "майкрософт",
+    "github":       "гитхаб",
+    # Браузеры
+    "chrome":       "хром",
+    "chromium":     "хромиум",
+    "firefox":      "файрфокс",
+    "opera":        "опера",
+    "yandex":       "яндекс",
+    # Мессенджеры / соцсети
+    "telegram":     "телеграм",
+    "whatsapp":     "ватсап",
+    "discord":      "дискорд",
+    "skype":        "скайп",
+    "zoom":         "зум",
+    "viber":        "вайбер",
+    # Офис / утилиты
+    "photoshop":    "фотошоп",
+    "illustrator":  "иллюстратор",
+    "notepad":      "блокнот",
+    "paint":        "пейнт",
+    "explorer":     "проводник",
+    "calculator":   "калькулятор",
+    # Игры / платформы
+    "steam":        "стим",
+    "minecraft":    "майнкрафт",
+    # Разработка
+    "docker":       "докер",
+    "git":          "гит",
+    "linux":        "линукс",
+    "ubuntu":       "убунту",
+    "android":      "андроид",
 }
 
 # ── Транслитерация RU ↔ EN ────────────────────────────────────────────────────
@@ -41,6 +120,7 @@ _RU_TO_EN = {
     'ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch',
     'ъ':'', 'ы':'y','ь':'', 'э':'e','ю':'yu','я':'ya',
 }
+
 
 _EN_TO_RU = [
     ('shch','щ'),('sch','щ'),('zh','ж'),('kh','х'),('ts','ц'),
@@ -74,9 +154,12 @@ def _query_variants(query: str) -> list[str]:
     чтобы LIKE 'диплом%' нашёл файл 'Диплом.docx' без fuzzy.
     Заимствованные слова: 'скриншот' → 'screenshot' (транслитерация не совпадает).
     """
-    if not query or len(query.strip()) <= 3:
+    q_stripped = query.lower().strip()
+    if not query or (len(q_stripped) <= 3
+                     and q_stripped not in _LOANWORDS
+                     and q_stripped not in _LOANWORDS_EN):
         return [query]
-    q = query.lower().strip()
+    q = q_stripped
     has_cyr = any('Ѐ' <= c <= 'ӿ' for c in q)
     has_lat = any('a' <= c <= 'z' for c in q)
     variants = [q]
@@ -94,12 +177,24 @@ def _query_variants(query: str) -> list[str]:
             if len(alt) > 4 and alt[-1] in _VOWELS_CYR:
                 variants.append(alt[:-1])
 
-    # Заимствованные слова: "скриншот" → добавляем "screenshot" как доп. вариант
-    for ru_word, en_word in _LOANWORDS.items():
-        if ru_word in q:
+    # RU→EN заимствования: "скриншот" → "screenshot"
+    # Применяем только самое длинное совпадение (сортировка по убыванию длины)
+    # чтобы "скриншот" не давал ещё и мусор от "скрин"
+    _applied: set[str] = set()
+    for ru_word, en_word in sorted(_LOANWORDS.items(), key=lambda x: -len(x[0])):
+        if ru_word in q and not any(ru_word in a for a in _applied):
             loan = q.replace(ru_word, en_word).strip()
             if loan and loan not in variants:
                 variants.append(loan)
+            _applied.add(ru_word)
+
+    # EN→RU заимствования: "screenshot" → "скриншот"
+    if has_lat and not has_cyr:
+        for en_word, ru_word in _LOANWORDS_EN.items():
+            if en_word in q:
+                loan = q.replace(en_word, ru_word).strip()
+                if loan and loan not in variants:
+                    variants.append(loan)
 
     return list(dict.fromkeys(variants))
 
@@ -144,10 +239,16 @@ def _build_search_text(name: str) -> str:
             lat = _to_latin(word)
             if not any('Ѐ' <= c <= 'ӿ' for c in lat):
                 _add(lat)
+            # RU→EN заимствование для name_search
+            if word in _LOANWORDS:
+                _add(_LOANWORDS[word])
         if has_lat:
             cyr = _to_cyrillic(word)
             if not any('a' <= c <= 'z' for c in cyr):
                 _add(cyr)
+            # EN→RU заимствование для name_search
+            if word in _LOANWORDS_EN:
+                _add(_LOANWORDS_EN[word])
 
     return ' '.join(parts)
 
@@ -158,14 +259,59 @@ HOME = pathlib.Path(os.environ.get("USERPROFILE", str(pathlib.Path.home())))
 
 # ── Приоритеты сканирования ────────────────────────────────────────────────────
 # Фаза 1: самые важные папки — результаты через ~5-10 сек
-PRIORITY_DIRS = [
-    HOME / "Desktop",
-    HOME / "OneDrive" / "Рабочий стол",
-    HOME / "OneDrive" / "Desktop",
-    HOME / "Downloads",
-    HOME / "Documents",
-    HOME / "OneDrive" / "Documents",
-]
+def _win_special_folders() -> list[pathlib.Path]:
+    """
+    Читает реальные пути Desktop / Documents / Downloads / Pictures /
+    Music / Videos из реестра Windows.
+    Работает для любого пользователя и любого диска/языка.
+    """
+    _SHELL_FOLDERS = {
+        "Desktop", "Personal", "{374DE290-123F-4565-9164-39C4925E467B}",
+        "My Pictures", "My Music", "My Video",
+    }
+    result = []
+    try:
+        import winreg
+        for hive in (
+            r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders",
+            r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders",
+        ):
+            try:
+                key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, hive)
+            except OSError:
+                continue
+            i = 0
+            while True:
+                try:
+                    name, value, _ = winreg.EnumValue(key, i)
+                    i += 1
+                    if name in _SHELL_FOLDERS and isinstance(value, str):
+                        # Раскрываем переменные окружения (%USERPROFILE% и т.д.)
+                        expanded = os.path.expandvars(value)
+                        p = pathlib.Path(expanded)
+                        if p.exists() and p not in result:
+                            result.append(p)
+                except OSError:
+                    break
+            winreg.CloseKey(key)
+    except Exception:
+        pass
+    return result
+
+
+PRIORITY_DIRS = list(dict.fromkeys(filter(
+    lambda p: p.exists(),
+    [
+        HOME / "Desktop",
+        HOME / "Downloads",
+        HOME / "Documents",
+        HOME / "OneDrive" / "Desktop",
+        HOME / "OneDrive" / "Рабочий стол",
+        HOME / "OneDrive" / "Documents",
+        HOME / "OneDrive" / "Документы",
+        *_win_special_folders(),   # реальные пути из реестра Windows
+    ]
+)))
 
 # Фаза 2: медиа и вся папка пользователя — через ~30-60 сек
 EXTENDED_DIRS = [
@@ -196,10 +342,28 @@ SKIP_DIR_PARTS = {
     "windows", "system32", "syswow64", "winsxs",
     "program files", "program files (x86)",
     "$recycle.bin", "system volume information",
-    # AppData мусор
-    "appdata\\local\\temp", "appdata\\roaming\\microsoft",
-    "appdata\\local\\microsoft", "appdata\\local\\google",
-    "appdata\\local\\packages",
+    # AppData — общий мусор
+    "appdata\\local\\temp",
+    "appdata\\roaming\\microsoft", "appdata\\local\\microsoft",
+    "appdata\\local\\google",    "appdata\\local\\packages",
+    # SDK и среды разработки
+    "appdata\\local\\android",   # Android SDK (сотни тысяч файлов)
+    "appdata\\local\\jetbrains", # JetBrains IDE кэши
+    "appdata\\local\\programs",  # установленные программы
+    "appdata\\local\\npm-cache", # npm кэш
+    "appdata\\roaming\\npm",
+    # Приложения с логами/кэшем
+    "appdata\\local\\ciscospark",
+    "appdata\\local\\cisco",
+    "appdata\\local\\slack",
+    "appdata\\local\\discord",
+    "appdata\\roaming\\discord",
+    "appdata\\local\\com.tauri",   # Tauri EBWebView
+    "appdata\\local\\tauri",
+    "appdata\\local\\electron",
+    "appdata\\roaming\\code",      # VS Code extensions
+    "appdata\\local\\webstorm",
+    "ebwebview",                   # Chromium WebView кэши
     # Разработка
     "node_modules", ".git", "__pycache__",
     "venv", ".venv", "site-packages",
@@ -513,6 +677,31 @@ class FileIndexer:
         }
         emit({"type": "index_progress", **self._progress})
         self._start_watcher()
+
+        # Запускаем семантическую индексацию в фоне после завершения файлового индекса
+        def _start_semantic():
+            try:
+                import config
+                from database.files.semantic_search import get_semantic_indexer, ALL_SUPPORTED
+                api_key = getattr(config, "OPENAI_API_KEY", "")
+                if not api_key:
+                    return
+                # Берём все документы из files.db с нужными расширениями
+                with self._lock:
+                    rows = self._conn.execute(
+                        "SELECT path FROM files WHERE extension IN ({})".format(
+                            ",".join("?" * len(ALL_SUPPORTED))
+                        ),
+                        list(ALL_SUPPORTED),
+                    ).fetchall()
+                paths = [r["path"] for r in rows]
+                if paths:
+                    print(f"    [semantic] Запуск индексации {len(paths)} документов...")
+                    get_semantic_indexer().build_index(paths, api_key)
+            except Exception as e:
+                print(f"    [semantic] Ошибка запуска: {e}")
+
+        threading.Thread(target=_start_semantic, daemon=True, name="semantic-build").start()
         return total_indexed
 
     # ── Инкрементальные обновления (watchdog) ─────────────────────────────────
@@ -538,6 +727,13 @@ class FileIndexer:
                      _build_search_text(fpath.name)),
                 )
                 self._conn.commit()
+            # Ставим в очередь семантической индексации (только файлы, не папки)
+            if not is_dir:
+                try:
+                    from database.files.semantic_search import get_semantic_indexer
+                    get_semantic_indexer().enqueue(str(fpath))
+                except Exception:
+                    pass
         except (OSError, PermissionError):
             pass
 
@@ -546,10 +742,15 @@ class FileIndexer:
         self._index_path(path)
 
     def _remove_file(self, path: str):
-        """Удалить файл из индекса."""
+        """Удалить файл из индекса (и из семантического индекса)."""
         with self._lock:
             self._conn.execute("DELETE FROM files WHERE path = ?", (path,))
             self._conn.commit()
+        try:
+            from database.files.semantic_search import get_semantic_indexer
+            get_semantic_indexer().remove_file(path)
+        except Exception:
+            pass
 
     def _start_watcher(self):
         """Запустить watchdog — следить за изменениями файловой системы."""

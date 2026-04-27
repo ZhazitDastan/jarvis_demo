@@ -56,28 +56,68 @@ class FileOpenRequest(BaseModel):
 async def files_search(
     q: str = "",
     category: str = "",
+    extension: str = "",
     date_filter: str = "",
     size_filter: str = "",
-    limit: int = 5,
+    drive: str = "",
+    semantic: bool = False,
+    limit: int = 20,
     offset: int = 0,
 ):
-    """Поиск файлов по имени, категории, дате, размеру."""
-    if not any([q, category, date_filter, size_filter]):
+    """Поиск файлов по имени или содержимому (semantic=true)."""
+    if not any([q, category, extension, date_filter, size_filter, drive]):
         raise HTTPException(400, "Укажи хотя бы один параметр поиска")
 
-    loop = asyncio.get_event_loop()
-    results = await loop.run_in_executor(
+    drive_norm = drive.upper().strip(": \\") if drive else ""
+    loop       = asyncio.get_event_loop()
+
+    results: list = []
+    seen:    set  = set()
+
+    # ── Семантический поиск ───────────────────────────────────────────────────
+    if semantic and q:
+        import config
+        api_key = getattr(config, "OPENAI_API_KEY", "")
+        if not api_key:
+            raise HTTPException(400, "OpenAI API ключ не задан — семантический поиск недоступен")
+
+        from database.files.semantic_search import get_semantic_indexer
+        sem_results = await loop.run_in_executor(
+            None,
+            lambda: get_semantic_indexer().search(
+                query=q, api_key=api_key, limit=limit, category=category,
+            ),
+        )
+        for r in sem_results:
+            results.append(r)
+            seen.add(r["path"])
+
+    # ── Обычный поиск по имени (всегда, дополняет без дублей) ────────────────
+    fuzzy = await loop.run_in_executor(
         None,
         lambda: _indexer().search(
             query=q,
             category=category,
+            extension=extension,
             date_filter=date_filter,
             size_filter=size_filter,
+            drive=drive_norm,
             limit=limit,
             offset=offset,
         ),
     )
-    return {"results": results, "count": len(results)}
+    for r in fuzzy:
+        if r["path"] not in seen:
+            results.append(r)
+            seen.add(r["path"])
+
+    return {
+        "results":  results[:limit],
+        "total":    len(results),
+        "offset":   offset,
+        "limit":    limit,
+        "semantic": semantic,
+    }
 
 
 @router.post("/open")
@@ -156,3 +196,44 @@ async def file_stats():
     """Статистика файлов по категориям и размеру."""
     loop = asyncio.get_event_loop()
     return await loop.run_in_executor(None, _indexer().get_stats)
+
+
+# ── Семантический индекс ──────────────────────────────────────────────────────
+
+@router.get("/semantic/status")
+async def semantic_status():
+    """Статус семантического индекса: кол-во проиндексированных файлов, прогресс."""
+    from database.files.semantic_search import get_semantic_indexer
+    return get_semantic_indexer().get_status()
+
+
+@router.post("/semantic/rebuild")
+async def semantic_rebuild():
+    """Запустить переиндексацию семантического индекса в фоне."""
+    import config
+    api_key = getattr(config, "OPENAI_API_KEY", "")
+    if not api_key:
+        raise HTTPException(400, "OpenAI API ключ не задан")
+
+    from database.files.semantic_search import get_semantic_indexer, ALL_SUPPORTED
+    from services.events import emit
+
+    def _bg():
+        try:
+            # Берём все документы из file indexer БД
+            indexer = _indexer()
+            with indexer._lock:
+                rows = indexer._conn.execute(
+                    "SELECT path FROM files WHERE extension IN ({})".format(
+                        ",".join("?" * len(ALL_SUPPORTED))
+                    ),
+                    list(ALL_SUPPORTED),
+                ).fetchall()
+            paths = [r["path"] for r in rows]
+            count = get_semantic_indexer().build_index(paths, api_key)
+            emit({"type": "semantic_index_done", "indexed": count})
+        except Exception as e:
+            emit({"type": "semantic_index_error", "error": str(e)})
+
+    threading.Thread(target=_bg, daemon=True, name="semantic-rebuild").start()
+    return {"ok": True, "message": "Семантическая переиндексация запущена"}

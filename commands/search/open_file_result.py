@@ -22,17 +22,25 @@ _BLOCKED_EXTS = {".exe", ".bat", ".cmd", ".com", ".msi", ".ps1",
 
 COMMAND_NAME = "open_file_result"
 DESCRIPTION = (
-    "Открыть файл или папку из последних результатов поиска по номеру. "
-    "Примеры: 'открой первый', 'открой папку второго', 'второй'."
+    "Open a file or folder from the last search results by number. "
+    "/ Открыть файл или папку из последних результатов поиска по номеру. "
+    "RU: 'открой первый' → 1; 'открой второй' → 2; 'открой восьмой' → 8; "
+    "'открой последний' → -1; 'открой максимальный' → -1; 'открой папку второго' → number=2 action=folder. "
+    "EN: 'open first' → 1; 'open second' → 2; 'open the last one' → -1; 'open folder of third' → number=3 action=folder. "
+    "Use number=-1 for last/последний/максимальный."
 )
 PARAMETERS = {
     "number": {
         "type": "integer",
-        "description": "Номер файла: 1 (первый), 2 (второй), 3 (третий), 4, 5",
+        "description": (
+            "1-based index of the file to open. "
+            "Use -1 for last/последний/максимальный. "
+            "Examples: 1=first/первый, 2=second/второй, ..., 8=eighth/восьмой, -1=last/последний."
+        ),
     },
     "action": {
         "type": "string",
-        "description": "open — открыть файл, folder — открыть папку с файлом",
+        "description": "open — открыть файл / open file, folder — открыть папку с файлом / show in folder",
         "enum": ["open", "folder"],
     },
 }
@@ -54,32 +62,45 @@ def _get_state():
 
 
 def handler(number: int, action: str = "open") -> str:
+    import config
+    is_en = getattr(config, "ACTIVE_LANGUAGE", "ru") == "en"
+
     state = _get_state()
     results = state.get_results()
 
     if not results:
-        return "Нет результатов поиска. Сначала найди файл."
+        return "No search results. Search for a file first." if is_en else \
+               "Нет результатов поиска. Сначала найди файл."
 
-    idx = number - 1
+    # -1 → последний/last
+    if number == -1 or number == 0:
+        idx = len(results) - 1
+    else:
+        idx = number - 1
+
     if idx < 0 or idx >= len(results):
-        return f"Нет файла с номером {number}. Найдено {len(results)} файлов."
+        return (f"No file #{number}. Found {len(results)} files.") if is_en else \
+               (f"Нет файла с номером {number}. Найдено {len(results)} файлов.")
 
     item = results[idx]
     path = item["path"]
     name = item["name"]
 
     if not os.path.exists(path):
-        return f"Файл «{name}» больше не существует по пути {path}."
+        return (f"File '{name}' no longer exists.") if is_en else \
+               (f"Файл «{name}» больше не существует.")
 
     ext = pathlib.Path(path).suffix.lower()
     if action == "open" and ext in _BLOCKED_EXTS:
-        return f"Открытие исполняемых файлов ({ext}) заблокировано."
+        return (f"Opening executable files ({ext}) is blocked.") if is_en else \
+               (f"Открытие исполняемых файлов ({ext}) заблокировано.")
 
     try:
         if action == "folder":
             if item.get("category") == "folder":
                 _open_foreground(path)
-                return f"Открываю папку «{name}»."
+                return (f"Opening folder '{name}'.") if is_en else \
+                       (f"Открываю папку «{name}».")
             else:
                 try:
                     ctypes.windll.user32.AllowSetForegroundWindow(0xFFFFFFFF)
@@ -90,9 +111,12 @@ def handler(number: int, action: str = "open") -> str:
                     shell=True,
                     creationflags=subprocess.CREATE_NO_WINDOW,
                 )
-                return f"Открываю папку с файлом «{name}»."
+                return (f"Showing '{name}' in folder.") if is_en else \
+                       (f"Открываю папку с файлом «{name}».")
         else:
             _open_foreground(path)
-            return f"Открываю «{name}»."
+            return (f"Opening '{name}'.") if is_en else \
+                   (f"Открываю «{name}».")
     except Exception as e:
-        return f"Не удалось открыть «{name}»: {e}"
+        return (f"Failed to open '{name}': {e}") if is_en else \
+               (f"Не удалось открыть «{name}»: {e}")

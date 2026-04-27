@@ -8,43 +8,64 @@ DESCRIPTION = (
     "Search for files and folders on the computer. "
     "/ Поиск файлов и папок на компьютере. "
 
-    "RU triggers (call this command for): найди, ищи, поищи, поиск, найти, где файл, открой файл. "
-    "EN triggers: find, search for, look for, locate, where is my file. "
+    "RU triggers: найди, ищи, поищи, поиск, найти, где файл, открой файл, ищи файл, ищи папку. "
+    "EN triggers: find, search for, look for, locate, where is my file, find folder. "
 
-    "CATEGORIES (use in 'category' field): "
-    "folder — папка/каталог/folder/directory; "
-    "document — документ/ворд/word/pdf/таблица/excel/презентация/powerpoint; "
-    "photo — фото/фотографии/картинки/скриншот/скрин/screenshot/photo/picture/image; "
-    "video — видео/фильм/video/movie/film; "
-    "music — музыка/песни/треки/music/song/audio/mp3; "
-    "archive — архив/archive/zip/rar; "
+    # ── Категории ──────────────────────────────────────────────────────────
+    "CATEGORY rules (set 'category' field): "
+    "folder — ONLY when user explicitly says папку/папка/каталог/директорию/folder/directory. "
+    "  Do NOT set category=folder when user says 'файл' (file) — 'файл' means any non-folder file. "
+    "document — документ/ворд/word/pdf/таблица/excel/презентация/powerpoint. "
+    "photo — фото/картинки/изображени/скриншот/скрин/screenshot/photo/picture/image. "
+    "video — видео/фильм/video/movie/film. "
+    "music — музыка/песни/треки/music/song/audio/mp3. "
+    "archive — архив/archive/zip/rar. "
     "code — код/скрипт/code/script. "
+
+    # ── Диск ───────────────────────────────────────────────────────────────
+    "DRIVE filter — CRITICAL RULES: "
+    "Set 'drive' to a single Latin letter (no colon, no slash). "
+    "'в папке д', 'в папке D', 'на диске д', 'диск д', 'папка д' → drive=D (NOT category=folder!). "
+    "'в папке с', 'диск с', 'на диске c' → drive=C. "
+    "'в папке е', 'диск е' → drive=E. "
+    "IMPORTANT: 'в папке X' where X is a drive letter means drive=X, NOT category=folder. "
+    "Russian letter mappings: а→A, б→B, с→C, д→D, е→E, ф→F, г→G. "
+    "EN: 'on drive D', 'in drive E', 'search drive C' → drive=D/E/C. "
 
     "DATE filter (date_filter): today, week, month, year. "
     "SIZE filter (size_filter): small (<1MB), medium (1-100MB), large (>100MB). "
-    "DRIVE filter (drive): letter only, no colon — e.g. D, E, F. "
 
-    "RU examples: "
+    # ── Примеры RU ─────────────────────────────────────────────────────────
+    "RU examples (by name): "
     "'найди папку диплом' → category=folder query=диплом; "
-    "'ищи файл диплом' → query=диплом; "
-    "'ищи папку' → category=folder; "
-    "'поищи скриншот' → category=photo query=скриншот; "
-    "'найди ворд документы' → category=document extension=docx; "
-    "'найди музыку за месяц' → category=music date_filter=month; "
-    "'найди большие видео' → category=video size_filter=large; "
+    "'ищи файл диплом' → query=диплом (no category!); "
+    "'ищи папку' → category=folder query=''; "
+    "'ищи в папке д' → drive=D (no category!); "
+    "'ищи в папке с' → drive=C (no category!); "
     "'ищи в диске д' → drive=D; "
     "'найди диплом на диске д' → query=диплом drive=D; "
-    "'ищи файл на диске е' → drive=E. "
+    "'найди ворд документы' → category=document extension=docx; "
+    "'найди музыку за месяц' → category=music date_filter=month; "
+    "'найди большие видео' → category=video size_filter=large. "
 
-    "EN examples: "
-    "'find my word documents' → category=document extension=docx; "
-    "'search for music from this week' → category=music date_filter=week; "
-    "'find large video files' → category=video size_filter=large; "
+    "RU examples (by content — semantic=True): "
+    "'найди файл где я писал про нейросети' → semantic=True query=нейросети; "
+    "'найди документ о машинном обучении' → semantic=True query=машинное обучение; "
+    "'где мой отчёт про продажи' → semantic=True query=продажи. "
+
+    # ── Примеры EN ─────────────────────────────────────────────────────────
+    "EN examples (by name): "
     "'find folder diploma' → category=folder query=diploma; "
-    "'search for screenshots' → category=photo query=screenshot; "
-    "'find photos' → category=photo; "
-    "'search on drive D' → drive=D; "
-    "'find diploma on drive D' → query=diploma drive=D."
+    "'find file diploma' → query=diploma (no category!); "
+    "'search in drive D' → drive=D (no category!); "
+    "'search in folder D' → drive=D (NOT category=folder!); "
+    "'find my word documents' → category=document extension=docx; "
+    "'find large video files' → category=video size_filter=large. "
+
+    "EN examples (by content — semantic=True): "
+    "'find file about neural networks' → semantic=True query=neural networks; "
+    "'find where I wrote about authentication' → semantic=True query=authentication; "
+    "'find document about sales report' → semantic=True query=sales report."
 )
 PARAMETERS = {
     "query": {
@@ -80,6 +101,20 @@ PARAMETERS = {
             "Буква диска для поиска (без двоеточия). Примеры: D, E, F. "
             "RU: 'ищи в диске д' → D; 'на диске е' → E. "
             "EN: 'on drive D' → D; 'search drive E' → E."
+        ),
+    },
+    "semantic": {
+        "type": "boolean",
+        "description": (
+            "True — поиск по СОДЕРЖИМОМУ файлов (смысл/тема). "
+            "False (по умолчанию) — поиск по ИМЕНИ файла. "
+            "Используй True когда пользователь ищет по смыслу, а не по названию. "
+            "RU: 'найди файл где я писал про нейросети' → True; "
+            "'найди документ о машинном обучении' → True; "
+            "'найди диплом.docx' → False. "
+            "EN: 'find file about neural networks' → True; "
+            "'find where I wrote about X' → True; "
+            "'find diploma.docx' → False."
         ),
     },
 }
@@ -211,37 +246,90 @@ _CAT_EN = {
 
 
 def handler(
-    query:       str = "",
-    category:    str = "",
-    extension:   str = "",
-    date_filter: str = "",
-    size_filter: str = "",
-    drive:       str = "",
+    query:       str  = "",
+    category:    str  = "",
+    extension:   str  = "",
+    date_filter: str  = "",
+    size_filter: str  = "",
+    drive:       str  = "",
+    semantic:    bool = False,
 ) -> str:
     is_en = getattr(config, "ACTIVE_LANGUAGE", "ru") == "en"
 
-    # Нормализация буквы диска: "д"→"D", "е"→"E" (RU раскладка)
-    _ru_drive = {"а":"A","б":"B","в":"C","г":"D","д":"D","е":"E","ж":"F","з":"G","и":"H"}
+    # Нормализация буквы диска — фонетическое соответствие RU→EN
+    _ru_drive = {
+        "а": "A", "б": "B", "с": "C", "д": "D",
+        "е": "E", "ф": "F", "г": "G", "х": "H",
+        "и": "I", "й": "J", "к": "K", "л": "L",
+        "м": "M", "н": "N", "о": "O", "п": "P",
+        "р": "R", "т": "T", "у": "U", "в": "V",
+    }
     if drive:
         drive = _ru_drive.get(drive.lower(), drive).upper().strip(": \\")
 
+    # Fallback: GPT иногда передаёт drive="папка д" или drive="диск д" вместо drive="D"
+    if drive and len(drive) > 1:
+        import re
+        m = re.search(r'\b([a-zA-Zа-яА-Я])\b\s*$', drive)
+        if m:
+            letter = m.group(1)
+            drive = _ru_drive.get(letter.lower(), letter).upper()
+        else:
+            drive = ""
+
+    # Fallback: GPT передал drive в query — извлекаем "в папке Д/D" из запроса
+    if not drive and query:
+        import re
+        m = re.search(
+            r'(?:в\s+папк[еи]|на\s+диск[еу]|диск|in\s+(?:drive|folder))\s+([a-zA-Zа-яА-Я])\b',
+            query, re.IGNORECASE
+        )
+        if m:
+            letter = m.group(1)
+            drive = _ru_drive.get(letter.lower(), letter).upper()
+            # Убираем найденный паттерн из query
+            query = re.sub(
+                r'(?:в\s+папк[еи]|на\s+диск[еу]|диск|in\s+(?:drive|folder))\s+[a-zA-Zа-яА-Я]\b',
+                '', query, flags=re.IGNORECASE
+            ).strip(" ,.")
+
     if not any([query, category, extension, date_filter, size_filter, drive]):
         if is_en:
-            return "Please specify a filename, type (word, photo, video, music, folder), date, or drive."
-        return (
-            "Уточни поиск — назови имя файла, тип "
-            "(ворд, фото, видео, музыка, папка), дату или диск."
-        )
+            return "Please specify a filename, topic, or type (word, photo, video, music, folder)."
+        return "Уточни поиск — назови имя файла, тему или тип (ворд, фото, видео, музыка, папка)."
 
     from database.files.file_indexer import get_indexer
     from services.events import emit
 
+    # Если GPT поставил category=folder, но пользователь говорил про файл — сброс
+    _file_words = {"файл", "файлы", "file", "files"}
+    if category == "folder" and any(w in query.lower().split() for w in _file_words):
+        category = ""
+
     # Авто-определение категории из запроса если GPT не передал
     query, category, extension = _auto_detect(query, category, extension)
 
-    indexer = get_indexer()
+    results: list[dict] = []
 
-    results = indexer.search(
+    # ── Семантический поиск по содержимому ───────────────────────────────────
+    if semantic and query:
+        try:
+            from database.files.semantic_search import get_semantic_indexer
+            api_key = getattr(config, "OPENAI_API_KEY", "")
+            sem_results = get_semantic_indexer().search(
+                query=query,
+                api_key=api_key,
+                limit=5,
+                category=category,
+            )
+            results = sem_results
+        except Exception as e:
+            print(f"  [semantic] Ошибка поиска: {e}")
+
+    # ── Обычный поиск по имени (всегда, дополняет семантику без дублей) ──────
+    seen_paths = {r["path"] for r in results}
+    indexer    = get_indexer()
+    fuzzy_results = indexer.search(
         query=query,
         category=category,
         extension=extension,
@@ -251,6 +339,12 @@ def handler(
         limit=5,
         offset=0,
     )
+    for r in fuzzy_results:
+        if r["path"] not in seen_paths:
+            results.append(r)
+            seen_paths.add(r["path"])
+
+    results = results[:5]
 
     state = _get_state()
     state.set_results(
@@ -264,6 +358,7 @@ def handler(
             "date_filter": date_filter,
             "size_filter": size_filter,
             "drive":       drive,
+            "semantic":    semantic,
         },
     )
 
@@ -276,6 +371,7 @@ def handler(
         "date_filter": date_filter,
         "size_filter": size_filter,
         "drive":       drive,
+        "semantic":    semantic,
         "total_shown": len(results),
     })
 
@@ -283,8 +379,12 @@ def handler(
     cat_map  = _CAT_EN    if is_en else _CAT_RU
 
     if not results:
-        hint = query or cat_map.get(category, "files" if is_en else "файлов")
+        hint       = query or cat_map.get(category, "files" if is_en else "файлов")
         drive_hint = f" on drive {drive}" if (drive and is_en) else (f" на диске {drive}" if drive else "")
+        if semantic:
+            if is_en:
+                return f"Nothing found by content for '{hint}'{drive_hint}. The file may not be indexed yet — try rebuilding the index."
+            return f"Ничего не нашёл по содержимому для «{hint}»{drive_hint}. Возможно файл ещё не проиндексирован — попробуй переиндексировать."
         if is_en:
             return f"Nothing found for '{hint}'{drive_hint}. Try rebuilding the index."
         return f"Ничего не нашёл по запросу «{hint}»{drive_hint}. Попробуй переиндексировать файлы."

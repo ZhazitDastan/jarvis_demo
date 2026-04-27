@@ -1,11 +1,9 @@
 # ══════════════════════════════════════════════════════════════════════════
 #  requirements.txt — Jarvis Voice Assistant
 #  Python: 3.11 | OS: Windows 10/11
-#  Обновлено: 2026-04-23
+#  Обновлено: 2026-04-26
 #
 #  ВАЖНО: Не обновляй пакеты без тестирования!
-#  Установка torch отдельно:
-#    pip install torch==2.1.0 --index-url https://download.pytorch.org/whl/cpu
 # ══════════════════════════════════════════════════════════════════════════
 
 # ── AI / LLM ──────────────────────────────────────────────────────────────
@@ -13,48 +11,23 @@ openai==2.24.0
 
 # ── Speech Recognition (STT) ──────────────────────────────────────────────
 vosk==0.3.45
-SpeechRecognition==3.10.0
 
 # ── Text-to-Speech (TTS) ──────────────────────────────────────────────────
 edge-tts==7.2.7
-piper-tts==1.4.2
-pyttsx3==2.90
-gTTS==2.5.4
-
-# ── Wake Word Detection ───────────────────────────────────────────────────
-openwakeword==0.6.0
-pvporcupine==3.0.0
+av==16.1.0
 
 # ── ONNX Runtime (КРИТИЧНО: не обновлять!) ────────────────────────────────
 onnxruntime==1.17.3
-
-# ── CTranslate2 (для faster-whisper) ─────────────────────────────────────
-ctranslate2==3.20.0
 
 # ── Audio ─────────────────────────────────────────────────────────────────
 sounddevice==0.5.5
 soundfile==0.13.1
 pygame==2.5.2
-av==16.1.0
 PyAudio==0.2.14
-pydub==0.25.1
-librosa==0.11.0
 
-# ── ML / Numpy (КРИТИЧНО: не обновлять выше 2.0!) ────────────────────────
+# ── ML / Numpy ────────────────────────────────────────────────────────────
 numpy==1.26.4
 scipy==1.13.1
-scikit-learn==1.8.0
-
-# ── HuggingFace ───────────────────────────────────────────────────────────
-huggingface_hub==1.4.1
-transformers==5.2.0
-tokenizers==0.22.2
-safetensors==0.7.0
-
-# ── Google ────────────────────────────────────────────────────────────────
-google-generativeai==0.8.6
-google-genai==1.70.0
-protobuf==5.29.6
 
 # ── Windows-специфичные пакеты ────────────────────────────────────────────
 pywin32==311
@@ -62,31 +35,21 @@ pycaw==20251023
 comtypes==1.4.15
 screen_brightness_control==0.27.0
 pywinauto==0.6.9
-win10toast==0.9
 
 # ── Automation / GUI ──────────────────────────────────────────────────────
 PyAutoGUI==0.9.54
 customtkinter==5.2.2
 Pillow==10.0.1
-opencv-python==4.8.1.78
-mss==10.1.0
 
 # ── File System ───────────────────────────────────────────────────────────
 watchdog==4.0.1
 
+# ── Semantic Search (извлечение текста из документов) ─────────────────────
+pymupdf==1.24.0          # PDF
+python-docx==1.1.2       # DOCX (Word)
+python-pptx==1.0.2       # PPTX (PowerPoint)
+openpyxl==3.1.2          # XLSX заголовки
+
 # ── Utilities ─────────────────────────────────────────────────────────────
 python-dotenv==1.0.0
 psutil==7.2.2
-future==1.0.0
-requests==2.31.0
-beautifulsoup4==4.12.3
-wikipedia==1.4.0
-duckduckgo_search==8.1.1
-pywhatkit==5.4
-appopener==1.7
-loguru==0.7.3
-rich==14.3.3
-tqdm==4.67.3
-PyYAML==6.0.3
-python-dateutil==2.9.0.post0
-pytz==2026.1.post1

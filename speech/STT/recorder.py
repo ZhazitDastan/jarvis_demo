@@ -63,7 +63,7 @@ class Recorder:
         sd.wait()
 
         audio = audio.flatten().astype(np.float32)
-        self.noise_level  = float(np.abs(audio).mean())
+        self.noise_level  = float(np.sqrt(np.mean(audio ** 2)))  # RMS шума
         self.noise_profile = audio  # сохраняем профиль для спектрального вычитания
         self.threshold    = self.noise_level * NOISE_MULTIPLIER
         self._calibrated  = True
@@ -145,11 +145,11 @@ class Recorder:
         # Собираем аудио
         audio_data = np.concatenate(frames_all, axis=0).astype(np.float32)
 
-        # Дополнительная проверка: отклоняем аудио, едва громче фона.
-        # Без этого _normalize() усиливает шум и Whisper галлюцинирует.
+        # Отклоняем аудио, едва громче фона — иначе _normalize() усиливает шум
+        # и Whisper галлюцинирует. Порог 1.3×RMS_шума: речь обычно 3–10× громче.
         rms = float(np.sqrt(np.mean(audio_data ** 2)))
-        if rms < self.noise_level * 1.8:
-            print("  [!] Аудио слишком тихое — пропуск (шум, не речь).")
+        if rms < self.noise_level * 1.3:
+            print(f"  [!] Аудио слишком тихое — пропуск (rms={rms:.0f} < порог={self.noise_level * 1.3:.0f}).")
             return None
 
         # Спектральное вычитание шума
@@ -241,8 +241,8 @@ class Recorder:
         """Нормализует громкость до 80% от максимума.
         Не усиливает сигналы близкие к уровню фонового шума."""
         peak = np.abs(audio).max()
-        # Если после шумоподавления пик ниже 2× шума — усиление только навредит
-        if peak < self.noise_level * 2 or peak == 0:
+        # Если пик ниже 1.5× RMS шума — сигнал слишком близок к фону
+        if peak < self.noise_level * 1.5 or peak == 0:
             return audio
         return audio / peak * 32767 * 0.8
 

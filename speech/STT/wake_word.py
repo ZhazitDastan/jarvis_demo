@@ -212,16 +212,11 @@ def _transcribe_fast(stt, audio: np.ndarray) -> str:
 
 
 def _transcribe_vosk(stt, audio: np.ndarray) -> str:
-    """Транскрипция через Vosk с grammar-ограничением для слов активации."""
+    """Транскрипция через Vosk без грамматики — fuzzy matching на стороне Python."""
     if get_whisper_language() == "ru":
         vosk_model = getattr(stt, "_vosk_model", None)
-        # Ограничиваем словарь: Vosk ищет только эти слова → точнее и быстрее
-        grammar = '["джарвис", "жарвис", "харвис", "ярвис", "шарвис", "дарвис", "марвис", "jarvis", "[unk]"]'
     else:
         vosk_model = getattr(stt, "_vosk_model_en", None)
-        # lgraph-модель не знает "Jarvis" как свободный текст,
-        # но grammar-режим форсирует поиск именно этих слов
-        grammar = '["jarvis", "garvis", "harvey", "jarbis", "marcus", "[unk]"]'
 
     if vosk_model is None:
         print("  [!] Vosk модель не загружена")
@@ -229,7 +224,7 @@ def _transcribe_vosk(stt, audio: np.ndarray) -> str:
     try:
         import json
         from vosk import KaldiRecognizer
-        rec = KaldiRecognizer(vosk_model, SAMPLE_RATE, grammar)
+        rec = KaldiRecognizer(vosk_model, SAMPLE_RATE)
         rec.AcceptWaveform(audio.astype(np.int16).tobytes())
         result = json.loads(rec.FinalResult())
         return result.get("text", "").strip()
