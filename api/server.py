@@ -47,12 +47,71 @@ _file_handler.setFormatter(logging.Formatter(
 ))
 _logger.addHandler(_file_handler)
 
+# ── Переводы лог-сообщений ────────────────────────────────────────────────────
+
+_LOG = {
+    "ru": {
+        "preload_start":    "Предзагрузка моделей...",
+        "tts_ok":           "TTS загружен",
+        "tts_fail":         "TTS не загружен: %s",
+        "brain_ok":         "Brain загружен",
+        "brain_fail":       "Brain не загружен: %s",
+        "stt_ok":           "STT загружен",
+        "stt_fail":         "STT не загружен: %s",
+        "indexer_ok":       "Файловый индексатор запущен",
+        "indexer_fail":     "Файловый индексатор не загружен: %s",
+        "preload_done":     "Предзагрузка завершена",
+        "voice_user":       "Голос | Пользователь: %s",
+        "voice_jarvis":     "Голос | Jarvis: %s",
+        "chat_user":        "Чат  | Пользователь: %s",
+        "chat_jarvis":      "Чат  | Jarvis: %s",
+        "started":          "Jarvis запущен (язык: %s)",
+        "stopped":          "Jarvis остановлен",
+        "audio_restart":    "Аудио-стрим прерван, перезапуск через 2с: %s",
+        "recorder_reinit":  "Переинициализация рекордера: %s",
+        "voice_error":      "Ошибка голосового цикла: %s",
+        "mic_changed":      "Микрофон сменён: [%d] %s",
+        "mic_restarted":    "Голосовой цикл перезапущен с новым микрофоном",
+    },
+    "en": {
+        "preload_start":    "Preloading models...",
+        "tts_ok":           "TTS loaded",
+        "tts_fail":         "TTS failed to load: %s",
+        "brain_ok":         "Brain loaded",
+        "brain_fail":       "Brain failed to load: %s",
+        "stt_ok":           "STT loaded",
+        "stt_fail":         "STT failed to load: %s",
+        "indexer_ok":       "File indexer started",
+        "indexer_fail":     "File indexer failed to load: %s",
+        "preload_done":     "Preloading complete",
+        "voice_user":       "Voice | User: %s",
+        "voice_jarvis":     "Voice | Jarvis: %s",
+        "chat_user":        "Chat  | User: %s",
+        "chat_jarvis":      "Chat  | Jarvis: %s",
+        "started":          "Jarvis started (language: %s)",
+        "stopped":          "Jarvis stopped",
+        "audio_restart":    "Audio stream interrupted, restarting in 2s: %s",
+        "recorder_reinit":  "Recorder reinitialization: %s",
+        "voice_error":      "Voice loop error: %s",
+        "mic_changed":      "Microphone changed: [%d] %s",
+        "mic_restarted":    "Voice loop restarted with new microphone",
+    },
+}
+
+
+def _lm(key: str, *args) -> str:
+    """Возвращает лог-сообщение на активном языке."""
+    lang = getattr(config, "ACTIVE_LANGUAGE", "ru")
+    msg  = _LOG.get(lang, _LOG["ru"]).get(key, key)
+    return msg % args if args else msg
+
+
 import config
 import ai.brain as _brain_module
 from config import set_language, LANGUAGE_PROFILES, get_lang
 from ai.brain import Brain
 from commands import COMMANDS, execute_command
-from speech.TTS.tts_v2 import TTS
+from speech.TTS.tts_v3 import TTS
 import services.events as _events
 from api.files import router as _files_router
 
@@ -60,34 +119,34 @@ from api.files import router as _files_router
 
 def _preload_models():
     """Загружает все модели при старте сервера в фоновом потоке."""
-    _logger.info("Предзагрузка моделей...")
+    _logger.info(_lm("preload_start"))
     try:
         get_tts()
-        _logger.info("TTS загружен")
+        _logger.info(_lm("tts_ok"))
     except Exception as e:
-        _logger.warning("TTS не загружен: %s", e)
+        _logger.warning(_lm("tts_fail", e))
     try:
         if config.OPENAI_API_KEY:
             get_brain()
-            _logger.info("Brain загружен")
+            _logger.info(_lm("brain_ok"))
     except Exception as e:
-        _logger.warning("Brain не загружен: %s", e)
+        _logger.warning(_lm("brain_fail", e))
     try:
         import speech.STT.stt as _stt_mod
         from speech.STT.stt import get_stt
         from utils.ramdisk import setup_vosk_ramdisk
         _stt_mod.VOSK_MODEL_PATH = setup_vosk_ramdisk(_stt_mod.VOSK_MODEL_PATH)
         get_stt()
-        _logger.info("STT загружен")
+        _logger.info(_lm("stt_ok"))
     except Exception as e:
-        _logger.warning("STT не загружен: %s", e)
+        _logger.warning(_lm("stt_fail", e))
     try:
         from database.files.file_indexer import get_indexer
-        get_indexer()   # создаёт синглтон и запускает _auto_build в фоне
-        _logger.info("Файловый индексатор запущен")
+        get_indexer()
+        _logger.info(_lm("indexer_ok"))
     except Exception as e:
-        _logger.warning("Файловый индексатор не загружен: %s", e)
-    _logger.info("Предзагрузка завершена")
+        _logger.warning(_lm("indexer_fail", e))
+    _logger.info(_lm("preload_done"))
 
 
 @asynccontextmanager
@@ -220,83 +279,41 @@ class VoiceRunner:
             tts.speak(get_lang()["ready"])
 
             while not self._stop.is_set():
-                _State.set_status("idle")
-
-                # Шаг 1: Ждём wake word
-                wait_for_wake_word(stt=stt, tts=tts)
-                if self._stop.is_set():
-                    break
-
-                lang = get_lang()
-                _State.emit({"type": "wake_word"})
-                tts.speak(lang["activation"])
-
-                # Шаг 2: Запись команды
-                _State.set_status("listening")
-                audio_path = recorder.record(max_seconds=config.LISTEN_TIMEOUT)
-                if not audio_path or self._stop.is_set():
-                    continue
-
-                _State.set_status("thinking")
-                text = stt.transcribe(audio_path)
-                if not text or len(text.strip()) < 2:
-                    _State.set_status("idle")
-                    continue
-
-                _State.emit({"type": "transcribed", "text": text})
-                _State.add_message("user", text)
-                _logger.info("Голос | Пользователь: %s", text)
-
-                stop_words = lang.get("stop_words", [])
-                if any(w in text.lower() for w in stop_words):
-                    tts.speak(lang.get("stopped", "Хорошо."))
-                    _State.set_status("idle")
-                    continue
-
-                # Шаг 3: GPT → TTS
-                _State.voice_busy = True
                 try:
-                    with _brain_lock:
-                        response = brain.think(text)
-                finally:
-                    _State.voice_busy = False
+                    _State.set_status("idle")
 
-                _logger.info("Голос | Jarvis: %s", response)
-                _State.add_message("assistant", response)
-                _State.emit({"type": "response", "text": response})
-                _State.set_status("speaking")
-                with StopListener(stt, tts):
-                    tts.speak(response)
+                    # Шаг 1: Ждём wake word
+                    wait_for_wake_word(stt=stt, tts=tts, stop_event=self._stop)
+                    if self._stop.is_set():
+                        break
 
-                # Шаг 4: Followup
-                # Пауза 0.6с — даём эху TTS затухнуть, иначе микрофон
-                # подхватывает конец ответа Jarvis как новую команду
-                time.sleep(0.6)
-                followup_end = time.time() + _State.followup_seconds
-                while time.time() < followup_end and not self._stop.is_set():
+                    lang = get_lang()
+                    _State.emit({"type": "wake_word"})
+                    tts.speak(lang["activation"])
+
+                    # Шаг 2: Запись команды
                     _State.set_status("listening")
                     audio_path = recorder.record(max_seconds=config.LISTEN_TIMEOUT)
-                    if not audio_path:
-                        break
+                    if not audio_path or self._stop.is_set():
+                        continue
 
+                    _State.set_status("thinking")
                     text = stt.transcribe(audio_path)
                     if not text or len(text.strip()) < 2:
-                        break
+                        _State.set_status("idle")
+                        continue
 
                     _State.emit({"type": "transcribed", "text": text})
                     _State.add_message("user", text)
+                    _logger.info(_lm("voice_user", text))
 
+                    stop_words = lang.get("stop_words", [])
                     if any(w in text.lower() for w in stop_words):
-                        tts.stop()
-                        break
+                        tts.speak(lang.get("stopped", "Хорошо."))
+                        _State.set_status("idle")
+                        continue
 
-                    if "jarvis" in text.lower():
-                        text = text.lower().replace("jarvis", "").strip()
-                        if not text:
-                            tts.speak(lang["listening"])
-                            continue
-
-                    _State.set_status("thinking")
+                    # Шаг 3: GPT → TTS
                     _State.voice_busy = True
                     try:
                         with _brain_lock:
@@ -304,16 +321,74 @@ class VoiceRunner:
                     finally:
                         _State.voice_busy = False
 
+                    _logger.info(_lm("voice_jarvis", response))
                     _State.add_message("assistant", response)
                     _State.emit({"type": "response", "text": response})
                     _State.set_status("speaking")
                     with StopListener(stt, tts):
                         tts.speak(response)
 
+                    # Шаг 4: Followup
+                    # Пауза 0.6с — даём эху TTS затухнуть, иначе микрофон
+                    # подхватывает конец ответа Jarvis как новую команду
+                    time.sleep(0.6)
                     followup_end = time.time() + _State.followup_seconds
+                    while time.time() < followup_end and not self._stop.is_set():
+                        _State.set_status("listening")
+                        audio_path = recorder.record(max_seconds=config.LISTEN_TIMEOUT)
+                        if not audio_path:
+                            break
+
+                        text = stt.transcribe(audio_path)
+                        if not text or len(text.strip()) < 2:
+                            break
+
+                        _State.emit({"type": "transcribed", "text": text})
+                        _State.add_message("user", text)
+
+                        if any(w in text.lower() for w in stop_words):
+                            tts.stop()
+                            break
+
+                        if "jarvis" in text.lower():
+                            text = text.lower().replace("jarvis", "").strip()
+                            if not text:
+                                tts.speak(lang["listening"])
+                                continue
+
+                        _State.set_status("thinking")
+                        _State.voice_busy = True
+                        try:
+                            with _brain_lock:
+                                response = brain.think(text)
+                        finally:
+                            _State.voice_busy = False
+
+                        _State.add_message("assistant", response)
+                        _State.emit({"type": "response", "text": response})
+                        _State.set_status("speaking")
+                        with StopListener(stt, tts):
+                            tts.speak(response)
+
+                        followup_end = time.time() + _State.followup_seconds
+
+                except Exception as loop_err:
+                    s = str(loop_err)
+                    if "Stream is stopped" in s or "PaErrorCode" in s:
+                        _logger.warning(_lm("audio_restart", loop_err))
+                        _State.set_status("idle")
+                        _State.voice_busy = False
+                        time.sleep(2)
+                        try:
+                            recorder = Recorder()
+                            recorder.calibrate()
+                        except Exception as re:
+                            _logger.warning(_lm("recorder_reinit", re))
+                    else:
+                        raise   # не-аудио ошибки поднимаем наверх
 
         except Exception as e:
-            _logger.error("Ошибка голосового цикла: %s", e)
+            _logger.error(_lm("voice_error", e))
             _State.emit({"type": "error", "message": str(e)})
             _State.is_running = False
             _State.set_status("idle")
@@ -361,14 +436,14 @@ async def start_jarvis():
     if _State.is_running:
         return {"ok": True, "message": "Jarvis уже запущен"}
     _runner.start()
-    _logger.info("Jarvis запущен (язык: %s)", config.ACTIVE_LANGUAGE)
+    _logger.info(_lm("started", config.ACTIVE_LANGUAGE))
     return {"ok": True, "message": "Jarvis запущен"}
 
 
 @app.post("/jarvis/stop")
 async def stop_jarvis():
     _runner.stop()
-    _logger.info("Jarvis остановлен")
+    _logger.info(_lm("stopped"))
     return {"ok": True, "message": "Jarvis остановлен"}
 
 
@@ -406,8 +481,8 @@ async def chat(req: ChatRequest):
 def _chat_sync(text: str, speak: bool) -> str:
     with _brain_lock:
         response = get_brain().think(text)
-    _logger.info("Чат  | Пользователь: %s", text)
-    _logger.info("Чат  | Jarvis: %s", response)
+    _logger.info(_lm("chat_user", text))
+    _logger.info(_lm("chat_jarvis", response))
     _State.add_message("user", text)
     _State.add_message("assistant", response)
     if speak:
@@ -442,7 +517,7 @@ async def reset_chat():
 
 @app.get("/settings")
 async def get_settings():
-    import speech.TTS.tts_v2 as _tts_mod
+    import speech.TTS.tts_v3 as _tts_mod
     import speech.STT.recorder as _rec_mod
     return {
         "language":          config.ACTIVE_LANGUAGE,
@@ -484,7 +559,8 @@ async def update_settings(body: SettingsUpdate):
             raise HTTPException(400, f"Неизвестный язык: {body.language}")
         set_language(body.language)
         with _brain_lock:
-            get_brain().refresh_language()
+            get_brain().reset_history()   # сбрасываем историю — старые сообщения на другом языке путают GPT
+        _State.chat_history.clear()
 
     if body.gpt_model is not None:
         config.GPT_MODEL = body.gpt_model
@@ -506,7 +582,7 @@ async def update_settings(body: SettingsUpdate):
         _State.active_mic_index = body.mic_index
 
     if body.tts_speed is not None:
-        import speech.TTS.tts_v2 as _tts_mod
+        import speech.TTS.tts_v3 as _tts_mod
         _tts_mod.LENGTH_SCALE = body.tts_speed
 
     if body.noise_multiplier is not None:
@@ -582,30 +658,25 @@ async def list_microphones():
 @app.get("/neural")
 async def get_neural():
     import speech.STT.stt as _stt_mod
-    from speech.TTS import tts_v2 as _tts_mod
 
     lang = config.ACTIVE_LANGUAGE
 
-    # STT: Vosk для русского, Whisper для английского
+    # STT: Vosk RU или Vosk EN (Faster-Whisper удалён)
     stt_instance = _stt_mod._instance
     if lang == "ru":
-        model_dir  = config.VOSK_MODEL_DIR
-        model_name = os.path.basename(model_dir)
+        model_name = os.path.basename(config.VOSK_MODEL_DIR)
         stt_loaded = stt_instance is not None and stt_instance._vosk_model is not None
-        stt_info   = {"engine": "Vosk", "model": model_name, "loaded": stt_loaded}
+        stt_info   = {"engine": "Vosk RU", "model": model_name, "loaded": stt_loaded}
     else:
-        model_name = config.WHISPER_MODEL
-        stt_loaded = stt_instance is not None and stt_instance._whisper_model is not None
-        stt_info   = {"engine": "faster-Whisper", "model": model_name, "loaded": stt_loaded}
+        model_name = os.path.basename(config.VOSK_EN_MODEL_DIR)
+        stt_loaded = stt_instance is not None and stt_instance._vosk_model_en is not None
+        stt_info   = {"engine": "Vosk EN", "model": model_name, "loaded": stt_loaded}
 
-    # TTS: всегда Piper
+    # TTS: Edge TTS (Microsoft Azure Neural, бесплатно)
     tts_instance = _tts
-    voice_models = {
-        "ru": "ru_RU-ruslan-medium",
-        "en": "en_US-ryan-high",
-    }
-    tts_loaded = tts_instance is not None and tts_instance._voice is not None
-    tts_info   = {"engine": "Piper", "model": voice_models.get(lang, "—"), "loaded": tts_loaded}
+    voice_names  = {"ru": "ru-RU-DmitryNeural", "en": "en-GB-RyanNeural"}
+    tts_loaded   = tts_instance is not None
+    tts_info     = {"engine": "Edge TTS", "model": voice_names.get(lang, "—"), "loaded": tts_loaded}
 
     return {"stt": stt_info, "tts": tts_info}
 
@@ -696,11 +767,11 @@ async def set_active_microphone(body: MicUpdate):
 
         _State.active_mic_index = idx
         mic_name = devices[idx]["name"]
-        _logger.info("Микрофон сменён: [%d] %s", idx, mic_name)
+        _logger.info(_lm("mic_changed", idx, mic_name))
 
         if was_running:
             _runner.start()
-            _logger.info("Голосовой цикл перезапущен с новым микрофоном")
+            _logger.info(_lm("mic_restarted"))
 
         return {
             "ok":          True,

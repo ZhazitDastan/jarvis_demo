@@ -1,30 +1,30 @@
 COMMAND_NAME = "show_overlay"
 DESCRIPTION = (
-    "Показать панель/оверлей на экране. / Show an overlay panel on screen. "
+    "Показать или закрыть панель/оверлей на экране. / Show or close an overlay panel. "
 
     "MODES (use in 'mode' field): "
-    "logs     — логи / logs / журнал / журнал событий; "
-    "chat     — чат / история чата / история / chat / chat history; "
-    "files    — файлы / результаты поиска / найденные файлы / files / search results; "
-    "settings — настройки / параметры / settings / preferences. "
+    "logs     — логи / logs / журнал; "
+    "chat     — чат / история чата / chat history; "
+    "files    — файлы / результаты поиска / files / search results; "
+    "settings — настройки / параметры / settings; "
+    "close    — закрыть / скрыть / убери панель / close / hide / dismiss. "
 
     "RU examples: "
     "'покажи логи' → mode=logs; "
-    "'открой историю чата' → mode=chat; "
-    "'покажи найденные файлы' → mode=files; "
-    "'открой настройки' → mode=settings. "
+    "'открой настройки' → mode=settings; "
+    "'закрой панель' → mode=close; "
+    "'убери оверлей' → mode=close. "
 
     "EN examples: "
     "'show logs' → mode=logs; "
-    "'open chat history' → mode=chat; "
-    "'show search results' → mode=files; "
-    "'open settings' → mode=settings."
+    "'close panel' → mode=close; "
+    "'hide overlay' → mode=close."
 )
 PARAMETERS = {
     "mode": {
         "type": "string",
-        "description": "logs | chat | files | settings",
-        "enum": ["logs", "chat", "files", "settings"],
+        "description": "logs | chat | files | settings | close",
+        "enum": ["logs", "chat", "files", "settings", "close"],
     },
 }
 REQUIRED = ["mode"]
@@ -34,6 +34,7 @@ _RESPONSES_RU = {
     "chat":     "Открываю историю чата.",
     "files":    "Открываю результаты поиска.",
     "settings": "Открываю настройки.",
+    "close":    "Закрываю панель.",
 }
 
 _RESPONSES_EN = {
@@ -41,6 +42,7 @@ _RESPONSES_EN = {
     "chat":     "Opening chat history.",
     "files":    "Opening search results.",
     "settings": "Opening settings.",
+    "close":    "Closing panel.",
 }
 
 
@@ -48,7 +50,10 @@ def handler(mode: str) -> str:
     from services.events import emit
     import config
 
-    emit({"type": "show_overlay", "mode": mode})
+    if mode == "close":
+        emit({"type": "close_overlay"})
+    else:
+        emit({"type": "show_overlay", "mode": mode})
 
     is_en = getattr(config, "ACTIVE_LANGUAGE", "ru") == "en"
     responses = _RESPONSES_EN if is_en else _RESPONSES_RU

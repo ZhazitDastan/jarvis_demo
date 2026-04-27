@@ -30,10 +30,14 @@ _spec.loader.exec_module(_reg)
 
 
 def handler(app: str) -> str:
+    import config
+    en = getattr(config, "ACTIVE_LANGUAGE", "ru") == "en"
+
     key = _reg.resolve(app)
     if key is None:
         known = ", ".join(sorted(_reg.APP_REGISTRY.keys()))
-        return f"Не знаю приложение «{app}». Доступны: {known}"
+        return (f"Unknown app '{app}'. Available: {known}" if en
+                else f"Не знаю приложение «{app}». Доступны: {known}")
 
     entry = _reg.APP_REGISTRY[key]
     cmd = entry["open"]
@@ -41,11 +45,11 @@ def handler(app: str) -> str:
 
     try:
         subprocess.Popen(cmd, shell=shell)
-        return f"Открываю {key}"
+        return f"Opening {key}" if en else f"Открываю {key}"
     except FileNotFoundError:
-        # Попытка через shell если прямой путь не найден
         try:
             subprocess.Popen(cmd, shell=True)
-            return f"Открываю {key}"
+            return f"Opening {key}" if en else f"Открываю {key}"
         except Exception as e:
-            return f"Не удалось открыть {key}: {e}"
+            return (f"Failed to open {key}: {e}" if en
+                    else f"Не удалось открыть {key}: {e}")

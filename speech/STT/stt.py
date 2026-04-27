@@ -1,20 +1,23 @@
 """
 stt.py — Speech-to-Text с автовыбором движка по языку
 
-  Русский  → Vosk (оффлайн, быстро, не требует torch)
-  Английский → faster-whisper (точнее для английского)
+  RU / EN  → OpenAI Whisper API (основной, точный)
+  RU       → Vosk RU (оффлайн fallback + wake word)
+  EN       → Vosk EN (оффлайн fallback + wake word)
 
 Модели:
-  models/vosk-ru/   ← русская Vosk модель
+  models/vosk-model-small-ru-0.22/        ← русская Vosk модель
+  models/vosk-model-en-us-0.22-lgraph/    ← английская Vosk модель
 """
 
 import os
 import re
 import wave
 import json
-from config import WHISPER_MODEL, VOSK_MODEL_DIR, get_whisper_language
+from config import VOSK_MODEL_DIR, VOSK_EN_MODEL_DIR, get_whisper_language, OPENAI_API_KEY
 
-VOSK_MODEL_PATH = VOSK_MODEL_DIR
+VOSK_MODEL_PATH    = VOSK_MODEL_DIR
+VOSK_EN_MODEL_PATH = VOSK_EN_MODEL_DIR
 
 _instance: 'STT | None' = None
 
@@ -61,101 +64,128 @@ def _is_repetitive(text: str, max_repeat: int = 3) -> bool:
     return False
 
 _PROMPTS = {
-    "ru": (
-        "Голосовая команда ассистенту Jarvis. "
-        "Короткая фраза или вопрос на русском. "
-        "Например: открой браузер, который час, выключи компьютер."
-    ),
-    "en": (
-        "Short voice command to Jarvis. "
-        "Examples: open browser, what time is it, shut down."
-    ),
+    # НЕ давай примеры команд — Whisper галлюцинирует их на тишине/шуме.
+    # Нейтральный стиль-промпт без конкретных фраз.
+    "ru": "Голосовая команда на русском языке.",
+    "en": "Short voice command in English.",
 }
 
-_FAST_THRESHOLD_SEC = 3.0
+
+
+def _detect_lang(text: str) -> str:
+    """Определяет язык по доле кириллицы в тексте: 'ru' или 'en'."""
+    if not text:
+        return "?"
+    cyrillic = sum(1 for c in text if "Ѐ" <= c <= "ӿ")
+    return "ru" if cyrillic / max(len(text), 1) > 0.25 else "en"
 
 
 class STT:
     def __init__(self):
-        self._vosk_model    = None
-        self._whisper_model = None
+        self._vosk_model    = None   # Vosk RU
+        self._vosk_model_en = None   # Vosk EN
         self._load_models()
 
     def _load_models(self):
-        lang = get_whisper_language()
-        if lang == "ru":
-            self._load_vosk()
-            self._load_whisper(silent=True)   # тихий fallback
-        else:
-            self._load_whisper()
+        self._load_vosk_ru()
+        self._load_vosk_en()
 
-    # ── Vosk ──────────────────────────────────────────────────────────────────
+    # ── Vosk RU ───────────────────────────────────────────────────────────────
 
-    def _load_vosk(self):
+    def _load_vosk_ru(self):
         try:
             from vosk import Model, SetLogLevel
             SetLogLevel(-1)
-
             if not os.path.exists(VOSK_MODEL_PATH):
-                print(f"    [!] Vosk модель не найдена: {VOSK_MODEL_PATH}")
+                print(f"    [!] Vosk RU модель не найдена: {VOSK_MODEL_PATH}")
                 return
-
-            print(f"    → Загрузка Vosk...", end="", flush=True)
+            print(f"    → Загрузка Vosk RU...", end="", flush=True)
             self._vosk_model = Model(VOSK_MODEL_PATH)
             print(" ✓")
-
         except ImportError:
             print("    [!] vosk не установлен: pip install vosk")
         except Exception as e:
-            print(f"    [!] Ошибка загрузки Vosk: {e}")
+            print(f"    [!] Ошибка загрузки Vosk RU: {e}")
 
-    # ── Whisper ───────────────────────────────────────────────────────────────
+    # ── Vosk EN ───────────────────────────────────────────────────────────────
 
-    def _load_whisper(self, silent=False):
+    def _load_vosk_en(self):
         try:
-            from faster_whisper import WhisperModel
-
-            local_path = os.path.join("models", f"whisper-{WHISPER_MODEL}")
-            model_path = local_path if os.path.exists(local_path) else WHISPER_MODEL
-
-            if not silent:
-                print(f"    → Загрузка Whisper '{model_path}'...", end="", flush=True)
-
-            self._whisper_model = WhisperModel(
-                model_path,
-                device="cpu",
-                compute_type="int8",
-                cpu_threads=4,
-                num_workers=2,
-            )
-            if not silent:
-                print(" ✓")
-
-        except (ImportError, OSError) as e:
-            if not silent:
-                print(f"    [!] Whisper не загружен: {e}")
-                print(f"    [~] Для исправления: pip install torch --index-url https://download.pytorch.org/whl/cpu")
+            from vosk import Model, SetLogLevel
+            SetLogLevel(-1)
+            if not os.path.exists(VOSK_EN_MODEL_PATH):
+                print(f"    [!] Vosk EN модель не найдена: {VOSK_EN_MODEL_PATH}")
+                return
+            print(f"    → Загрузка Vosk EN...", end="", flush=True)
+            self._vosk_model_en = Model(VOSK_EN_MODEL_PATH)
+            print(" ✓")
+        except ImportError:
+            pass   # vosk уже проверен в _load_vosk_ru
         except Exception as e:
-            if not silent:
-                print(f"    [!] Ошибка загрузки Whisper: {e}")
+            print(f"    [!] Ошибка загрузки Vosk EN: {e}")
 
     # ── Публичный метод ───────────────────────────────────────────────────────
 
     def transcribe(self, audio_path: str) -> str:
-        lang = get_whisper_language()
+        if OPENAI_API_KEY:
+            return self._transcribe_openai(audio_path)
 
+        # Fallback на Vosk если нет ключа
+        lang = get_whisper_language()
         if lang == "ru" and self._vosk_model:
             return self._transcribe_vosk(audio_path)
-        if self._whisper_model:
-            return self._transcribe_whisper(audio_path)
+        if self._vosk_model_en:
+            return self._transcribe_vosk_en(audio_path)
 
-        print("  [!] Нет доступных STT моделей")
+        print("  [!] Нет OpenAI ключа и Vosk моделей")
         self._safe_delete(audio_path)
         return ""
 
-    # ── Vosk транскрипция ─────────────────────────────────────────────────────
+    # ── OpenAI Whisper API ────────────────────────────────────────────────────
+
+    def _transcribe_openai(self, audio_path: str) -> str:
+        try:
+            from openai import OpenAI
+            client = OpenAI(api_key=OPENAI_API_KEY)
+            lang   = get_whisper_language()
+
+            with open(audio_path, "rb") as f:
+                result = client.audio.transcriptions.create(
+                    model="whisper-1",
+                    file=f,
+                    # language не указываем → Whisper сам определяет RU/EN по речи
+                    prompt=_PROMPTS.get(lang, _PROMPTS["en"]),
+                    timeout=8.0,
+                )
+
+            text = self._clean(result.text.strip())
+            if text:
+                detected = _detect_lang(text)
+                print(f"  [STT/openai] «{text}» [{detected}]")
+            return text
+
+        except Exception as e:
+            print(f"  [!] OpenAI Whisper error / ошибка: {e}")
+            lang = get_whisper_language()
+            if lang == "ru" and self._vosk_model:
+                return self._transcribe_vosk(audio_path)
+            if self._vosk_model_en:
+                return self._transcribe_vosk_en(audio_path)
+            return ""
+        finally:
+            self._safe_delete(audio_path)
+
+    # ── Vosk RU транскрипция ──────────────────────────────────────────────────
 
     def _transcribe_vosk(self, audio_path: str) -> str:
+        return self._transcribe_vosk_model(audio_path, self._vosk_model, "ru")
+
+    # ── Vosk EN транскрипция ──────────────────────────────────────────────────
+
+    def _transcribe_vosk_en(self, audio_path: str) -> str:
+        return self._transcribe_vosk_model(audio_path, self._vosk_model_en, "en")
+
+    def _transcribe_vosk_model(self, audio_path: str, model, lang_tag: str) -> str:
         try:
             from vosk import KaldiRecognizer
 
@@ -169,91 +199,24 @@ class STT:
             if sample_rate != 16000:
                 audio_data = self._resample(audio_data, sample_rate, 16000)
 
-            rec = KaldiRecognizer(self._vosk_model, 16000)
+            rec = KaldiRecognizer(model, 16000)
             rec.AcceptWaveform(audio_data)
 
             result = json.loads(rec.FinalResult())
             text   = result.get("text", "").strip()
 
             if text:
-                print(f"  [STT/vosk] «{text}»")
+                print(f"  [STT/vosk] «{text}» [{lang_tag}]")
             return self._clean(text)
 
         except Exception as e:
-            print(f"  [!] Vosk ошибка: {e}")
-            if self._whisper_model:
-                print("  [~] Переключаюсь на Whisper...")
-                return self._transcribe_whisper(audio_path)
-            return ""
-        finally:
-            self._safe_delete(audio_path)
-
-    # ── Whisper транскрипция ──────────────────────────────────────────────────
-
-    def _transcribe_whisper(self, audio_path: str) -> str:
-        try:
-            lang      = get_whisper_language()
-            prompt    = _PROMPTS.get(lang, _PROMPTS["en"])
-            duration  = self._get_duration(audio_path)
-            fast_mode = duration < _FAST_THRESHOLD_SEC
-
-            segments, info = self._whisper_model.transcribe(
-                audio_path,
-                language=lang,
-                beam_size=1 if fast_mode else 5,
-                best_of=1 if fast_mode else 5,
-                temperature=0.0 if fast_mode else [0.0, 0.1, 0.2],
-                condition_on_previous_text=False,
-                repetition_penalty=1.2,
-                log_prob_threshold=-1.0,
-                no_speech_threshold=0.6,
-                # vad_filter отключён — recorder уже отфильтровал тишину через webrtcvad
-                vad_filter=False,
-                initial_prompt=prompt,
-                suppress_blank=True,
-            )
-
-            # Предупреждение если Whisper думает что другой язык (не отклоняем — язык задан явно)
-            if info.language != lang and info.language_probability > 0.85:
-                print(f"  [STT/whisper] предупреждение: детектирован {info.language} "
-                      f"({info.language_probability:.0%}), ожидался {lang}")
-
-            parts = []
-            for seg in segments:
-                if seg.avg_logprob < -1.2:
-                    print(f"  [STT/whisper] сегмент отброшен (низкий logprob {seg.avg_logprob:.2f}): «{seg.text.strip()}»")
-                    continue
-                if seg.no_speech_prob > 0.7:
-                    print(f"  [STT/whisper] сегмент отброшен (no_speech {seg.no_speech_prob:.2f}): «{seg.text.strip()}»")
-                    continue
-                parts.append(seg.text)
-
-            raw = " ".join(parts).strip()
-            if not raw:
-                print(f"  [STT/whisper] Whisper вернул пустой результат (аудио {duration:.1f}с)")
-                return ""
-
-            text = self._clean(raw)
-            if text:
-                mode = "fast" if fast_mode else "precise"
-                print(f"  [STT/whisper-{mode}] «{text}»  "
-                      f"[{info.language} {info.language_probability:.0%}]")
-            return text
-
-        except Exception as e:
-            print(f"  [!] Whisper ошибка: {e}")
+            print(f"  [!] Vosk error / ошибка: {e}")
             return ""
         finally:
             self._safe_delete(audio_path)
 
     # ── Утилиты ───────────────────────────────────────────────────────────────
 
-    def _get_duration(self, path: str) -> float:
-        try:
-            with wave.open(path, "rb") as wf:
-                return wf.getnframes() / wf.getframerate()
-        except Exception:
-            return 5.0
 
     def _stereo_to_mono(self, data: bytes, channels: int) -> bytes:
         import numpy as np

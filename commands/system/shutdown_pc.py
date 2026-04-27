@@ -25,5 +25,5 @@ def handler(action: str = "shutdown") -> str:
     if action not in _ACTIONS:
         return f"Неизвестное действие '{action}'. Используй: shutdown, restart или sleep."
     cmd, message = _ACTIONS[action]
-    subprocess.Popen(cmd)
+    # subprocess.Popen(cmd)  # временно отключено
     return message

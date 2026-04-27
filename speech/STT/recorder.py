@@ -99,7 +99,12 @@ class Recorder:
         ) as stream:
 
             while total_chunks < max_chunks:
-                chunk, _ = stream.read(self.chunk_size)
+                try:
+                    chunk, _ = stream.read(self.chunk_size)
+                except Exception as e:
+                    if "Stream is stopped" in str(e) or "PaErrorCode" in str(e):
+                        return None   # аудиоустройство отключилось, выходим чисто
+                    raise
                 chunk    = chunk.flatten()
                 energy   = float(np.abs(chunk).mean())
                 total_chunks += 1
@@ -134,16 +139,23 @@ class Recorder:
 
         print()
 
-        if not frames_all or speech_frames < 2:
+        if not frames_all or speech_frames < 3:
             return None
 
         # Собираем аудио
         audio_data = np.concatenate(frames_all, axis=0).astype(np.float32)
 
+        # Дополнительная проверка: отклоняем аудио, едва громче фона.
+        # Без этого _normalize() усиливает шум и Whisper галлюцинирует.
+        rms = float(np.sqrt(np.mean(audio_data ** 2)))
+        if rms < self.noise_level * 1.8:
+            print("  [!] Аудио слишком тихое — пропуск (шум, не речь).")
+            return None
+
         # Спектральное вычитание шума
         audio_data = self._denoise(audio_data)
 
-        # Нормализация громкости (чтобы Whisper лучше слышал тихую речь)
+        # Нормализация громкости (только если сигнал значительно выше шума)
         audio_data = self._normalize(audio_data)
 
         # Конвертируем обратно в int16
@@ -226,11 +238,13 @@ class Recorder:
             return audio
 
     def _normalize(self, audio: np.ndarray) -> np.ndarray:
-        """Нормализует громкость до 80% от максимума."""
+        """Нормализует громкость до 80% от максимума.
+        Не усиливает сигналы близкие к уровню фонового шума."""
         peak = np.abs(audio).max()
-        if peak > 0:
-            audio = audio / peak * 32767 * 0.8
-        return audio
+        # Если после шумоподавления пик ниже 2× шума — усиление только навредит
+        if peak < self.noise_level * 2 or peak == 0:
+            return audio
+        return audio / peak * 32767 * 0.8
 
     def _save_wav(self, audio: np.ndarray) -> str:
         tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)

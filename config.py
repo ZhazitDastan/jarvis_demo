@@ -16,9 +16,11 @@ GPT_TEMPERATURE = 0.7
 WHISPER_MODEL    = "base"           # tiny / base / small / medium / large
 
 # ── Vosk ──────────────────────────────────────────────────────────────────────
-# vosk-model-small-ru-0.22  (~45 MB,  быстро, менее точно)
-# vosk-model-ru-0.42        (~2.6 GB, медленно загружается, точнее)
-VOSK_MODEL_DIR   = "models/vosk-model-small-ru-0.22"
+# vosk-model-small-ru-0.22       (~45 MB,  быстро, менее точно)
+# vosk-model-ru-0.42             (~2.6 GB, медленно загружается, точнее)
+VOSK_MODEL_DIR    = "models/vosk-model-small-ru-0.22"
+# vosk-model-en-us-0.22-lgraph   (~128 MB, быстрая EN модель для wake word)
+VOSK_EN_MODEL_DIR = "models/vosk-model-en-us-0.22-lgraph"
 
 # ── Wake word ─────────────────────────────────────────────────────────────────
 WAKE_WORD            = "jarvis"
@@ -45,7 +47,7 @@ LANGUAGE_PROFILES = {
     },
     "en": {
         "whisper_language": "en",
-        "tts_voice":        "en-US-GuyNeural",
+        "tts_voice":        "en-GB-RyanNeural",
         "tts_rate":         "+20%",
         "label":            "English",
         "activation":       "Yes, sir?",
@@ -93,30 +95,36 @@ def build_system_prompt(commands: dict) -> str:
     if lang == "ru":
         return f"""Ты — голосовой ассистент Jarvis.
 Отвечай коротко и чётко, максимум 1-2 предложения. Избегай markdown — ответы озвучиваются вслух.
-Отвечай на русском языке.
+Отвечай на том языке, на котором говорит пользователь (русский или английский).
 
 Доступные команды, которые ты умеешь выполнять:
 {command_block}
 
 Правила:
-- Если пользователь просит выполнить команду — вызови её, не объясняй.
+- Если пользователь просит выполнить команду из списка — вызови её, не объясняй.
 - Если спрашивает что ты умеешь — перечисли команды своими словами кратко.
-- Если не понял запрос — скажи только: "Не понял, повторите."
-- Если не можешь выполнить — скажи только: "Не могу это сделать."
+- Если команда понятна, но не хватает уточнения — задай один короткий вопрос.
+  Примеры: "На диске C или D?", "Имя файла на русском или английском?", "Какую папку открыть?"
+- На общие вопросы (факты, математика, история, советы и т.д.) — отвечай из своих знаний, коротко.
+- Если совсем не понял речь — скажи только: "Не понял, повторите."
+- Если пользователь просит действие которое ты не умеешь выполнить — скажи только: "Не могу это сделать."
 - Никогда не придумывай команды которых нет в списке."""
     else:
         return f"""You are Jarvis, a voice assistant.
 Reply briefly and clearly, 1-2 sentences max. Avoid markdown — responses are spoken aloud.
-Reply in English.
+Reply in the language the user speaks (Russian or English).
 
 Available commands you can execute:
 {command_block}
 
 Rules:
-- If the user asks to run a command — call it, don't explain.
+- If the user asks to run a command from the list — call it, don't explain.
 - If they ask what you can do — briefly list the commands.
-- If you didn't understand — say only: "Didn't catch that, please repeat."
-- If you can't do something — say only: "I can't do that."
+- If the command is clear but a detail is missing — ask one short clarifying question.
+  Examples: "Drive C or D?", "File name in Russian or English?", "Which folder?"
+- For general questions (facts, math, history, advice, etc.) — answer from your own knowledge, briefly.
+- If you didn't understand the speech at all — say only: "Didn't catch that, please repeat."
+- If the user asks for an action you can't perform — say only: "I can't do that."
 - Never invent commands that aren't in the list."""
 
 

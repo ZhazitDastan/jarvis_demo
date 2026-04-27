@@ -1,8 +1,21 @@
+import ctypes
 import sys
 import importlib.util
 import pathlib
 import subprocess
 import os
+
+
+def _open_foreground(path: str) -> None:
+    try:
+        ctypes.windll.user32.AllowSetForegroundWindow(0xFFFFFFFF)
+    except Exception:
+        pass
+    subprocess.Popen(
+        f'start "" "{path}"',
+        shell=True,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
 
 _BLOCKED_EXTS = {".exe", ".bat", ".cmd", ".com", ".msi", ".ps1",
                  ".vbs", ".wsf", ".scr", ".pif", ".cpl", ".hta"}
@@ -65,15 +78,21 @@ def handler(number: int, action: str = "open") -> str:
     try:
         if action == "folder":
             if item.get("category") == "folder":
-                # Сама папка — открываем её напрямую
-                os.startfile(path)
+                _open_foreground(path)
                 return f"Открываю папку «{name}»."
             else:
-                # Файл — открываем родительскую папку с выделением файла
-                subprocess.Popen(f'explorer /select,"{path}"', shell=True)
+                try:
+                    ctypes.windll.user32.AllowSetForegroundWindow(0xFFFFFFFF)
+                except Exception:
+                    pass
+                subprocess.Popen(
+                    f'explorer /select,"{path}"',
+                    shell=True,
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                )
                 return f"Открываю папку с файлом «{name}»."
         else:
-            os.startfile(path)
+            _open_foreground(path)
             return f"Открываю «{name}»."
     except Exception as e:
         return f"Не удалось открыть «{name}»: {e}"

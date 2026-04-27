@@ -12,7 +12,6 @@
 openai==2.24.0
 
 # ── Speech Recognition (STT) ──────────────────────────────────────────────
-faster-whisper==0.10.0
 vosk==0.3.45
 SpeechRecognition==3.10.0
 

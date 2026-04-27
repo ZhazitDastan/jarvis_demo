@@ -4,6 +4,7 @@ api/files.py — роуты для поиска и открытия файлов
 """
 
 import asyncio
+import ctypes
 import os
 import pathlib
 import subprocess
@@ -11,6 +12,25 @@ import threading
 
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
+
+
+def _open_foreground(path: str) -> None:
+    """Открывает файл и выводит окно на передний план.
+
+    os.startfile() из фонового сервиса не получает право на смену фокуса —
+    Windows блокирует это (focus stealing prevention). Решение:
+    1. AllowSetForegroundWindow(ASFW_ANY) — разрешаем любому процессу вынести окно вперёд
+    2. cmd /c start "" — запускает файл в новом процессе с правами на foreground
+    """
+    try:
+        ctypes.windll.user32.AllowSetForegroundWindow(0xFFFFFFFF)  # ASFW_ANY
+    except Exception:
+        pass
+    subprocess.Popen(
+        f'start "" "{path}"',
+        shell=True,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
 
 _BLOCKED_EXTS = {".exe", ".bat", ".cmd", ".com", ".msi", ".ps1",
                  ".vbs", ".wsf", ".scr", ".pif", ".cpl", ".hta"}
@@ -71,13 +91,20 @@ async def file_open(req: FileOpenRequest):
     try:
         if req.action == "folder":
             if os.path.isdir(req.path):
-                # Папка — открываем её напрямую
-                os.startfile(req.path)
+                _open_foreground(req.path)
             else:
                 # Файл — открываем родительскую папку с выделением файла
-                subprocess.Popen(f'explorer /select,"{req.path}"', shell=True)
+                try:
+                    ctypes.windll.user32.AllowSetForegroundWindow(0xFFFFFFFF)
+                except Exception:
+                    pass
+                subprocess.Popen(
+                    f'explorer /select,"{req.path}"',
+                    shell=True,
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                )
         else:
-            os.startfile(req.path)
+            _open_foreground(req.path)
         return {"ok": True}
     except Exception as e:
         raise HTTPException(500, str(e))

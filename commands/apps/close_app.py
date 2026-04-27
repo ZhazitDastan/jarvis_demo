@@ -32,9 +32,13 @@ _spec.loader.exec_module(_reg)
 
 
 def handler(app: str, force: bool = False) -> str:
+    import config
+    en = getattr(config, "ACTIVE_LANGUAGE", "ru") == "en"
+
     key = _reg.resolve(app)
     if key is None:
-        return f"Не знаю приложение «{app}»."
+        return (f"Unknown app '{app}'." if en
+                else f"Не знаю приложение «{app}».")
 
     process = _reg.APP_REGISTRY[key]["process"]
     flags = ["/F"] if force else []
@@ -45,15 +49,15 @@ def handler(app: str, force: bool = False) -> str:
     )
 
     if result.returncode == 0:
-        return f"{key} закрыт"
+        return f"{key} closed" if en else f"{key} закрыт"
     if "not found" in result.stderr.lower() or "не найден" in result.stderr:
-        return f"{key} не запущен"
-    # Повтор с /F если без него не получилось
+        return f"{key} is not running" if en else f"{key} не запущен"
     if not force:
         result2 = subprocess.run(
             ["taskkill", "/F", "/IM", process],
             capture_output=True, text=True,
         )
         if result2.returncode == 0:
-            return f"{key} принудительно закрыт"
-    return f"Не удалось закрыть {key}: {result.stderr.strip()}"
+            return f"{key} force closed" if en else f"{key} принудительно закрыт"
+    return (f"Failed to close {key}: {result.stderr.strip()}" if en
+            else f"Не удалось закрыть {key}: {result.stderr.strip()}")

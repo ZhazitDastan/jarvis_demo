@@ -10,7 +10,11 @@ from commands import COMMANDS, execute_command, build_tools_schema
 
 class Brain:
     def __init__(self):
-        self.client = OpenAI(api_key=OPENAI_API_KEY)
+        self.client = OpenAI(
+            api_key=OPENAI_API_KEY,
+            timeout=15.0,    # не висеть при нестабильном интернете
+            max_retries=1,   # 1 повтор при обрыве, потом ошибка
+        )
         self.history: list = []
         self._rebuild_system()
         print("    ✓ OpenAI подключён")

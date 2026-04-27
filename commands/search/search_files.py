@@ -5,12 +5,16 @@ import config
 
 COMMAND_NAME = "search_files"
 DESCRIPTION = (
-    "Search for files and folders on the computer. / Поиск файлов и папок на компьютере. "
+    "Search for files and folders on the computer. "
+    "/ Поиск файлов и папок на компьютере. "
+
+    "RU triggers (call this command for): найди, ищи, поищи, поиск, найти, где файл, открой файл. "
+    "EN triggers: find, search for, look for, locate, where is my file. "
 
     "CATEGORIES (use in 'category' field): "
     "folder — папка/каталог/folder/directory; "
     "document — документ/ворд/word/pdf/таблица/excel/презентация/powerpoint; "
-    "photo — фото/фотографии/картинки/photo/picture/image; "
+    "photo — фото/фотографии/картинки/скриншот/скрин/screenshot/photo/picture/image; "
     "video — видео/фильм/video/movie/film; "
     "music — музыка/песни/треки/music/song/audio/mp3; "
     "archive — архив/archive/zip/rar; "
@@ -18,19 +22,29 @@ DESCRIPTION = (
 
     "DATE filter (date_filter): today, week, month, year. "
     "SIZE filter (size_filter): small (<1MB), medium (1-100MB), large (>100MB). "
+    "DRIVE filter (drive): letter only, no colon — e.g. D, E, F. "
 
     "RU examples: "
     "'найди папку диплом' → category=folder query=диплом; "
+    "'ищи файл диплом' → query=диплом; "
+    "'ищи папку' → category=folder; "
+    "'поищи скриншот' → category=photo query=скриншот; "
     "'найди ворд документы' → category=document extension=docx; "
     "'найди музыку за месяц' → category=music date_filter=month; "
-    "'найди большие видео' → category=video size_filter=large. "
+    "'найди большие видео' → category=video size_filter=large; "
+    "'ищи в диске д' → drive=D; "
+    "'найди диплом на диске д' → query=диплом drive=D; "
+    "'ищи файл на диске е' → drive=E. "
 
     "EN examples: "
     "'find my word documents' → category=document extension=docx; "
-    "'find music from this week' → category=music date_filter=week; "
+    "'search for music from this week' → category=music date_filter=week; "
     "'find large video files' → category=video size_filter=large; "
     "'find folder diploma' → category=folder query=diploma; "
-    "'find photos' → category=photo."
+    "'search for screenshots' → category=photo query=screenshot; "
+    "'find photos' → category=photo; "
+    "'search on drive D' → drive=D; "
+    "'find diploma on drive D' → query=diploma drive=D."
 )
 PARAMETERS = {
     "query": {
@@ -42,7 +56,7 @@ PARAMETERS = {
         "description": (
             "folder, document, photo, video, music, archive, code. "
             "Алиасы: папка/folder, ворд/word/документ/document, "
-            "фото/photo, видео/video, музыка/music, архив/archive, код/code"
+            "скриншот/screenshot→photo, фото/photo, видео/video, музыка/music, архив/archive, код/code"
         ),
         "enum": ["folder", "document", "photo", "video", "music", "archive", "code"],
     },
@@ -59,6 +73,14 @@ PARAMETERS = {
         "type": "string",
         "description": "small (до 1МБ), medium (1-100МБ), large (свыше 100МБ)",
         "enum": ["small", "medium", "large"],
+    },
+    "drive": {
+        "type": "string",
+        "description": (
+            "Буква диска для поиска (без двоеточия). Примеры: D, E, F. "
+            "RU: 'ищи в диске д' → D; 'на диске е' → E. "
+            "EN: 'on drive D' → D; 'search drive E' → E."
+        ),
     },
 }
 REQUIRED = []
@@ -90,10 +112,13 @@ _ALIASES: list[tuple[str, str, str]] = [
     # Документы (общее)
     ("документ",    "document", ""),
     ("document",    "document", ""),
-    # Фото
+    # Фото / Скриншоты
     ("фото",        "photo",    ""),
     ("картинк",     "photo",    ""),
     ("изображени",  "photo",    ""),
+    ("скриншот",    "photo",    ""),
+    ("скрин",       "photo",    ""),
+    ("screenshot",  "photo",    ""),
     ("photo",       "photo",    ""),
     ("picture",     "photo",    ""),
     ("image",       "photo",    ""),
@@ -145,60 +170,6 @@ def _auto_detect(query: str, category: str, extension: str):
     return clean_query, detected_cat, detected_ext
 
 
-# ── Транслитерация (RU ↔ EN) ──────────────────────────────────────────────────
-
-_RU_TO_EN = {
-    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo',
-    'ж':'zh','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m',
-    'н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u',
-    'ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch',
-    'ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya',
-}
-
-_EN_TO_RU = [
-    ('shch','щ'),('sch','щ'),('zh','ж'),('kh','х'),('ts','ц'),
-    ('ch','ч'),('sh','ш'),('yu','ю'),('ya','я'),('yo','ё'),
-    ('a','а'),('b','б'),('v','в'),('g','г'),('d','д'),('e','е'),
-    ('z','з'),('i','и'),('y','й'),('k','к'),('l','л'),('m','м'),
-    ('n','н'),('o','о'),('p','п'),('r','р'),('s','с'),('t','т'),
-    ('u','у'),('f','ф'),('h','х'),
-]
-
-
-def _to_latin(text: str) -> str:
-    return ''.join(_RU_TO_EN.get(c.lower(), c) for c in text)
-
-
-def _to_cyrillic(text: str) -> str:
-    result = text.lower()
-    for lat, cyr in _EN_TO_RU:
-        result = result.replace(lat, cyr)
-    return result
-
-
-def _has_cyrillic(text: str) -> bool:
-    return any('Ѐ' <= c <= 'ӿ' for c in text)
-
-
-def _has_latin(text: str) -> bool:
-    return any('a' <= c.lower() <= 'z' for c in text)
-
-
-def _query_variants(query: str) -> list[str]:
-    """Возвращает [оригинал, транслитерация] если скрипты разные."""
-    if not query:
-        return [query]
-    variants = [query]
-    if _has_cyrillic(query):
-        lat = _to_latin(query)
-        if lat != query:
-            variants.append(lat)
-    elif _has_latin(query):
-        cyr = _to_cyrillic(query)
-        if cyr != query:
-            variants.append(cyr)
-    return variants
-
 
 _HERE      = pathlib.Path(__file__).parent
 _STATE_KEY = "_jarvis_search_state"
@@ -245,15 +216,21 @@ def handler(
     extension:   str = "",
     date_filter: str = "",
     size_filter: str = "",
+    drive:       str = "",
 ) -> str:
     is_en = getattr(config, "ACTIVE_LANGUAGE", "ru") == "en"
 
-    if not any([query, category, extension, date_filter, size_filter]):
+    # Нормализация буквы диска: "д"→"D", "е"→"E" (RU раскладка)
+    _ru_drive = {"а":"A","б":"B","в":"C","г":"D","д":"D","е":"E","ж":"F","з":"G","и":"H"}
+    if drive:
+        drive = _ru_drive.get(drive.lower(), drive).upper().strip(": \\")
+
+    if not any([query, category, extension, date_filter, size_filter, drive]):
         if is_en:
-            return "Please specify a filename, type (word, photo, video, music, folder) or date."
+            return "Please specify a filename, type (word, photo, video, music, folder), date, or drive."
         return (
             "Уточни поиск — назови имя файла, тип "
-            "(ворд, фото, видео, музыка, папка) или дату."
+            "(ворд, фото, видео, музыка, папка), дату или диск."
         )
 
     from database.files.file_indexer import get_indexer
@@ -270,6 +247,7 @@ def handler(
         extension=extension,
         date_filter=date_filter,
         size_filter=size_filter,
+        drive=drive,
         limit=5,
         offset=0,
     )
@@ -285,6 +263,7 @@ def handler(
             "extension":   extension,
             "date_filter": date_filter,
             "size_filter": size_filter,
+            "drive":       drive,
         },
     )
 
@@ -296,6 +275,7 @@ def handler(
         "extension":   extension,
         "date_filter": date_filter,
         "size_filter": size_filter,
+        "drive":       drive,
         "total_shown": len(results),
     })
 
@@ -304,9 +284,10 @@ def handler(
 
     if not results:
         hint = query or cat_map.get(category, "files" if is_en else "файлов")
+        drive_hint = f" on drive {drive}" if (drive and is_en) else (f" на диске {drive}" if drive else "")
         if is_en:
-            return f"Nothing found for '{hint}'. Try rebuilding the index."
-        return f"Ничего не нашёл по запросу «{hint}». Попробуй переиндексировать файлы."
+            return f"Nothing found for '{hint}'{drive_hint}. Try rebuilding the index."
+        return f"Ничего не нашёл по запросу «{hint}»{drive_hint}. Попробуй переиндексировать файлы."
 
     if len(results) == 1:
         if is_en:

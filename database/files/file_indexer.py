@@ -11,6 +11,27 @@ import pathlib
 import datetime
 from difflib import SequenceMatcher
 
+# ── Заимствованные слова RU → EN ──────────────────────────────────────────────
+# Транслитерация "скриншот" → "skrinshot", но реальный файл "screenshot".
+# Этот словарь даёт точный EN-оригинал для поиска.
+_LOANWORDS: dict[str, str] = {
+    "скриншот":  "screenshot",
+    "скриншоты": "screenshot",
+    "скрин":     "screenshot",
+    "ворд":      "word",
+    "эксель":    "excel",
+    "экзель":    "excel",
+    "питон":     "python",
+    "джанго":    "django",
+    "реакт":     "react",
+    "ноджс":     "nodejs",
+    "пдф":       "pdf",
+    "зип":       "zip",
+    "рар":       "rar",
+    "майкрософт": "microsoft",
+    "гитхаб":    "github",
+}
+
 # ── Транслитерация RU ↔ EN ────────────────────────────────────────────────────
 
 _RU_TO_EN = {
@@ -42,26 +63,94 @@ def _to_cyrillic(text: str) -> str:
     return result
 
 
+_VOWELS_CYR = frozenset('аеёиоуыэюя')
+_VOWELS_LAT = frozenset('aeiou')
+
+
 def _query_variants(query: str) -> list[str]:
-    """Оригинал + транслитерированная версия (RU→EN или EN→RU).
-    Транслитерируем только если запрос длиннее 4 символов —
-    короткие слова дают слишком много ложных совпадений.
+    """Оригинал + транслитерация (RU↔EN) + заимствованные слова + стем.
+
+    Стем нужен для кросс-языкового поиска: 'diploma' → 'диплома' → 'диплом',
+    чтобы LIKE 'диплом%' нашёл файл 'Диплом.docx' без fuzzy.
+    Заимствованные слова: 'скриншот' → 'screenshot' (транслитерация не совпадает).
     """
-    if not query or len(query.strip()) <= 4:
+    if not query or len(query.strip()) <= 3:
         return [query]
-    q = query.lower()
+    q = query.lower().strip()
     has_cyr = any('Ѐ' <= c <= 'ӿ' for c in q)
     has_lat = any('a' <= c <= 'z' for c in q)
     variants = [q]
+
     if has_cyr and not has_lat:
         alt = _to_latin(q)
-        if alt != q:
+        if alt and alt != q:
             variants.append(alt)
+            if len(alt) > 4 and alt[-1] in _VOWELS_LAT:
+                variants.append(alt[:-1])
     elif has_lat and not has_cyr:
         alt = _to_cyrillic(q)
-        if alt != q:
+        if alt and alt != q:
             variants.append(alt)
-    return variants
+            if len(alt) > 4 and alt[-1] in _VOWELS_CYR:
+                variants.append(alt[:-1])
+
+    # Заимствованные слова: "скриншот" → добавляем "screenshot" как доп. вариант
+    for ru_word, en_word in _LOANWORDS.items():
+        if ru_word in q:
+            loan = q.replace(ru_word, en_word).strip()
+            if loan and loan not in variants:
+                variants.append(loan)
+
+    return list(dict.fromkeys(variants))
+
+
+def _build_search_text(name: str) -> str:
+    """Строит cross-language строку для имени файла.
+
+    Разбивает имя на слова по разделителям, добавляет оригинал +
+    латинский транслит кириллицы + кириллический транслит латиницы.
+
+    'report_final_2024.pdf' → 'report final 2024 pdf репорт финал'
+    'Диплом_финал.docx'    → 'диплом финал docx diplom final'
+    """
+    lower = name.lower()
+    words: list[str] = []
+    current: list[str] = []
+    for ch in lower:
+        if ch in '_-. \t':
+            if current:
+                words.append(''.join(current))
+                current = []
+        else:
+            current.append(ch)
+    if current:
+        words.append(''.join(current))
+
+    parts: list[str] = []
+    seen_w: set[str] = set()
+
+    def _add(s: str) -> None:
+        if s and s not in seen_w:
+            parts.append(s)
+            seen_w.add(s)
+
+    for word in words:
+        _add(word)
+        if len(word) <= 3:
+            continue
+        has_cyr = any('Ѐ' <= c <= 'ӿ' for c in word)
+        has_lat = any('a' <= c <= 'z' for c in word)
+        if has_cyr:
+            lat = _to_latin(word)
+            if not any('Ѐ' <= c <= 'ӿ' for c in lat):
+                _add(lat)
+        if has_lat:
+            cyr = _to_cyrillic(word)
+            if not any('a' <= c <= 'z' for c in cyr):
+                _add(cyr)
+
+    return ' '.join(parts)
+
 
 DB_PATH = pathlib.Path(__file__).parent / "files.db"
 
@@ -177,6 +266,7 @@ class FileIndexer:
         self._lock = threading.Lock()
         self._conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
         self._conn.row_factory = sqlite3.Row
+        self._needs_rebuild = False
         self._init_db()
 
         # Прогресс индексации
@@ -204,7 +294,8 @@ class FileIndexer:
                 category    TEXT NOT NULL,
                 size_bytes  INTEGER NOT NULL,
                 modified_at REAL NOT NULL,
-                indexed_at  REAL NOT NULL
+                indexed_at  REAL NOT NULL,
+                name_search TEXT NOT NULL DEFAULT ''
             );
             CREATE INDEX IF NOT EXISTS idx_name     ON files(name_lower);
             CREATE INDEX IF NOT EXISTS idx_cat      ON files(category);
@@ -216,9 +307,20 @@ class FileIndexer:
             );
         """)
         self._conn.commit()
+        # Миграция: добавляем name_search в существующую БД если его нет
+        cols = {r[1] for r in self._conn.execute("PRAGMA table_info(files)").fetchall()}
+        if 'name_search' not in cols:
+            self._conn.execute(
+                "ALTER TABLE files ADD COLUMN name_search TEXT NOT NULL DEFAULT ''"
+            )
+            self._conn.commit()
+            self._needs_rebuild = True
 
     def _auto_build_and_watch(self):
         """Запускается в фоне при старте: rebuild если нужно, потом watchdog."""
+        if self._needs_rebuild:
+            self.build_index()
+            return
         with self._lock:
             row = self._conn.execute(
                 "SELECT value FROM meta WHERE key='last_build'"
@@ -318,6 +420,7 @@ class FileIndexer:
                             batch.append((
                                 dname, dname.lower(), dpath_str,
                                 "", "folder", 0, stat.st_mtime, now,
+                                _build_search_text(dname),
                             ))
                             seen_in_build.add(dpath_str)
                         except (OSError, PermissionError):
@@ -347,6 +450,7 @@ class FileIndexer:
                                 stat.st_size,
                                 stat.st_mtime,
                                 now,
+                                _build_search_text(fname),
                             ))
                             seen_in_build.add(fpath_str)
                         except (OSError, PermissionError):
@@ -427,10 +531,11 @@ class FileIndexer:
             with self._lock:
                 self._conn.execute(
                     "INSERT OR REPLACE INTO files "
-                    "(name, name_lower, path, extension, category, size_bytes, modified_at, indexed_at) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    "(name, name_lower, path, extension, category, size_bytes, modified_at, indexed_at, name_search) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     (fpath.name, fpath.name.lower(), str(fpath),
-                     ext.lower().lstrip("."), cat, size, stat.st_mtime, time.time()),
+                     ext.lower().lstrip("."), cat, size, stat.st_mtime, time.time(),
+                     _build_search_text(fpath.name)),
                 )
                 self._conn.commit()
         except (OSError, PermissionError):
@@ -522,8 +627,8 @@ class FileIndexer:
         with self._lock:
             self._conn.executemany(
                 "INSERT OR REPLACE INTO files "
-                "(name, name_lower, path, extension, category, size_bytes, modified_at, indexed_at) "
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                "(name, name_lower, path, extension, category, size_bytes, modified_at, indexed_at, name_search) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 batch,
             )
             self._conn.commit()
@@ -540,10 +645,11 @@ class FileIndexer:
         extension:   str = "",
         date_filter: str = "",
         size_filter: str = "",
+        drive:       str = "",
         limit:       int = 5,
         offset:      int = 0,
     ) -> list[dict]:
-        # Ищем по оригинальному запросу + транслитерированному варианту
+        # Ищем по оригинальному запросу + транслитерированному варианту + заимствованным словам
         variants = _query_variants(query)
         if len(variants) > 1:
             seen, merged = set(), []
@@ -551,7 +657,7 @@ class FileIndexer:
                 for r in self._search_one(
                     query=v, category=category, extension=extension,
                     date_filter=date_filter, size_filter=size_filter,
-                    limit=limit, offset=offset,
+                    drive=drive, limit=limit, offset=offset,
                 ):
                     if r["path"] not in seen:
                         merged.append(r); seen.add(r["path"])
@@ -561,7 +667,7 @@ class FileIndexer:
         return self._search_one(
             query=query, category=category, extension=extension,
             date_filter=date_filter, size_filter=size_filter,
-            limit=limit, offset=offset,
+            drive=drive, limit=limit, offset=offset,
         )
 
     def _search_one(
@@ -571,6 +677,7 @@ class FileIndexer:
         extension:   str = "",
         date_filter: str = "",
         size_filter: str = "",
+        drive:       str = "",
         limit:       int = 5,
         offset:      int = 0,
     ) -> list[dict]:
@@ -605,6 +712,11 @@ class FileIndexer:
             expr, vals = size_map[size_filter]
             conds.append(expr)
             params.extend(vals)
+
+        # Фильтр по диску: "D" → ищем только файлы на D:\
+        if drive:
+            conds.append("UPPER(SUBSTR(path, 1, 1)) = ?")
+            params.append(drive.upper().strip(": \\"))
 
         where = ("WHERE " + " AND ".join(conds)) if conds else ""
 
@@ -647,18 +759,37 @@ class FileIndexer:
                     if len(results) >= limit:
                         break
 
+            # 4.5. Поиск в name_search — транслитерированные имена файлов (cross-language).
+            # Здесь ищем слова запроса в поле, где у файла хранятся оба скрипта:
+            # 'report_final.pdf' содержит 'репорт финал', 'Диплом.docx' содержит 'diplom'.
+            if len(results) < limit:
+                search_words = [w for w in q.split() if len(w) > 2] or [q]
+                for word in search_words:
+                    for r in _run("name_search LIKE ?", ["%" + word + "%"], limit * 3):
+                        if r["path"] not in seen:
+                            results.append(dict(r)); seen.add(r["path"])
+                    if len(results) >= limit:
+                        break
+
             # 5. Fuzzy matching — только если совсем ничего не нашли, пул 500
+            # Сравниваем и с name_lower, и с name_search (транслитерированное имя)
             if len(results) < 2 and len(q) > 4:
                 sql = f"SELECT * FROM files {where} LIMIT 500"
                 with self._lock:
                     pool = self._conn.execute(sql, params).fetchall()
-                scored = [
-                    (SequenceMatcher(None, q, r["name_lower"]).ratio(), dict(r))
-                    for r in pool if r["path"] not in seen
-                ]
+                scored = []
+                for r in pool:
+                    if r["path"] in seen:
+                        continue
+                    score = max(
+                        SequenceMatcher(None, q, r["name_lower"]).ratio(),
+                        SequenceMatcher(None, q, r["name_search"]).ratio(),
+                    )
+                    if score >= 0.5:
+                        scored.append((score, dict(r)))
                 scored.sort(key=lambda x: -x[0])
                 for score, r in scored:
-                    if score >= 0.5 and len(results) < limit:
+                    if len(results) < limit:
                         results.append(r); seen.add(r["path"])
 
             return self._fmt(results[offset: offset + limit])
