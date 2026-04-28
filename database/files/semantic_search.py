@@ -175,13 +175,21 @@ def _extract_text(path: str) -> str:
             lines = [f"Excel файл: {filename}"]
             for sheet_name in wb.sheetnames[:10]:
                 ws = wb[sheet_name]
-                # Берём только первую строку (заголовки) — данные не нужны
-                first_row = next(ws.iter_rows(max_row=1, values_only=True), ())
-                headers = [str(v) for v in first_row if v is not None]
+                # Читаем заголовок + несколько строк данных для лучшего контекста эмбеддинга
+                sheet_rows = list(ws.iter_rows(max_row=5, values_only=True))
+                if not sheet_rows:
+                    lines.append(f"Лист '{sheet_name}'")
+                    continue
+                headers = [str(v) for v in sheet_rows[0] if v is not None]
                 if headers:
                     lines.append(f"Лист '{sheet_name}': {', '.join(headers)}")
                 else:
                     lines.append(f"Лист '{sheet_name}'")
+                # Добавляем 2-3 строки данных для семантического контекста
+                for row in sheet_rows[1:4]:
+                    sample = [str(v) for v in row if v is not None]
+                    if sample:
+                        lines.append("  " + ", ".join(sample[:10]))
             wb.close()
             return "\n".join(lines)[:MAX_CHARS]
         except ImportError:
@@ -196,8 +204,8 @@ def _extract_text(path: str) -> str:
             try:
                 with open(path, "r", encoding=enc, errors="strict", newline="") as f:
                     reader = csv.reader(f)
-                    rows = [next(reader, []), next(reader, []), next(reader, [])]
-                header = rows[0]
+                    rows = [r for _, r in zip(range(6), reader)]
+                header = rows[0] if rows else []
                 if not header:
                     return f"CSV файл: {filename}"
                 lines = [
@@ -253,7 +261,10 @@ def _embed_batch(texts: list[str], api_key: str) -> list[list[float]] | None:
         resp   = client.embeddings.create(model=EMBED_MODEL, input=texts)
         return [item.embedding for item in resp.data]
     except Exception as e:
-        print(f"    [semantic] Embedding error: {e}")
+        try:
+            print(f"    [semantic] Embedding error: {e}")
+        except Exception:
+            pass
         return None
 
 
@@ -326,21 +337,26 @@ class SemanticIndexer:
                 path = self._queue.get(timeout=5)
             except queue.Empty:
                 continue
+            except Exception:
+                break
 
-            batch = [path]
-            # Сливаем всё что успело накопиться
             try:
-                while len(batch) < BATCH_SIZE:
-                    batch.append(self._queue.get_nowait())
-            except queue.Empty:
+                batch = [path]
+                # Сливаем всё что успело накопиться
+                try:
+                    while len(batch) < BATCH_SIZE:
+                        batch.append(self._queue.get_nowait())
+                except queue.Empty:
+                    pass
+
+                import config
+                api_key = getattr(config, "OPENAI_API_KEY", "")
+                if api_key:
+                    self.build_index(batch, api_key)
+
+                time.sleep(1)  # пауза между батчами — OpenAI rate limit
+            except Exception:
                 pass
-
-            import config
-            api_key = getattr(config, "OPENAI_API_KEY", "")
-            if api_key:
-                self.build_index(batch, api_key)
-
-            time.sleep(1)  # пауза между батчами — OpenAI rate limit
 
     def enqueue(self, path: str):
         """Добавить файл в очередь на семантическую индексацию (из watchdog)."""
@@ -383,7 +399,10 @@ class SemanticIndexer:
         if not to_index:
             return 0
 
-        print(f"    [semantic] Индексирую {len(to_index)} файлов...")
+        try:
+            print(f"    [semantic] Индексирую {len(to_index)} файлов...")
+        except Exception:
+            pass
         self._progress = {
             "is_indexing": True,
             "indexed": 0, "total": len(to_index), "percent": 0,
@@ -424,7 +443,10 @@ class SemanticIndexer:
             "is_indexing": False,
             "indexed": indexed, "total": len(to_index), "percent": 100,
         }
-        print(f"    [semantic] Готово: {indexed} файлов")
+        try:
+            print(f"    [semantic] Готово: {indexed} файлов")
+        except Exception:
+            pass
         return indexed
 
     def _flush_batch(
@@ -493,7 +515,7 @@ class SemanticIndexer:
             # Фильтр по категории
             if category:
                 if category == "document" and ext not in (
-                    set(LIBRARY) | {"txt", "md", "rst", "csv", "pptx", "xlsx"}
+                    set(LIBRARY) | {"txt", "md", "rst", "csv", "pptx", "xlsx", "xls"}
                 ):
                     continue
                 elif category == "code" and ext not in FULL_TEXT:
@@ -565,9 +587,15 @@ class SemanticIndexer:
     # ── Управление ────────────────────────────────────────────────────────────
 
     def remove_file(self, path: str):
+        self.remove_path(path)
+
+    def remove_path(self, path: str):
+        """Удалить файл или папку (все вложенные пути) из семантического индекса."""
+        prefix = path.rstrip("/\\") + os.sep
         with self._lock:
             self._conn.execute(
-                "DELETE FROM embeddings WHERE path = ?", (path,)
+                "DELETE FROM embeddings WHERE path = ? OR path LIKE ?",
+                (path, prefix + "%"),
             )
             self._conn.commit()
 

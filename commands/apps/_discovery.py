@@ -19,6 +19,7 @@ import threading
 import time
 
 _CACHE_FILE = pathlib.Path(__file__).parent / "_app_cache.json"
+_OBSERVERS: list = []   # хранит watchdog Observer для остановки при выходе
 _CACHE_TTL  = 86400   # 24 часа
 
 _START_DIRS = [
@@ -269,6 +270,15 @@ def _start_watcher(registry: dict) -> None:
 
     observer.daemon = True
     observer.start()
+
+    # Выставляем daemon на внутренних потоках watchdog (на случай если они не наследуют флаг)
+    for emitter in getattr(observer, "_emitters", []):
+        try:
+            emitter.daemon = True
+        except Exception:
+            pass
+
+    _OBSERVERS.append(observer)
     print(f"    [discovery] watchdog запущен — слежу за {watched} папками Start Menu")
 
 

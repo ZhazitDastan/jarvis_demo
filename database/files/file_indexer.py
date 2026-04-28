@@ -517,7 +517,10 @@ class FileIndexer:
             offset += BATCH - len(dead)   # сдвигаемся с учётом удалённых
             time.sleep(0.05)              # не нагружаем диск
         if total_removed:
-            print(f"    [cleanup] Удалено устаревших записей: {total_removed}")
+            try:
+                print(f"    [cleanup] Удалено устаревших записей: {total_removed}")
+            except Exception:
+                pass
 
     # ── Построение индекса (3 фазы) ────────────────────────────────────────────
 
@@ -696,10 +699,16 @@ class FileIndexer:
                     ).fetchall()
                 paths = [r["path"] for r in rows]
                 if paths:
-                    print(f"    [semantic] Запуск индексации {len(paths)} документов...")
+                    try:
+                        print(f"    [semantic] Запуск индексации {len(paths)} документов...")
+                    except Exception:
+                        pass
                     get_semantic_indexer().build_index(paths, api_key)
             except Exception as e:
-                print(f"    [semantic] Ошибка запуска: {e}")
+                try:
+                    print(f"    [semantic] Ошибка запуска: {e}")
+                except Exception:
+                    pass
 
         threading.Thread(target=_start_semantic, daemon=True, name="semantic-build").start()
         return total_indexed
@@ -737,18 +746,67 @@ class FileIndexer:
         except (OSError, PermissionError):
             pass
 
+    def _index_dir(self, path: str):
+        """Рекурсивно переиндексировать всё содержимое папки (после переноса)."""
+        fpath = pathlib.Path(path)
+        if not fpath.is_dir() or _should_skip(fpath):
+            return
+        batch: list[tuple] = []
+        now = time.time()
+        for root, dirs_list, files in os.walk(str(fpath), followlinks=False):
+            root_path = pathlib.Path(root)
+            dirs_list[:] = [
+                d for d in dirs_list
+                if not d.startswith(".") and not _should_skip(root_path / d)
+            ]
+            for dname in dirs_list:
+                dpath = root_path / dname
+                try:
+                    stat = dpath.stat()
+                    batch.append((
+                        dname, dname.lower(), str(dpath),
+                        "", "folder", 0, stat.st_mtime, now,
+                        _build_search_text(dname),
+                    ))
+                except (OSError, PermissionError):
+                    pass
+            for fname in files:
+                fpath2 = root_path / fname
+                try:
+                    stat = fpath2.stat()
+                    if _is_cloud_only(stat):
+                        continue
+                    ext = fpath2.suffix
+                    batch.append((
+                        fname, fname.lower(), str(fpath2),
+                        ext.lower().lstrip("."), _get_category(ext),
+                        stat.st_size, stat.st_mtime, now,
+                        _build_search_text(fname),
+                    ))
+                except (OSError, PermissionError):
+                    pass
+            if len(batch) >= 500:
+                self._flush(batch)
+                batch.clear()
+        if batch:
+            self._flush(batch)
+
     # обратная совместимость
     def _index_file(self, path: str):
         self._index_path(path)
 
     def _remove_file(self, path: str):
-        """Удалить файл из индекса (и из семантического индекса)."""
+        """Удалить файл или папку (со всем содержимым) из индекса."""
+        prefix = path.rstrip("/\\") + os.sep
         with self._lock:
-            self._conn.execute("DELETE FROM files WHERE path = ?", (path,))
+            self._conn.execute(
+                "DELETE FROM files WHERE path = ? OR path LIKE ?",
+                (path, prefix + "%"),
+            )
             self._conn.commit()
         try:
             from database.files.semantic_search import get_semantic_indexer
-            get_semantic_indexer().remove_file(path)
+            get_semantic_indexer().remove_path(path)
         except Exception:
             pass
 
@@ -775,6 +833,8 @@ class FileIndexer:
                 for path, action in batch.items():
                     if action == "add":
                         indexer._index_path(path)
+                    elif action == "reindex_dir":
+                        indexer._index_dir(path)
                     else:
                         indexer._remove_file(path)
 
@@ -790,14 +850,20 @@ class FileIndexer:
 
             class _Handler(FileSystemEventHandler):
                 def on_created(self, event):
-                    _schedule(event.src_path, "add")
+                    if event.is_directory:
+                        _schedule(event.src_path, "reindex_dir")
+                    else:
+                        _schedule(event.src_path, "add")
 
                 def on_deleted(self, event):
                     _schedule(event.src_path, "remove")
 
                 def on_moved(self, event):
                     _schedule(event.src_path, "remove")
-                    _schedule(event.dest_path, "add")
+                    if event.is_directory:
+                        _schedule(event.dest_path, "reindex_dir")
+                    else:
+                        _schedule(event.dest_path, "add")
 
                 def on_modified(self, event):
                     if not event.is_directory:
@@ -811,17 +877,29 @@ class FileIndexer:
                 if d.exists() and str(d) not in watched:
                     observer.schedule(handler, str(d), recursive=True)
                     watched.add(str(d))
-                    print(f"    [watcher] Слежу: {d}")
+                    try:
+                        print(f"    [watcher] Слежу: {d}")
+                    except Exception:
+                        pass
 
             observer.daemon = True
             observer.start()
             self._observer = observer
-            print(f"    [watcher] Запущен. Папок под наблюдением: {len(watched)}")
+            try:
+                print(f"    [watcher] Запущен. Папок под наблюдением: {len(watched)}")
+            except Exception:
+                pass
 
         except ImportError:
-            print("    [watcher] watchdog не установлен (pip install watchdog)")
+            try:
+                print("    [watcher] watchdog не установлен (pip install watchdog)")
+            except Exception:
+                pass
         except Exception as e:
-            print(f"    [watcher] Ошибка запуска: {e}")
+            try:
+                print(f"    [watcher] Ошибка запуска: {e}")
+            except Exception:
+                pass
 
     def _flush(self, batch: list[tuple]):
         """Записывает батч файлов в БД — не блокирует поиск надолго."""

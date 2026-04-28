@@ -63,7 +63,7 @@ _DEFAULT_RATES = {
     "en": "+15%",
 }
 
-ECHO_PAUSE   = 0.2    # пауза после речи (глушим эхо)
+ECHO_PAUSE   = 0.05   # пауза после речи (уменьшено, эхо минимально на Edge TTS)
 CACHE_SIZE   = 60     # LRU кэш фраз
 LENGTH_SCALE = 1.0    # заглушка для совместимости с /settings
 
@@ -136,7 +136,16 @@ class TTS:
         self._stop_evt = threading.Event()
         self._cache: collections.OrderedDict[str, tuple[np.ndarray, int]] = \
             collections.OrderedDict()
+        self._warmup_audio_device()
         print("    ✓ TTS v3 (Edge TTS) готов")
+
+    def _warmup_audio_device(self):
+        """Предварительно инициализирует звуковое устройство."""
+        try:
+            sd.play(np.zeros(1000, dtype=np.float32), samplerate=16000, blocking=False)
+            sd.stop()
+        except Exception:
+            pass
 
     # ── Предзагрузка ──────────────────────────────────────────────────────────
 
@@ -235,12 +244,12 @@ class TTS:
         try:
             sd.play(audio, samplerate=sr, blocking=False)
             duration = len(audio) / sr
-            deadline = time.time() + duration + 0.3
+            deadline = time.time() + duration + 0.2
             while time.time() < deadline:
                 if self._stop_evt.is_set():
                     sd.stop()
                     return
-                time.sleep(0.02)
+                time.sleep(0.01)  # уменьшено с 0.02 для быстрого отклика на stop
         except Exception as e:
             print(f"  [!] TTS воспроизведение: {e}")
 

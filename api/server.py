@@ -27,6 +27,11 @@ if hasattr(os, "add_dll_directory") and sys.platform == "win32":
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
+# На Windows ProactorEventLoop не обрабатывает Ctrl+C корректно.
+# SelectorEventLoop — стандартный и поддерживает SIGINT.
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -155,6 +160,17 @@ async def lifespan(application: FastAPI):
     loop = asyncio.get_running_loop()
     loop.run_in_executor(None, _preload_models)   # фон, не блокирует старт
     yield
+    # ── Завершение: останавливаем watchdog observers ──────────────────────────
+    try:
+        from commands.apps._discovery import _OBSERVERS
+        for obs in _OBSERVERS:
+            try:
+                obs.stop()
+                obs.join(timeout=2)
+            except Exception:
+                pass
+    except Exception:
+        pass
 
 
 app = FastAPI(title="Jarvis API", version="1.0.0", lifespan=lifespan)

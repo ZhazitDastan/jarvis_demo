@@ -72,6 +72,27 @@ class Recorder:
         print(f"  [✓] Калибровка готова — уровень шума: {self.noise_level:.0f}, "
               f"порог: {self.threshold:.0f}  [{vad_engine}]          ")
 
+    # ── Подготовка ────────────────────────────────────────────────────────────
+
+    def prepare(self):
+        """
+        Предварительно инициализирует аудио систему — готовит stream к записи.
+        Вызывается после активационной фразы чтобы избежать задержки.
+        """
+        if not self._calibrated:
+            return
+        try:
+            # Открываем и закрываем dummy stream чтобы инициализировать аудиосистему
+            with sd.InputStream(
+                samplerate=self.sample_rate,
+                channels=self.channels,
+                dtype=np.int16,
+                blocksize=self.chunk_size,
+            ) as stream:
+                stream.read(self.chunk_size)
+        except Exception:
+            pass   # не критично если prepare() не удалась
+
     # ── Запись с VAD ───────────────────────────────────────────────────────────
 
     def record(self, max_seconds: int = 15) -> str | None:

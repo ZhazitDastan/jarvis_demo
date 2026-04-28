@@ -28,6 +28,8 @@ tts_v2.py — Text-to-Speech через Piper (локально, оффлайн,
 
 import io
 import os
+import queue
+import re
 import time
 import wave
 import random
@@ -37,6 +39,12 @@ import numpy as np
 import sounddevice as sd
 import config
 from config import get_lang
+
+
+def _split_sentences(text: str) -> list[str]:
+    """Разбивает текст на предложения для конвейерного синтеза."""
+    parts = re.split(r'(?<=[.!?])\s+', text.strip())
+    return [p.strip() for p in parts if p.strip()]
 
 # ── Фразы активации ───────────────────────────────────────────────────────────
 _ACTIVATION_RU = [
@@ -233,31 +241,61 @@ class TTS:
             return
 
         if not self._voice:
-            # Fallback: просто печатаем если модель не загружена
             print(f"  [TTS] {text}")
             return
 
         self._stop_evt.clear()
 
-        try:
-            # Берём из кэша или синтезируем
-            audio = self._get_cache(text)
-            if audio is None:
-                audio = self._synthesize(text)
-                if audio is None:
-                    return
-                self._add_cache(text, audio)
+        sentences = _split_sentences(text)
 
-            TTS.is_speaking = True
+        # Одно предложение — синтез и воспроизведение без конвейера
+        if len(sentences) <= 1:
             try:
-                self._play(audio)
-            finally:
-                time.sleep(ECHO_PAUSE)
+                audio = self._get_cache(text)
+                if audio is None:
+                    audio = self._synthesize(text)
+                    if audio is None:
+                        return
+                    self._add_cache(text, audio)
+                TTS.is_speaking = True
+                try:
+                    self._play(audio)
+                finally:
+                    time.sleep(ECHO_PAUSE)
+                    TTS.is_speaking = False
+            except Exception as e:
                 TTS.is_speaking = False
+                print(f"  [!] TTS v2 ошибка: {e}")
+            return
 
-        except Exception as e:
+        # Несколько предложений — конвейер: синтез следующего пока играет текущее.
+        # Очередь с буфером 2: продюсер всегда на шаг впереди плеера.
+        audio_q: queue.Queue = queue.Queue(maxsize=2)
+
+        def _producer():
+            for s in sentences:
+                if self._stop_evt.is_set():
+                    break
+                a = self._get_cache(s)
+                if a is None:
+                    a = self._synthesize(s)
+                    if a is not None:
+                        self._add_cache(s, a)
+                audio_q.put(a)
+            audio_q.put(None)  # сигнал окончания
+
+        threading.Thread(target=_producer, daemon=True, name="tts-producer").start()
+
+        TTS.is_speaking = True
+        try:
+            while True:
+                a = audio_q.get()
+                if a is None or self._stop_evt.is_set():
+                    break
+                self._play(a)
+        finally:
+            time.sleep(ECHO_PAUSE)
             TTS.is_speaking = False
-            print(f"  [!] TTS v2 ошибка: {e}")
 
     def speak_activation(self):
         """Случайная фраза активации — мгновенно из кэша."""

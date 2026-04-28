@@ -151,6 +151,9 @@ def main():
         # ── Шаг 1: Ждём "Jarvis" ─────────────────────────────────────────────
         wait_for_wake_word(stt=stt, tts=tts)
 
+        # Предварительно инициализируем аудиосистему (убирает задержку в ~500ms)
+        recorder.prepare()
+
         # Мгновенный ответ — не ждём GPT, говорим сразу
         lang = get_lang()
         tts.speak(lang["activation"])
@@ -187,6 +190,7 @@ def main():
             print(f"\n  [👂] Продолжение диалога ({remaining} сек)... "
                   f"Говорите или скажите 'Jarvis' для новой темы")
 
+            recorder.prepare()
             followup_text = handle_query(stt, tts, brain, recorder, lang)
 
             if followup_text is None:
@@ -207,6 +211,7 @@ def main():
                 followup_text = followup_text.lower().replace("jarvis", "").strip()
                 if not followup_text:
                     tts.speak(lang["listening"])
+                    recorder.prepare()
                     continue
 
             # Отвечаем на продолжение
@@ -215,6 +220,9 @@ def main():
             print(f"\n  Jarvis: {response}\n")
             with StopListener(stt, tts):
                 tts.speak(response)
+
+            # Предварительная инициализация перед следующим слушанием
+            recorder.prepare()
 
             # Продлеваем окно followup после каждого ответа
             followup_end = time.time() + FOLLOWUP_SECONDS
