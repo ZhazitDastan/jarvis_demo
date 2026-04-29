@@ -12,7 +12,12 @@ $ErrorActionPreference = "Stop"
 $Host.UI.RawUI.WindowTitle = "J.A.R.V.I.S - Launcher"
 
 # ── Fixed paths (launcher lives in the backend repo) ─────────────────────────
-$BACKEND_PATH = $PSScriptRoot          # always = folder of this script
+# $PSScriptRoot is empty in ps2exe compiled exe — use process path as fallback
+$BACKEND_PATH = if ($PSScriptRoot) {
+    $PSScriptRoot
+} else {
+    Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
+}
 $BACKEND_PORT = 8000
 
 # ── Read machine-specific config ─────────────────────────────────────────────
