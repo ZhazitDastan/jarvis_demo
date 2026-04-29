@@ -88,7 +88,13 @@ def _is_wake_word(text: str) -> tuple[bool, str]:
             if target in word or word in target:
                 return True, word
 
+        # Пропускаем явно несовпадающие по длине — SequenceMatcher на коротких/
+        # длинных словах не достигнет порога 0.55 в принципе, экономим CPU.
+        wlen = len(word)
         for target in fuzzy_list:
+            tlen = len(target)
+            if abs(wlen - tlen) * 2 > min(wlen, tlen):
+                continue
             score = difflib.SequenceMatcher(None, word, target).ratio()
             if score >= FUZZY_THRESHOLD:
                 return True, f"{word} ({score:.0%})"
@@ -224,6 +230,25 @@ def _transcribe_fast(stt, audio: np.ndarray) -> str:
     return _transcribe_vosk(stt, audio)
 
 
+_WAKE_RECOGNIZERS: dict[int, object] = {}   # id(model) → KaldiRecognizer
+_WAKE_REC_LOCK = threading.Lock()
+
+
+def _get_wake_recognizer(model):
+    """Возвращает кэшированный KaldiRecognizer для модели.
+    Создание нового рекогнайзера на каждый чанк ~30-50мс — на тишине это бьёт по CPU."""
+    key = id(model)
+    rec = _WAKE_RECOGNIZERS.get(key)
+    if rec is None:
+        with _WAKE_REC_LOCK:
+            rec = _WAKE_RECOGNIZERS.get(key)
+            if rec is None:
+                from vosk import KaldiRecognizer
+                rec = KaldiRecognizer(model, SAMPLE_RATE)
+                _WAKE_RECOGNIZERS[key] = rec
+    return rec
+
+
 def _transcribe_vosk(stt, audio: np.ndarray) -> str:
     """Транскрипция через Vosk без грамматики — fuzzy matching на стороне Python."""
     vosk_model = getattr(stt, "_vosk_model", None)  # всегда Vosk RU для wake word
@@ -235,8 +260,9 @@ def _transcribe_vosk(stt, audio: np.ndarray) -> str:
         return ""
     try:
         import json
-        from vosk import KaldiRecognizer
-        rec = KaldiRecognizer(vosk_model, SAMPLE_RATE)
+        rec = _get_wake_recognizer(vosk_model)
+        # Reset() очищает состояние без аллокации новой модели
+        rec.Reset()
         rec.AcceptWaveform(audio.astype(np.int16).tobytes())
         result = json.loads(rec.FinalResult())
         return result.get("text", "").strip()

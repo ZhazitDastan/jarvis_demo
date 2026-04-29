@@ -173,8 +173,11 @@ class Recorder:
             print(f"  [!] Аудио слишком тихое — пропуск (rms={rms:.0f} < порог={self.noise_level * 1.3:.0f}).")
             return None
 
-        # Спектральное вычитание шума
-        audio_data = self._denoise(audio_data)
+        # Денойз нужен только в шумной комнате. Для чистого сигнала FFT
+        # просто жжёт CPU (~50-100мс на 5 сек аудио) и ничего не улучшает.
+        # SNR > 4× — речь и так в 4 раза громче фона, шум не критичен.
+        if rms < self.noise_level * 4.0:
+            audio_data = self._denoise(audio_data)
 
         # Нормализация громкости (только если сигнал значительно выше шума)
         audio_data = self._normalize(audio_data)

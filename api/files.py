@@ -71,29 +71,10 @@ async def files_search(
     drive_norm = drive.upper().strip(": \\") if drive else ""
     loop       = asyncio.get_event_loop()
 
-    results: list = []
-    seen:    set  = set()
-
-    # ── Семантический поиск ───────────────────────────────────────────────────
-    if semantic and q:
-        import config
-        api_key = getattr(config, "OPENAI_API_KEY", "")
-        if not api_key:
-            raise HTTPException(400, "OpenAI API ключ не задан — семантический поиск недоступен")
-
-        from database.files.semantic_search import get_semantic_indexer
-        sem_results = await loop.run_in_executor(
-            None,
-            lambda: get_semantic_indexer().search(
-                query=q, api_key=api_key, limit=limit, category=category,
-            ),
-        )
-        for r in sem_results:
-            results.append(r)
-            seen.add(r["path"])
-
-    # ── Обычный поиск по имени (всегда, дополняет без дублей) ────────────────
-    fuzzy = await loop.run_in_executor(
+    # ── Параллельный запуск семантики и поиска по имени ──────────────────────
+    # Раньше шло последовательно: semantic (~1-2с на embedding) → name search.
+    # Теперь оба запускаются одновременно — суммарное время = max, не sum.
+    name_task = loop.run_in_executor(
         None,
         lambda: _indexer().search(
             query=q,
@@ -106,7 +87,31 @@ async def files_search(
             offset=offset,
         ),
     )
-    for r in fuzzy:
+
+    sem_task = None
+    if semantic and q:
+        import config
+        api_key = getattr(config, "OPENAI_API_KEY", "")
+        if not api_key:
+            raise HTTPException(400, "OpenAI API ключ не задан — семантический поиск недоступен")
+        from database.files.semantic_search import get_semantic_indexer
+        sem_task = loop.run_in_executor(
+            None,
+            lambda: get_semantic_indexer().search(
+                query=q, api_key=api_key, limit=limit, category=category,
+            ),
+        )
+
+    results: list = []
+    seen:    set  = set()
+
+    # Семантика идёт первой в ответе, если включена
+    if sem_task is not None:
+        for r in await sem_task:
+            results.append(r)
+            seen.add(r["path"])
+
+    for r in await name_task:
         if r["path"] not in seen:
             results.append(r)
             seen.add(r["path"])

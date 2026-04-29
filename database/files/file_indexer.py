@@ -11,6 +11,7 @@ import time
 import pathlib
 import datetime
 from difflib import SequenceMatcher
+from functools import lru_cache
 
 # ── Заимствованные слова RU → EN ──────────────────────────────────────────────
 # Транслитерация "скриншот" → "skrinshot", но реальный файл "screenshot".
@@ -156,6 +157,7 @@ _VOWELS_CYR = frozenset('аеёиоуыэюя')
 _VOWELS_LAT = frozenset('aeiou')
 
 
+@lru_cache(maxsize=256)
 def _query_variants(query: str) -> list[str]:
     """Оригинал + транслитерация (RU↔EN) + заимствованные слова + стем.
 
@@ -167,7 +169,7 @@ def _query_variants(query: str) -> list[str]:
     if not query or (len(q_stripped) <= 3
                      and q_stripped not in _LOANWORDS
                      and q_stripped not in _LOANWORDS_EN):
-        return [query]
+        return (query,)
     q = q_stripped
     has_cyr = any('Ѐ' <= c <= 'ӿ' for c in q)
     has_lat = any('a' <= c <= 'z' for c in q)
@@ -205,9 +207,10 @@ def _query_variants(query: str) -> list[str]:
                 if loan and loan not in variants:
                     variants.append(loan)
 
-    return list(dict.fromkeys(variants))
+    return tuple(dict.fromkeys(variants))
 
 
+@lru_cache(maxsize=2048)
 def _build_search_text(name: str) -> str:
     """Строит cross-language строку для имени файла.
 
@@ -1092,13 +1095,21 @@ class FileIndexer:
             with self._lock:
                 pool = self._conn.execute(sql, params).fetchall()
             scored = []
+            # quick_ratio() даёт верхнюю границу за O(min(n,m)) — на порядок
+            # быстрее ratio(). Если она ниже порога — не считаем полный ratio.
             for r in pool:
                 if r["path"] in seen:
                     continue
-                score = max(
-                    SequenceMatcher(None, q, r["name_lower"]).ratio(),
-                    SequenceMatcher(None, q, r["name_search"]).ratio(),
-                )
+                m1 = SequenceMatcher(None, q, r["name_lower"])
+                if m1.quick_ratio() < 0.5:
+                    m2 = SequenceMatcher(None, q, r["name_search"])
+                    if m2.quick_ratio() < 0.5:
+                        continue
+                    score = m2.ratio()
+                else:
+                    s1 = m1.ratio()
+                    m2 = SequenceMatcher(None, q, r["name_search"])
+                    score = max(s1, m2.ratio()) if m2.quick_ratio() >= s1 else s1
                 if score >= 0.5:
                     scored.append((score, dict(r)))
             scored.sort(key=lambda x: -x[0])

@@ -24,6 +24,32 @@ import sounddevice as sd
 import config
 from config import get_lang
 
+
+# ── Постоянный фоновый event loop для Edge TTS ────────────────────────────────
+# Создание нового event loop на каждый speak() стоит 50-100мс.
+# Один общий loop в фоновом потоке убирает эти накладные расходы.
+
+_bg_loop: asyncio.AbstractEventLoop | None = None
+_bg_loop_lock = threading.Lock()
+
+
+def _get_bg_loop() -> asyncio.AbstractEventLoop:
+    global _bg_loop
+    if _bg_loop is not None and not _bg_loop.is_closed():
+        return _bg_loop
+    with _bg_loop_lock:
+        if _bg_loop is not None and not _bg_loop.is_closed():
+            return _bg_loop
+        loop = asyncio.new_event_loop()
+        t = threading.Thread(
+            target=loop.run_forever,
+            daemon=True,
+            name="tts-loop",
+        )
+        t.start()
+        _bg_loop = loop
+        return loop
+
 # ── Фразы активации ───────────────────────────────────────────────────────────
 
 _ACTIVATION_RU = [
@@ -109,14 +135,13 @@ async def _synth_async(text: str, voice: str, rate: str) -> bytes:
 
 
 def _synthesize(text: str, voice: str, rate: str) -> tuple[np.ndarray, int] | None:
-    """Запускает async синтез в новом event loop (безопасно из любого потока)."""
+    """Запускает async синтез в общем фоновом event loop (быстро)."""
     try:
-        loop = asyncio.new_event_loop()
-        try:
-            mp3 = loop.run_until_complete(_synth_async(text, voice, rate))
-        finally:
-            loop.close()
-
+        loop = _get_bg_loop()
+        future = asyncio.run_coroutine_threadsafe(
+            _synth_async(text, voice, rate), loop
+        )
+        mp3 = future.result(timeout=15.0)
         if not mp3:
             return None
         return _mp3_to_numpy(mp3)
@@ -137,6 +162,7 @@ class TTS:
         self._cache: collections.OrderedDict[str, tuple[np.ndarray, int]] = \
             collections.OrderedDict()
         self._warmup_audio_device()
+        _get_bg_loop()   # запускаем фоновый event loop заранее
         print("    ✓ TTS v3 (Edge TTS) готов")
 
     def _warmup_audio_device(self):
@@ -244,12 +270,10 @@ class TTS:
         try:
             sd.play(audio, samplerate=sr, blocking=False)
             duration = len(audio) / sr
-            deadline = time.time() + duration + 0.2
-            while time.time() < deadline:
-                if self._stop_evt.is_set():
-                    sd.stop()
-                    return
-                time.sleep(0.01)  # уменьшено с 0.02 для быстрого отклика на stop
+            # Event.wait() блокируется без CPU-нагрузки и просыпается мгновенно при stop
+            interrupted = self._stop_evt.wait(timeout=duration)
+            if interrupted:
+                sd.stop()
         except Exception as e:
             print(f"  [!] TTS воспроизведение: {e}")
 

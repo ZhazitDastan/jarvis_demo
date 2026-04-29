@@ -495,6 +495,19 @@ class SemanticIndexer:
             return []
         query_vec = np.array(vecs[0], dtype=np.float32)
 
+        # Pre-compute допустимые расширения для категории — фильтр в Python
+        # (SUFFIX в SQL дорогой; категория обычно отсекает 80%+ записей)
+        allowed_exts: set[str] | None = None
+        if category:
+            cat_map = {
+                "document": set(LIBRARY) | {"txt", "md", "rst", "csv", "pptx", "xlsx", "xls"},
+                "code":     set(FULL_TEXT),
+                "photo":    {"jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg"},
+                "music":    {"mp3", "flac", "wav", "aac", "ogg", "m4a"},
+                "video":    {"mp4", "avi", "mkv", "mov", "wmv", "webm"},
+            }
+            allowed_exts = cat_map.get(category)
+
         with self._lock:
             rows = self._conn.execute(
                 "SELECT path, embedding, text_preview FROM embeddings"
@@ -509,29 +522,14 @@ class SemanticIndexer:
 
         for r in rows:
             p = r["path"]
+            # Быстрый фильтр по расширению ДО os.path.isfile() — экономит I/O
+            if allowed_exts is not None:
+                dot = p.rfind(".")
+                ext = p[dot + 1:].lower() if dot >= 0 else ""
+                if ext not in allowed_exts:
+                    continue
             if not os.path.isfile(p):   # исключаем папки и несуществующие пути
                 continue
-            ext = pathlib.Path(p).suffix.lower().lstrip(".")
-            # Фильтр по категории
-            if category:
-                if category == "document" and ext not in (
-                    set(LIBRARY) | {"txt", "md", "rst", "csv", "pptx", "xlsx", "xls"}
-                ):
-                    continue
-                elif category == "code" and ext not in FULL_TEXT:
-                    continue
-                elif category == "photo" and ext not in {
-                    "jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg"
-                }:
-                    continue
-                elif category == "music" and ext not in {
-                    "mp3", "flac", "wav", "aac", "ogg", "m4a"
-                }:
-                    continue
-                elif category == "video" and ext not in {
-                    "mp4", "avi", "mkv", "mov", "wmv", "webm"
-                }:
-                    continue
             live_paths.append(p)
             matrix.append(_blob_to_vec(r["embedding"]))
             previews[p] = r["text_preview"] or ""

@@ -82,9 +82,21 @@ def _detect_lang(text: str) -> str:
 
 class STT:
     def __init__(self):
-        self._vosk_model    = None   # Vosk RU
-        self._vosk_model_en = None   # Vosk EN
+        self._vosk_model      = None   # Vosk RU
+        self._vosk_model_en   = None   # Vosk EN
+        self._openai_client   = None   # ленивый, переиспользуется
+        self._vosk_recognizer = None   # для wake_word: создаётся один раз
         self._load_models()
+
+    # ── Переиспользуемый OpenAI клиент ────────────────────────────────────────
+
+    def _get_openai_client(self):
+        """Возвращает кэшированный OpenAI клиент.
+        Создание нового клиента на каждый запрос стоит ~30-50мс."""
+        if self._openai_client is None:
+            from openai import OpenAI
+            self._openai_client = OpenAI(api_key=OPENAI_API_KEY, timeout=8.0, max_retries=1)
+        return self._openai_client
 
     def _load_models(self):
         self._load_vosk_ru()
@@ -145,8 +157,7 @@ class STT:
 
     def _transcribe_openai(self, audio_path: str) -> str:
         try:
-            from openai import OpenAI
-            client = OpenAI(api_key=OPENAI_API_KEY)
+            client = self._get_openai_client()
             lang   = get_whisper_language()
 
             with open(audio_path, "rb") as f:
@@ -155,7 +166,6 @@ class STT:
                     file=f,
                     language=lang,  # явно указываем язык — иначе Whisper транскрибирует EN акцент кириллицей
                     prompt=_PROMPTS.get(lang, _PROMPTS["en"]),
-                    timeout=8.0,
                 )
 
             text = self._clean(result.text.strip())
