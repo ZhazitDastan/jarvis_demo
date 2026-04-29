@@ -115,7 +115,12 @@ if (Test-Path $cfgFile) {
         "  $(T 'Ukazhi put'' k papke s frontom (React+Tauri)' 'Enter path to frontend folder (React+Tauri)')"
     Say "  $(T 'Primer' 'Example'): D:\Diploma project\J.A.R.V.I.S" `
         "  $(T 'Primer' 'Example'): D:\Diploma project\J.A.R.V.I.S"
-    $frontPath = Ask "Frontend path" "Frontend path"
+    do {
+        $frontPath = Ask "Frontend path" "Frontend path"
+        if (-not $frontPath -or $frontPath.Trim() -eq "") {
+            Write-Host "  !! $(T 'Put ne mozhet byt pustym. Vvedite put.' 'Path cannot be empty. Enter a path.')" -ForegroundColor Red
+        }
+    } while (-not $frontPath -or $frontPath.Trim() -eq "")
 
     if (-not (Test-Path $frontPath)) {
         Warn "$(T 'Papka ne najdena, no config budet sozdan' 'Folder not found, config will be created anyway')" `

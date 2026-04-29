@@ -73,13 +73,19 @@ $prevBack = git rev-parse HEAD 2>$null
 if ($LASTEXITCODE -ne 0) {
     Warn "Git ne naiden v bekende, propuskaju pull" "Git not found in backend, skipping pull"
 } else {
-    git pull --ff-only -q 2>&1 | Out-Null
-    $curBack = git rev-parse HEAD
-    if ($prevBack -ne $curBack) {
-        OK "Backend obnovlen" "Backend updated"
-        Write-Host "     ->  $($curBack.Substring(0,7))" -ForegroundColor DarkGray
+    $pullFailed = $false
+    try { $null = git pull --ff-only -q 2>&1; if ($LASTEXITCODE -ne 0) { $pullFailed = $true } }
+    catch { $pullFailed = $true }
+    if ($pullFailed) {
+        Warn "Net remote-vetvki, propuskaju pull" "No remote tracking branch, skipping pull"
     } else {
-        OK "Backend aktualen  [$($curBack.Substring(0,7))]" "Backend is up to date  [$($curBack.Substring(0,7))]"
+        $curBack = git rev-parse HEAD
+        if ($prevBack -ne $curBack) {
+            OK "Backend obnovlen" "Backend updated"
+            Write-Host "     ->  $($curBack.Substring(0,7))" -ForegroundColor DarkGray
+        } else {
+            OK "Backend aktualen  [$($curBack.Substring(0,7))]" "Backend is up to date  [$($curBack.Substring(0,7))]"
+        }
     }
 }
 
@@ -94,21 +100,27 @@ $prevFront = git rev-parse HEAD 2>$null
 if ($LASTEXITCODE -ne 0) {
     Warn "Git ne naiden vo frontende, propuskaju pull" "Git not found in frontend, skipping pull"
 } else {
-    git pull --ff-only -q 2>&1 | Out-Null
-    $curFront = git rev-parse HEAD
-
-    if ($prevFront -ne $curFront) {
-        $changed      = git diff $prevFront $curFront --name-only 2>$null
-        $reactChanged = ($changed | Where-Object { $_ -match '^(src|public|index\.html|vite\.config|tailwind|postcss|package)' }).Count -gt 0
-        $tauriChanged = ($changed | Where-Object { $_ -match '^src-tauri' }).Count -gt 0
-
-        OK "Frontend obnovlen" "Frontend updated"
-        Write-Host "     ->  $($curFront.Substring(0,7))" -ForegroundColor DarkGray
-
-        if ($tauriChanged)     { Warn "Izmenilsja Rust/Tauri - peresborka ~3-10 min" "Rust/Tauri changed - rebuild ~3-10 min" }
-        elseif ($reactChanged) { Warn "Izmenilsja React - peresborka ~30-60 sek" "React source changed - rebuild ~30-60 sec" }
+    $pullFailed = $false
+    try { $null = git pull --ff-only -q 2>&1; if ($LASTEXITCODE -ne 0) { $pullFailed = $true } }
+    catch { $pullFailed = $true }
+    if ($pullFailed) {
+        Warn "Net remote-vetvki, propuskaju pull" "No remote tracking branch, skipping pull"
     } else {
-        OK "Frontend aktualen  [$($curFront.Substring(0,7))]" "Frontend is up to date  [$($curFront.Substring(0,7))]"
+        $curFront = git rev-parse HEAD
+
+        if ($prevFront -ne $curFront) {
+            $changed      = git diff $prevFront $curFront --name-only 2>$null
+            $reactChanged = ($changed | Where-Object { $_ -match '^(src|public|index\.html|vite\.config|tailwind|postcss|package)' }).Count -gt 0
+            $tauriChanged = ($changed | Where-Object { $_ -match '^src-tauri' }).Count -gt 0
+
+            OK "Frontend obnovlen" "Frontend updated"
+            Write-Host "     ->  $($curFront.Substring(0,7))" -ForegroundColor DarkGray
+
+            if ($tauriChanged)     { Warn "Izmenilsja Rust/Tauri - peresborka ~3-10 min" "Rust/Tauri changed - rebuild ~3-10 min" }
+            elseif ($reactChanged) { Warn "Izmenilsja React - peresborka ~30-60 sek" "React source changed - rebuild ~30-60 sec" }
+        } else {
+            OK "Frontend aktualen  [$($curFront.Substring(0,7))]" "Frontend is up to date  [$($curFront.Substring(0,7))]"
+        }
     }
 }
 
