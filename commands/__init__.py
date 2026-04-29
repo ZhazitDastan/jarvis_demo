@@ -20,6 +20,8 @@ COMMANDS: dict = {}
 _lock = threading.Lock()
 _pkg_dir = pathlib.Path(__file__).parent
 _file_mtimes: dict = {}  # str(path) -> mtime
+_cmd_version: int = 0    # инкрементируется при каждом изменении COMMANDS
+_schema_cache: dict = {"version": -1, "tools": []}
 
 
 # ── Загрузка одного файла ──────────────────────────────────────────────────────
@@ -46,8 +48,10 @@ def _load_command_file(path: pathlib.Path) -> None:
         "handler":     mod.handler,
     }
     with _lock:
+        global _cmd_version
         COMMANDS[name] = entry
         _file_mtimes[str(path)] = _mtime(path)
+        _cmd_version += 1
     print(f"    [cmd] Загружена команда: {name}")
 
 
@@ -103,7 +107,11 @@ def execute_command(name: str, args: dict) -> str:
 
 def build_tools_schema() -> list[dict]:
     with _lock:
+        if _schema_cache["version"] == _cmd_version:
+            return _schema_cache["tools"]
         snapshot = list(COMMANDS.items())
+        current_version = _cmd_version
+
     tools = []
     for name, meta in snapshot:
         tools.append({
@@ -118,4 +126,10 @@ def build_tools_schema() -> list[dict]:
                 },
             },
         })
+
+    with _lock:
+        # Сохраняем только если версия не изменилась пока строили схему
+        if _schema_cache["version"] != current_version:
+            _schema_cache["version"] = current_version
+            _schema_cache["tools"] = tools
     return tools

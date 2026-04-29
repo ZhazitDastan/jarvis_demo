@@ -4,6 +4,7 @@ SQLite индекс файлов пользователя.
 """
 
 import os
+import re
 import sqlite3
 import threading
 import time
@@ -381,12 +382,17 @@ SKIP_DIR_PARTS = {
 }
 
 
+# Компилируем один раз — O(1) поиск вместо O(n) перебора строк
+_SKIP_RE = re.compile(
+    '|'.join(re.escape(s) for s in sorted(SKIP_DIR_PARTS, key=len, reverse=True))
+)
+
+
 def _should_skip(path: pathlib.Path) -> bool:
     p_lower = str(path).lower()
-    # Исключаем папку самого проекта
     if p_lower.startswith(_PROJECT_ROOT):
         return True
-    return any(skip in p_lower for skip in SKIP_DIR_PARTS)
+    return bool(_SKIP_RE.search(p_lower))
 
 CATEGORIES = {
     "document": {"pdf", "doc", "docx", "txt", "xls", "xlsx", "ppt", "pptx",
@@ -438,6 +444,12 @@ class FileIndexer:
         self._lock = threading.Lock()
         self._conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
         self._conn.row_factory = sqlite3.Row
+        # Производительность: WAL даёт параллельные чтения, cache ускоряет LIKE-запросы
+        self._conn.execute("PRAGMA journal_mode=WAL")
+        self._conn.execute("PRAGMA synchronous=NORMAL")
+        self._conn.execute("PRAGMA cache_size=-32000")   # 32 МБ кеш страниц
+        self._conn.execute("PRAGMA temp_store=MEMORY")
+        self._conn.execute("PRAGMA mmap_size=134217728") # 128 МБ memory-mapped I/O
         self._needs_rebuild = False
         self._init_db()
 
@@ -1000,110 +1012,102 @@ class FileIndexer:
             conds.append(expr)
             params.extend(vals)
 
-        # Фильтр по диску: "D" → ищем только файлы на D:\
         if drive:
             conds.append("UPPER(SUBSTR(path, 1, 1)) = ?")
             params.append(drive.upper().strip(": \\"))
 
         where = ("WHERE " + " AND ".join(conds)) if conds else ""
 
-        if query:
-            q = query.lower()
-            results, seen = [], set()
+        if not query:
+            sql = f"SELECT * FROM files {where} ORDER BY modified_at DESC LIMIT ? OFFSET ?"
+            with self._lock:
+                rows = self._conn.execute(sql, params + [limit, offset]).fetchall()
+            return self._fmt([dict(r) for r in rows])
 
-            def _run(extra_cond, extra_params, lim):
-                all_conds = conds + ([extra_cond] if extra_cond else [])
-                all_params = params + extra_params
-                w = ("WHERE " + " AND ".join(all_conds)) if all_conds else ""
-                sql = f"SELECT * FROM files {w} LIMIT ?"
-                with self._lock:
-                    return self._conn.execute(sql, all_params + [lim]).fetchall()
+        q = query.lower()
+        words = [w for w in q.split() if len(w) > 2]
+        results: list[dict] = []
+        seen: set[str] = set()
 
-            # 1. Точное совпадение
-            for r in _run("name_lower = ?", [q], limit):
+        def _q(extra_cond: str, extra_params: list, lim: int):
+            """Выполняет запрос без захвата блокировки (вызывается внутри with self._lock)."""
+            all_conds = conds + [extra_cond]
+            w = "WHERE " + " AND ".join(all_conds)
+            return self._conn.execute(
+                f"SELECT * FROM files {w} LIMIT ?",
+                params + extra_params + [lim],
+            ).fetchall()
+
+        def _add(rows) -> None:
+            for r in rows:
                 if r["path"] not in seen:
-                    results.append(dict(r)); seen.add(r["path"])
+                    results.append(dict(r))
+                    seen.add(r["path"])
+
+        # ── Все приоритетные запросы в одном захвате блокировки ───────────────
+        with self._lock:
+            # 1. Точное совпадение
+            _add(_q("name_lower = ?", [q], limit))
 
             # 2. Начинается с запроса
             if len(results) < limit:
-                for r in _run("name_lower LIKE ?", [q + "%"], limit * 3):
-                    if r["path"] not in seen:
-                        results.append(dict(r)); seen.add(r["path"])
+                _add(_q("name_lower LIKE ?", [q + "%"], limit * 3))
 
             # 3. Содержит запрос целиком
             if len(results) < limit:
-                for r in _run("name_lower LIKE ?", ["%" + q + "%"], limit * 5):
-                    if r["path"] not in seen:
-                        results.append(dict(r)); seen.add(r["path"])
+                _add(_q("name_lower LIKE ?", ["%" + q + "%"], limit * 5))
 
-            # 4. AND-поиск по словам — все слова должны быть в имени
-            if len(results) < limit:
-                words = [w for w in q.split() if len(w) > 2]
-                if len(words) > 1:
-                    cond = " AND ".join("name_lower LIKE ?" for _ in words)
-                    for r in _run(cond, ["%" + w + "%" for w in words], limit * 3):
-                        if r["path"] not in seen:
-                            results.append(dict(r)); seen.add(r["path"])
-                elif words:
-                    for r in _run("name_lower LIKE ?", ["%" + words[0] + "%"], limit * 3):
-                        if r["path"] not in seen:
-                            results.append(dict(r)); seen.add(r["path"])
+            # 4. AND по словам (только для многословных запросов)
+            if len(results) < limit and len(words) > 1:
+                cond = " AND ".join("name_lower LIKE ?" for _ in words)
+                _add(_q(cond, ["%" + w + "%" for w in words], limit * 3))
 
-            # 4а. OR-fallback: хотя бы одно слово совпадает
-            if len(results) < limit:
-                words = [w for w in q.split() if len(w) > 2]
+            # 5. OR fallback по словам
+            if len(results) < limit and words:
                 for word in words:
-                    for r in _run("name_lower LIKE ?", ["%" + word + "%"], limit * 3):
-                        if r["path"] not in seen:
-                            results.append(dict(r)); seen.add(r["path"])
+                    _add(_q("name_lower LIKE ?", ["%" + word + "%"], limit * 3))
                     if len(results) >= limit:
                         break
 
-            # 4.5. Поиск в name_search (транслитерированные имена) — AND, потом OR fallback
+            # 6. name_search: транслитерация / заимствования (AND)
             if len(results) < limit:
-                search_words = [w for w in q.split() if len(w) > 2] or [q]
-                if len(search_words) > 1:
-                    cond = " AND ".join("name_search LIKE ?" for _ in search_words)
-                    for r in _run(cond, ["%" + w + "%" for w in search_words], limit * 3):
-                        if r["path"] not in seen:
-                            results.append(dict(r)); seen.add(r["path"])
+                sw = words if len(words) > 1 else [q]
+                if len(sw) > 1:
+                    cond = " AND ".join("name_search LIKE ?" for _ in sw)
+                    _add(_q(cond, ["%" + w + "%" for w in sw], limit * 3))
+
+            # 7. name_search содержит запрос целиком / OR fallback
             if len(results) < limit:
-                search_words = [w for w in q.split() if len(w) > 2] or [q]
-                for word in search_words:
-                    for r in _run("name_search LIKE ?", ["%" + word + "%"], limit * 3):
-                        if r["path"] not in seen:
-                            results.append(dict(r)); seen.add(r["path"])
-                    if len(results) >= limit:
-                        break
+                sw = words or [q]
+                _add(_q("name_search LIKE ?", ["%" + q + "%"], limit * 5))
+                if len(results) < limit:
+                    for word in sw:
+                        _add(_q("name_search LIKE ?", ["%" + word + "%"], limit * 3))
+                        if len(results) >= limit:
+                            break
 
-            # 5. Fuzzy matching — только если совсем ничего не нашли, пул 500
-            # Сравниваем и с name_lower, и с name_search (транслитерированное имя)
-            if len(results) < 2 and len(q) > 4:
-                sql = f"SELECT * FROM files {where} LIMIT 500"
-                with self._lock:
-                    pool = self._conn.execute(sql, params).fetchall()
-                scored = []
-                for r in pool:
-                    if r["path"] in seen:
-                        continue
-                    score = max(
-                        SequenceMatcher(None, q, r["name_lower"]).ratio(),
-                        SequenceMatcher(None, q, r["name_search"]).ratio(),
-                    )
-                    if score >= 0.5:
-                        scored.append((score, dict(r)))
-                scored.sort(key=lambda x: -x[0])
-                for score, r in scored:
-                    if len(results) < limit:
-                        results.append(r); seen.add(r["path"])
+        # ── Fuzzy — отдельный захват блокировки, только когда всё выше не нашло ──
+        if len(results) < 2 and len(q) > 4:
+            sql = f"SELECT * FROM files {where} LIMIT 500"
+            with self._lock:
+                pool = self._conn.execute(sql, params).fetchall()
+            scored = []
+            for r in pool:
+                if r["path"] in seen:
+                    continue
+                score = max(
+                    SequenceMatcher(None, q, r["name_lower"]).ratio(),
+                    SequenceMatcher(None, q, r["name_search"]).ratio(),
+                )
+                if score >= 0.5:
+                    scored.append((score, dict(r)))
+            scored.sort(key=lambda x: -x[0])
+            for _, r in scored:
+                if len(results) < limit:
+                    results.append(r)
+                    seen.add(r["path"])
 
-            return self._fmt(results[offset: offset + limit])
-
-        # Без запроса — по дате убывания
-        sql = f"SELECT * FROM files {where} ORDER BY modified_at DESC LIMIT ? OFFSET ?"
-        with self._lock:
-            rows = self._conn.execute(sql, params + [limit, offset]).fetchall()
-        return self._fmt([dict(r) for r in rows])
+        return self._fmt(results[offset: offset + limit])
 
     def _fmt(self, rows: list) -> list[dict]:
         out = []

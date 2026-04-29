@@ -1,14 +1,18 @@
-# Environment
+# Environment — never commit real keys
 .env
 .env.local
 .env.*.local
 config.json
 secrets/
 
-# Large model files (too large for GitHub)
+# Launcher machine-specific config (paths differ per machine)
+launcher.config.json
+
+# Large model files (too large for GitHub — download via setup.ps1)
 models/vosk-ru/
 models/voices/
 models/whisper-*/
+models/vosk-model-*/
 *.onnx
 *.bin
 
