@@ -305,6 +305,7 @@ class VoiceRunner:
 
                     lang = get_lang()
                     _State.emit({"type": "wake_word"})
+                    _State.set_status("speaking")
                     tts.speak(lang["activation"])
 
                     # Шаг 2: Запись команды
@@ -481,12 +482,10 @@ async def chat(req: ChatRequest):
         raise HTTPException(409, "Voice pipeline is busy")
 
     _State.set_status("thinking")
-    _State.emit({"type": "transcribed", "text": req.text})
 
     loop = asyncio.get_event_loop()
     try:
         response = await loop.run_in_executor(None, lambda: _chat_sync(req.text, req.speak))
-        _State.emit({"type": "response", "text": response})
         _State.set_status("idle")
         return {"response": response}
     except Exception as e:

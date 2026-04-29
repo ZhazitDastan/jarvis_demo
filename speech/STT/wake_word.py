@@ -50,12 +50,18 @@ _PHONETIC_EN = frozenset({
 def _wake_sets() -> tuple[frozenset, list]:
     """Возвращает (exact_set, fuzzy_list) для текущего языка."""
     if get_whisper_language() == "ru":
-        exact  = _TARGETS_RU | _PHONETIC_RU | _TARGETS_EN   # EN тоже слушаем в RU режиме
-        fuzzy  = list(_TARGETS_RU | _TARGETS_EN)
+        exact = _TARGETS_RU | _PHONETIC_RU | _TARGETS_EN
+        fuzzy = list(_TARGETS_RU | _TARGETS_EN)
     else:
-        exact  = _TARGETS_EN | _PHONETIC_EN                  # только EN варианты
-        fuzzy  = list(_TARGETS_EN)
+        # EN-режим: слушаем и EN и RU варианты — Vosk RU может вернуть кириллицу
+        exact = _TARGETS_EN | _PHONETIC_EN | _TARGETS_RU | _PHONETIC_RU
+        fuzzy = list(_TARGETS_EN | _TARGETS_RU)
     return exact, fuzzy
+
+
+# Ядро слова во всех вариантах произношения (RU кириллица и EN латиница)
+_CORE_RU = "арвис"
+_CORE_EN = "arvis"
 
 
 # ── Нечёткое совпадение ───────────────────────────────────────────────────────
@@ -63,14 +69,21 @@ def _wake_sets() -> tuple[frozenset, list]:
 def _is_wake_word(text: str) -> tuple[bool, str]:
     """
     Возвращает (совпало, найденное_слово).
-    В EN-режиме реагирует только на английские варианты.
+    Проверяет сначала по ядру слова, затем по точным и нечётким наборам.
     """
     if not text:
         return False, ""
 
+    lower = text.lower()
+
+    # Быстрая проверка по ядру: ловит джарвис/жарвис/ярвис/jarvis и все варианты
+    for core in (_CORE_RU, _CORE_EN):
+        if core in lower:
+            return True, lower
+
     exact_set, fuzzy_list = _wake_sets()
 
-    for word in text.lower().split():
+    for word in lower.split():
         for target in exact_set:
             if target in word or word in target:
                 return True, word
@@ -213,9 +226,8 @@ def _transcribe_fast(stt, audio: np.ndarray) -> str:
 
 def _transcribe_vosk(stt, audio: np.ndarray) -> str:
     """Транскрипция через Vosk без грамматики — fuzzy matching на стороне Python."""
-    if get_whisper_language() == "ru":
-        vosk_model = getattr(stt, "_vosk_model", None)
-    else:
+    vosk_model = getattr(stt, "_vosk_model", None)  # всегда Vosk RU для wake word
+    if vosk_model is None:
         vosk_model = getattr(stt, "_vosk_model_en", None)
 
     if vosk_model is None:

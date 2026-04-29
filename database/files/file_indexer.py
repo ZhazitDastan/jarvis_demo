@@ -30,6 +30,10 @@ _LOANWORDS: dict[str, str] = {
     "рар":        "rar",
     "майкрософт": "microsoft",
     "гитхаб":     "github",
+    # Медиа / общие слова
+    "фото":       "photo",
+    "клипы":      "clips",
+    "клип":       "clip",
     # Браузеры
     "хром":       "chrome",
     "хромиум":    "chromium",
@@ -80,6 +84,10 @@ _LOANWORDS_EN: dict[str, str] = {
     "rar":          "рар",
     "microsoft":    "майкрософт",
     "github":       "гитхаб",
+    # Медиа / общие слова
+    "photo":        "фото",
+    "clip":         "клип",
+    "clips":        "клипы",
     # Браузеры
     "chrome":       "хром",
     "chromium":     "хромиум",
@@ -1028,7 +1036,20 @@ class FileIndexer:
                     if r["path"] not in seen:
                         results.append(dict(r)); seen.add(r["path"])
 
-            # 4. Поиск по отдельным словам (для запросов типа "диплом финал")
+            # 4. AND-поиск по словам — все слова должны быть в имени
+            if len(results) < limit:
+                words = [w for w in q.split() if len(w) > 2]
+                if len(words) > 1:
+                    cond = " AND ".join("name_lower LIKE ?" for _ in words)
+                    for r in _run(cond, ["%" + w + "%" for w in words], limit * 3):
+                        if r["path"] not in seen:
+                            results.append(dict(r)); seen.add(r["path"])
+                elif words:
+                    for r in _run("name_lower LIKE ?", ["%" + words[0] + "%"], limit * 3):
+                        if r["path"] not in seen:
+                            results.append(dict(r)); seen.add(r["path"])
+
+            # 4а. OR-fallback: хотя бы одно слово совпадает
             if len(results) < limit:
                 words = [w for w in q.split() if len(w) > 2]
                 for word in words:
@@ -1038,9 +1059,14 @@ class FileIndexer:
                     if len(results) >= limit:
                         break
 
-            # 4.5. Поиск в name_search — транслитерированные имена файлов (cross-language).
-            # Здесь ищем слова запроса в поле, где у файла хранятся оба скрипта:
-            # 'report_final.pdf' содержит 'репорт финал', 'Диплом.docx' содержит 'diplom'.
+            # 4.5. Поиск в name_search (транслитерированные имена) — AND, потом OR fallback
+            if len(results) < limit:
+                search_words = [w for w in q.split() if len(w) > 2] or [q]
+                if len(search_words) > 1:
+                    cond = " AND ".join("name_search LIKE ?" for _ in search_words)
+                    for r in _run(cond, ["%" + w + "%" for w in search_words], limit * 3):
+                        if r["path"] not in seen:
+                            results.append(dict(r)); seen.add(r["path"])
             if len(results) < limit:
                 search_words = [w for w in q.split() if len(w) > 2] or [q]
                 for word in search_words:

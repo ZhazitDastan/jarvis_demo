@@ -3,6 +3,7 @@ brain.py — Мозг Jarvis через OpenAI ChatGPT API + function calling д
 """
 
 import json
+import config as _cfg
 from openai import OpenAI
 from config import OPENAI_API_KEY, GPT_MODEL, GPT_TEMPERATURE, build_system_prompt, get_lang
 from commands import COMMANDS, execute_command, build_tools_schema
@@ -73,9 +74,21 @@ class Brain:
                     })
 
                 # Второй запрос — финальный ответ пользователю
+                # Строим копию истории с усиленным языковым правилом
+                lang_note = (
+                    "\n\nCRITICAL: Your reply MUST be in English only."
+                    if getattr(_cfg, "ACTIVE_LANGUAGE", "ru") == "en"
+                    else "\n\nВАЖНО: Отвечай ТОЛЬКО на русском языке."
+                )
+                final_msgs = list(self.history)
+                if final_msgs and self._role(final_msgs[0]) == "system":
+                    sys0 = final_msgs[0]
+                    old_content = sys0["content"] if isinstance(sys0, dict) else sys0.content
+                    final_msgs = [{"role": "system", "content": old_content + lang_note}] + final_msgs[1:]
+
                 final = self.client.chat.completions.create(
                     model=GPT_MODEL,
-                    messages=self.history,
+                    messages=final_msgs,
                     max_tokens=200,
                     temperature=0.7,
                 )

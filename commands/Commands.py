@@ -182,8 +182,12 @@ def execute_command(name: str, args: dict) -> str:
 
 def build_tools_schema() -> list:
     """Строит список tools для OpenAI function calling."""
+    from config import ACTIVE_LANGUAGE
+    use_en = ACTIVE_LANGUAGE == "en"
+
     tools = []
     for name, meta in COMMANDS.items():
+        description = meta.get("description_en" if use_en else "description", meta["description"])
         properties = {}
         required = []
         for param_name, param_info in meta.get("params", {}).items():
@@ -191,13 +195,12 @@ def build_tools_schema() -> list:
                 "type": param_info["type"],
                 "description": param_info["description"],
             }
-            # Все параметры необязательные — GPT сам решает
 
         tools.append({
             "type": "function",
             "function": {
                 "name": name,
-                "description": meta["description"],
+                "description": description,
                 "parameters": {
                     "type": "object",
                     "properties": properties,

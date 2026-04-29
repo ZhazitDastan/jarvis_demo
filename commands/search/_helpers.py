@@ -101,9 +101,9 @@ def auto_detect(query: str, category: str, extension: str):
                 detected_cat = cat
             if not detected_ext and ext:
                 detected_ext = ext
-            q_lower = q_lower.replace(alias, "").strip()
+            # Не удаляем alias из запроса — он может быть частью имени файла/папки
 
-    return q_lower.strip(" -,."), detected_cat, detected_ext
+    return query.strip(" -,."), detected_cat, detected_ext
 
 
 def normalize_drive(drive: str, query: str = "") -> tuple[str, str]:

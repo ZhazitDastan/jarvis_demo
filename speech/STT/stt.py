@@ -153,7 +153,7 @@ class STT:
                 result = client.audio.transcriptions.create(
                     model="whisper-1",
                     file=f,
-                    # language не указываем → Whisper сам определяет RU/EN по речи
+                    language=lang,  # явно указываем язык — иначе Whisper транскрибирует EN акцент кириллицей
                     prompt=_PROMPTS.get(lang, _PROMPTS["en"]),
                     timeout=8.0,
                 )
